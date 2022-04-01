@@ -2,12 +2,12 @@
 lab:
   title: ラボ 00:ラボ環境を検証する
   module: 'Module 0: Welcome'
-ms.openlocfilehash: d5886a54ef4531d68bfa5da28ba2542ddb0cd463
-ms.sourcegitcommit: 08d43004a29343fed5b35bf6819ba38b074201f3
+ms.openlocfilehash: 082d0853be7780d0a49c949d9c60851a7f30b7a8
+ms.sourcegitcommit: 7001996e0238a23639a4d9ce16e68a201393abfb
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 03/09/2022
-ms.locfileid: "139687273"
+ms.lasthandoff: 03/22/2022
+ms.locfileid: "140748969"
 ---
 # <a name="lab-00-validate-lab-environment"></a>ラボ 00:ラボ環境を検証する
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
@@ -32,5 +32,7 @@ ms.locfileid: "139687273"
 16. 新しい設定がバックエンドに反映されるように、**CI/CD 機能を使用する前に少なくとも 3 時間待ちます**。 それ以外の場合は、 *"リクエストの最大数に達したため、このエージェントは実行されていません…"* というメッセージが表示されます。
 17. [組織の設定] で、[セキュリティ] -> **[ポリシー]** に移動します
 18. [OAuth を使用したサード パーティ アプリケーションのアクセス] を **オンにします**
+    > 注: OAuth 設定は、DemoDevOpsGenerator などのツールで拡張機能を登録できるようにするのに役立ちます。 これがないと、必要な拡張機能が不足して、いくつかのラボが失敗するおそれがあります。
 19. [パブリック プロジェクトを許可します] を **オンにします**
+    > 注: パブリック プロジェクト設定では、一部のラボで、いくつかの拡張機能の無料バージョンを使用できます。
 20. オプション: ビルド パイプラインを作成してトリガーすることで、この新しい設定が正常に適用されたことを検証できます。 これを行うには、[Azure DevOps Demo Generator](https://azuredevopsdemogenerator.azurewebsites.net) を使用して、講師に相談するか、課金を有効にして新しく作成した組織にデモプロジェクトを作成します。
