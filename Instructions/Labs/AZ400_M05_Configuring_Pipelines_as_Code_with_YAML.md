@@ -2,12 +2,12 @@
 lab:
   title: ラボ 11:YAML を使用したコードとしてのパイプラインの構築
   module: 'Module 05: Implement a secure continuous deployment using Azure Pipelines'
-ms.openlocfilehash: 6f6c4d98338022a305fb3fd05f0d1efc7a4b9c00
-ms.sourcegitcommit: f72fcf5ee578f465b3495f3cf789b06c530e88a4
+ms.openlocfilehash: 8de8c2a736004288fe37e971771b02ca7b8afd7e
+ms.sourcegitcommit: 47f04db60403c98a8fd46def1794f46594bfd1f8
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 03/04/2022
-ms.locfileid: "139262577"
+ms.lasthandoff: 04/27/2022
+ms.locfileid: "144341228"
 ---
 # <a name="lab-11-configuring-pipelines-as-code-with-yaml"></a>ラボ 11:YAML を使用したコードとしてのパイプラインの構築
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
@@ -94,19 +94,13 @@ ms.locfileid: "139262577"
     az group create --name $RESOURCEGROUPNAME --location $LOCATION
     ```
 
-1.  次のコマンドを実行して Windows App Service プランを作成するには:
+1.  次のコマンドを実行して Windows App Service プランを作成するには、次のようにします。
 
     ```bash
     SERVICEPLANNAME='az400l11a-sp1'
     az appservice plan create --resource-group $RESOURCEGROUPNAME --name $SERVICEPLANNAME --sku B3
     ```
-    
-    > **注**:`ModuleNotFoundError: No module named 'vsts_cd_manager'` で始まるエラー メッセージで `az appservice plan create` コマンドが失敗した場合は、次のコマンドを実行してから、失敗したコマンドを再び実行します。
-
-    ```bash
-    az extension remove -n appservice-kube
-    az extension add --yes --source "https://aka.ms/appsvc/appservice_kube-latest-py2.py3-none-any.whl"
-    ```
+        
 
 1.  一意の名前を指定して Web アプリを作成します。
 

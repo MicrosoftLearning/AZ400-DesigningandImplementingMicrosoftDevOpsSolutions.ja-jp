@@ -2,12 +2,12 @@
 lab:
   title: ラボ 12:Azure Key Vault と Azure DevOps の統合
   module: 'Module 05: Implement a secure continuous deployment using Azure Pipelines'
-ms.openlocfilehash: ee482422f21a674e4a91b7cd7af048fbd2bfbfbb
-ms.sourcegitcommit: f72fcf5ee578f465b3495f3cf789b06c530e88a4
+ms.openlocfilehash: ecd8c74d1dc1c9b96c3d61e59fb2abc646bd8741
+ms.sourcegitcommit: ea152638f54c729974e5cc91ef3dc7414d853ab5
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 03/04/2022
-ms.locfileid: "139262605"
+ms.lasthandoff: 04/26/2022
+ms.locfileid: "144012357"
 ---
 # <a name="lab-12-integrating-azure-key-vault-with-azure-devops"></a>ラボ 12:Azure Key Vault と Azure DevOps の統合
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
@@ -109,7 +109,8 @@ Azure Pipelines からAzure リソースにアプリをデプロイするには�
 1.  **Bash** プロンプトの **Cloud Shell** ペインで、次のコマンドを実行してサービス プリンシパルを作成します (`<service-principal-name>` を文字と数字で構成される一意の文字列に置き換えます)。
 
     ```
-    az ad sp create-for-rbac --name <service-principal-name> --role Contributor
+    SUB_ID=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac --name <service-principal-name> --role contributor --scope /subscriptions/$SUB_ID
     ```
 
     > **注**:このコマンドは JSON 出力を生成します。 出力をテキスト ファイルにコピーします。 このラボで後ほど必要になります。
@@ -165,7 +166,7 @@ Azure Pipelines からAzure リソースにアプリをデプロイするには�
 
     | 設定 | 値 |
     | --- | --- |
-    | Upload options | **[手動]** |
+    | Upload options | **手動** |
     | Name | **sqldbpassword** |
     | 値 | 任意の有効な MySQL のパスワード値 |
 
