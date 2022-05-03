@@ -2,12 +2,12 @@
 lab:
   title: DevOps Starter を使用して GitHub Actions を実装する
   module: 'Module 3: Implement CI with Azure Pipelines and GitHub Actions'
-ms.openlocfilehash: 9a57b5948b959773dcda04d48f802bcf5a516a9f
-ms.sourcegitcommit: f72fcf5ee578f465b3495f3cf789b06c530e88a4
+ms.openlocfilehash: ab4f600b83b4808caff309fa49e2dcab19a32c00
+ms.sourcegitcommit: ea152638f54c729974e5cc91ef3dc7414d853ab5
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 03/04/2022
-ms.locfileid: "139262522"
+ms.lasthandoff: 04/26/2022
+ms.locfileid: "144012351"
 ---
 # <a name="lab-06-implementing-github-actions-by-using-devops-starter"></a>DevOps Starter を使用して GitHub Actions を実装する
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
@@ -96,9 +96,10 @@ ms.locfileid: "139262522"
     | リポジトリ | **az400m08l01** |
     | サブスクリプション | このラボに使用する Azure サブスクリプションの名前 |
     | Web アプリの名前 | **azurewebsites.net** DNS 名前空間内の有効でグローバルに一意のホスト名 |
-    | 場所 | Azure Web アプリをプロビジョニングできる Azure リージョンの名前 |
+    | 場所 | Azure Web アプリをプロビジョニングできる Azure リージョンの名前 **米国東部** が推奨されます |
 
-    > **注**:プロビジョニングが完了するまで待ちます。 これには 1 分ほどかかります。
+   > **注**:一部の **場所** では、リソースが使用できないため失敗する可能性があります。 **米国東部** が推奨されます。
+   > **注**:プロビジョニングが完了するまで待ちます。 これには 1 分ほどかかります。
 
 1.  「**Deploy_DevOps_Project_az400m08l01\| の概要**」ブレードで、 **[リソースに移動]** をクリックします。
 1.  「**az400m08l01**」ブレードの **GitHub ワークフロー** タイルで、「**承認**」をクリックします。 

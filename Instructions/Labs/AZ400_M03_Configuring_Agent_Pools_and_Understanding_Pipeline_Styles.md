@@ -2,12 +2,12 @@
 lab:
   title: ラボ 04:エージェント プールの構成とパイプライン スタイルの把握
   module: 'Module 3: Implement CI with Azure Pipelines and GitHub Actions'
-ms.openlocfilehash: 2aff45194cb8c16e1d19be44af175bb937873f60
-ms.sourcegitcommit: f72fcf5ee578f465b3495f3cf789b06c530e88a4
+ms.openlocfilehash: b25f462520c5a6932abf9a2f0647e53e2e171adb
+ms.sourcegitcommit: 03e098f960d137ab5862f4cc9a8d762cc6740c48
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 03/04/2022
-ms.locfileid: "139262527"
+ms.lasthandoff: 04/27/2022
+ms.locfileid: "144339530"
 ---
 # <a name="lab-04-configuring-agent-pools-and-understanding-pipeline-styles"></a>ラボ 04:エージェント プールの構成とパイプライン スタイルの把握
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
@@ -63,7 +63,7 @@ Windows 10 デスクトップでタスク バーを見つけます。 タスク 
 
 1.  ラボのコンピューターで Web ブラウザーを起動し、[Azure DevOps Demo Generator](https://azuredevopsdemogenerator.azurewebsites.net) に移動します。 このユーティリティ サイトは、ラボで必要なコンテンツ (作業項目、リポジトリなど) が事前設定されている新しい Azure DevOps プロジェクトをアカウント内で作成するプロセスを自動化します。 
 
-    > **注**:サイトの詳細については、https://docs.microsoft.com/en-us/azure/devops/demo-gen を参照してください。
+    > **注**:サイトの詳細については、 https://docs.microsoft.com/en-us/azure/devops/demo-gen を参照してください。
 
 1.  「**サインイン**」をクリックし、Azure DevOps サブスクリプションに関連のある Microsoft アカウントを使用してサインインします。
 1.  必要な場合は、「**Azure DevOps Demo Generator**」ページで「**承諾する**」をクリックし、Azure DevOps サブスクリプションへのアクセス許可要求を承諾します。
@@ -149,7 +149,7 @@ Windows 10 デスクトップでタスク バーを見つけます。 タスク 
     | エージェント・プールを入力する (デフォルトで Enter を押します) | **az400m05l05a-pool** |
     | エージェント名を入力する | **az400m05-vm0** |
     | 作業フォルダーを入力する (_work の場合は Enter 押します) | **Enter** |
-    | 「各ステップのタスクの解凍を実行する」と入力します。 (N の場合は Enter を押します) | **Enter** |
+    | **(表示された場合のみ)** 「各ステップのタスクの解凍を実行する」と入力します。 (N の場合は Enter を押します) | **Enter** |
     | 「エージェントをサービスとして実行しますか?」入力します。 (Y/N) (N の場合は Enter を押します) | **Y** |
     | サービスで使用するユーザー アカウントを入力します (NT AUTHORITY\NETWORK SERVICE で Enter を押します) | **Enter** |
     | Enter whether to prevent service starting immediately after configuration is finished? (構成が完了した直後にサービスが開始されないようにするかどうかを入力します。) (Y/N) (N の場合は Enter を押します) | **Enter** |
@@ -170,7 +170,7 @@ Windows 10 デスクトップでタスク バーを見つけます。 タスク 
     demands:
     - agent.name -equals az400m05-vm0
     ```
-1. `Task: NugetInstaller@0` で **[設定] (グレーでタスクの上に表示されているリンク)** をクリックし、**[インストールする NuGet.exe のバージョン]** > **[4.0.0]** に変更して、**[追加]** をクリックします。 
+1. `Task: NugetToolInstaller@0` で **[設定] (グレーでタスクの上に表示されているリンク)** をクリックし、**[インストールする NuGet.exe のバージョン]** > **[4.0.0]** に変更して、**[追加]** をクリックします。 
 1.  
           **PartsUnlimited** 編集ペインのペインの右上隅にある [**保存**] をクリックし、[**保存**] ペインでもう一度 [**保存**] をクリックします。 これにより、このパイプラインに基づいてビルドが自動的にトリガーされます。 
 1.  Azure DevOps ポータルの左側の垂直ナビゲーション ペインの [**パイプライン**] セクションで、[**パイプライン**] をクリックします。

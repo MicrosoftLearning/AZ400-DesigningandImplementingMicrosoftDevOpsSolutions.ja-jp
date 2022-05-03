@@ -2,12 +2,12 @@
 lab:
   title: ラボ 17:Azure Artifacts によるパッケージ管理
   module: 'Module 07: Design and implement a dependency management strategy'
-ms.openlocfilehash: e4172b81e228750517d6b7dc93e2a16755d031c1
-ms.sourcegitcommit: f72fcf5ee578f465b3495f3cf789b06c530e88a4
+ms.openlocfilehash: e034aca12dc1fc7cfc00c039629a9fc9ba9c42eb
+ms.sourcegitcommit: 31ed72aab4ce3ac156655216d24b04ebeea6fd0b
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 03/04/2022
-ms.locfileid: "139262537"
+ms.lasthandoff: 04/29/2022
+ms.locfileid: "144390488"
 ---
 # <a name="lab-17-package-management-with-azure-artifacts"></a>ラボ 17:Azure Artifacts によるパッケージ管理
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
@@ -200,8 +200,6 @@ Azure Artifacts は、Azure DevOps での NuGet、npm、Maven パッケージの
 1.  **[ソリューション エクスプローラー]** ペインで、**PartsUnlimitedWebsite** プロジェクトの下の **[参照]** ノードを右クリックし、右クリックメニューで **[NuGet パッケージの管理]** を選択します。 これにより、ウィンドウの中央のペインに **[NuGet:PartsUnlimitedWebsite]** タブが開きます。
 1.  **[NuGet: PartsUnlimitedWebsite]** ペインで、 **[参照]** タブをクリックし、ペインの右上隅にある **[パッケージ ソース]** ドロップダウン リストで、 **[PartsUnlimitedShared]** を選択します。 
 
-    > **注**:パッケージのリストは、追加した単一のパッケージのみで構成されます。
-
 1.  パッケージを選択し、**PartsUnlimited.Shared** ペインで、 **[インストール]** をクリックしてプロジェクトに追加します。
 1.  プロンプトが表示されたら、 **[変更のプレビュー]** ダイアログ ボックスで **[OK]** をクリックします。
 1.  **Ctrl+Shift+B** を押してプロジェクトをビルドし、ビルドが正常に完了したことを確認します。 
@@ -267,7 +265,8 @@ Azure Artifacts は、Azure DevOps での NuGet、npm、Maven パッケージの
 
 1.  **[NuGet: PartsUnlimitedWebsite]** ペインで、 **[更新]** タブをクリックし、検索テキストボックスに「**PartsUnlimited.Shared**」と入力し、ペインの右側の **[バージョン:最新の安定版 1.1.0]** ドロップダウン リストの横にある **[更新]** をクリックして、新しいバージョンをインストールします。 
 
-    > **注**:利用可能な NuGet の更新が多数ある場合がありますが、更新する必要があるのは **PartsUnlimited.Shared** のみです。 パッケージが完全に更新できるようになるまで、少し時間がかかる場合があることに注意してください。 エラーが発生した場合は、しばらく待ってから再試行してください。
+    > **注**:利用可能な NuGet の更新が多数ある場合がありますが、更新する必要があるのは **PartsUnlimited.Shared** のみです。 パッケージが完全に更新できるようになるまで、少し時間がかかる場合があることに注意してください。 エラーが発生した場合は、しばらく待ってから再試行してください。 NuGet キャッシュのクリアを試みることもできます: VSツール –> NuGet パッケージ マネージャー –> パッケージ マネージャー設定 –> 全般
+    
 
 1.  プロンプトが表示されたら、 **[変更のプレビュー]** ダイアログ ボックスで **[OK]** をクリックします。
 1.  **F5** キーを押して、サイトを構築して実行します。 期待どおりに機能することを確認します。

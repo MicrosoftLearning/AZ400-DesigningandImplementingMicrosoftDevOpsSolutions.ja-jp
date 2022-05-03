@@ -2,12 +2,12 @@
 lab:
   title: ラボ 07:外部ソース管理と Azure Pipelines の統合
   module: 'Module 3: Implement CI with Azure Pipelines and GitHub Actions'
-ms.openlocfilehash: d48cf2a03d5d9408dcd95db5004563bc95066856
-ms.sourcegitcommit: f72fcf5ee578f465b3495f3cf789b06c530e88a4
+ms.openlocfilehash: cfe5a93dc06bf6799f0b877a13185b1abe18c266
+ms.sourcegitcommit: ea152638f54c729974e5cc91ef3dc7414d853ab5
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 03/04/2022
-ms.locfileid: "139262576"
+ms.lasthandoff: 04/26/2022
+ms.locfileid: "144012354"
 ---
 # <a name="lab-07-integrating-external-source-control-with-azure-pipelines"></a>ラボ 07:外部ソース管理と Azure Pipelines の統合
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
@@ -84,7 +84,7 @@ Azure Pipelines は、無制限の CI/CD 分と 10 の並列ジョブをすべ�
     > **注**:含めるリポジトリを指定するオプションがありますが、このラボでは、すべてのリポジトリを含めるだけです。 Azure DevOps は、そのサービスを実行するために、リストされた一連のアクセス許可を必要とすることに注意してください。 
 
 7.  プロンプトが表示されたら、GitHub パスワードで認証して続行します。
-8.  プロンプトが表示されたら、 **[Azure Pipelines プロジェクトのセットアップ]** ページの **[Azure DevOps 組織の選択]** ドロップダウン リストで、Azure DevOps アカウントを選択し、 **[新しいプロジェクトの作成]** をクリックします。
+8.  プロンプトが表示されたら、 **[Azure Pipelines プロジェクトのセットアップ]** ページでまず **[ディレクトリの切り替え]** をクリックし、既定のディレクトリが選択されていることを確認します。 次に、 **[Azure DevOps 組織の選択]** ドロップダウン リストで、Azure DevOps アカウントを選択し、 **[新しいプロジェクトの作成]** をクリックします。
 9.  プロンプトが表示されたら、 **[Azure Pipelines プロジェクトのセットアップ]** ページの **[プロジェクト名]** テキストボックスに「**外部ソース管理と Azure Pipelines の統合**」と入力し、**プロジェクトの可視性** を **プライベート** に設定したままにして、 **[続行]** をクリックします。
 10. **[Microsoft による Azure Pipelines のページへのアクセス許可]** ページで、 **[Azure Pipelines の承認]** をクリックします。
 
