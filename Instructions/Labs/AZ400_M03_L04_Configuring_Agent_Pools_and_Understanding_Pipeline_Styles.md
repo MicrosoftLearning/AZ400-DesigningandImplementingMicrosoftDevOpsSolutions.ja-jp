@@ -2,12 +2,12 @@
 lab:
   title: ラボ 04:エージェント プールの構成とパイプライン スタイルの把握
   module: 'Module 03: Implement CI with Azure Pipelines and GitHub Actions'
-ms.openlocfilehash: 41fe06e338c0cf62d7aff0513cf94550cb54de6b
-ms.sourcegitcommit: d78aebd7b14277a53f152e26cea68a30b0e90d73
+ms.openlocfilehash: 583d985e3529f9af22b07dc210a536a4451cac28
+ms.sourcegitcommit: ec8c8d929e4a5263af67a5ca17638128bc754bc0
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 06/13/2022
-ms.locfileid: "146276133"
+ms.lasthandoff: 06/21/2022
+ms.locfileid: "146533396"
 ---
 # <a name="lab-04-configuring-agent-pools-and-understanding-pipeline-styles"></a>ラボ 04:エージェント プールの構成とパイプライン スタイルの把握
 
@@ -165,11 +165,7 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
 1.  Azure DevOps ポータルの左側の垂直ナビゲーション ペインの [**パイプライン**] セクションで、[**パイプライン**] をクリックします。
 1.  [**パイプライン**] ペインの [**最近**] タブで、[**PartsUnlimited**] エントリをクリックし、[**PartsUnlimited**] ペインの [**実行**] タブで最新の実行を選択し、実行の [**概要**] ペインで一番下までスクロールし、[**ジョブ**] セクションで [**フェーズ 1**] をクリックし、正常に完了するまでジョブを監視します。 
 
-1. `Task: NugetInstaller@0` で **[設定] (グレーでタスクの上に表示されているリンク)** をクリックし、**[インストールする NuGet.exe のバージョン]** > **[4.0.0]** に変更して、**[追加]** をクリックします。
-1. 
-          **PartsUnlimited** 編集ペインのペインの右上隅にある [**保存**] をクリックし、[**保存**] ペインでもう一度 [**保存**] をクリックします。 これにより、このパイプラインに基づいてビルドが自動的にトリガーされます。
-1. Azure DevOps ポータルの左側の垂直ナビゲーション ペインの [**パイプライン**] セクションで、[**パイプライン**] をクリックします。
-1. [**パイプライン**] ペインの [**最近**] タブで、[**PartsUnlimited**] エントリをクリックし、[**PartsUnlimited**] ペインの [**実行**] タブで最新の実行を選択し、実行の [**概要**] ペインで一番下までスクロールし、[**ジョブ**] セクションで [**フェーズ 1**] をクリックし、正常に完了するまでジョブを監視します。
+
 
 ## <a name="review"></a>確認
 
