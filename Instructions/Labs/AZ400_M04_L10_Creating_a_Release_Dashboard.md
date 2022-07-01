@@ -2,12 +2,12 @@
 lab:
   title: ラボ 10:リリース ダッシュボードの作成
   module: 'Module 04: Design and implement a release strategy'
-ms.openlocfilehash: fff8ad410e278a809489cf4dd8a0e5f1cac4570f
-ms.sourcegitcommit: d78aebd7b14277a53f152e26cea68a30b0e90d73
+ms.openlocfilehash: 3d2f730f3c38f20561cfab1b7ce7e4ea971594f3
+ms.sourcegitcommit: 73179152f51e48ada9641c4a6a33ea941606c469
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 06/13/2022
-ms.locfileid: "146276079"
+ms.lasthandoff: 07/01/2022
+ms.locfileid: "146774609"
 ---
 # <a name="lab-10-creating-a-release-dashboard"></a>ラボ 10:リリース ダッシュボードの作成
 
@@ -103,11 +103,11 @@ ms.locfileid: "146276079"
     > **注**:ここで、デプロイが失敗する新しいリリースを作成します。 失敗の原因は、新しいリリースに関連する変更が無効であると見なされる組み込みアセンブリ テストです。
 
 1. Azure DevOps ポータルの左側の垂直メニューで **[リポジトリ]** をクリックし、リポジトリ内のフォルダーのリストで、**Applications\\aspnet-core-dotnet-core\\Pages** フォルダーに移動し、**Index.cshtml** エントリをクリックします。
-1. **Index.cshtml** ペインで **[編集]** をクリックし、**4** 行目で `ViewData["Title"] = "Home Page - ASP.NET Core";` を `ViewData["Title"] = "Home Page v1.2 - ASP.NET Core";` に置き換え、 **[コミット]** をクリックし、 **[コミット]** ペインでもう一度 **[コミット]** をクリックします。 これにより、ビルド パイプラインが自動的にトリガーされます。
+1. **Index.cshtml** ペインで、 **[編集]** をクリックします。 **4** の行で、`ViewData["Title"] = "Home Page - ASP.NET Core";` を `ViewData["Title"] = "Home Page v1.2 - ASP.NET Core";` に置き換えます。 **[コミット]** をクリックします。 **[コミット]** ペインで、 **[コミット]** を再度クリックします。 これにより、ビルド パイプラインが自動的にトリガーされます。
 1. Azure DevOps ポータルの左側の垂直ナビゲーション ペインで、「**パイプライン**」をクリックします。
 1. 「**パイプライン**」ペインの「**最近**」タブで、**az400m10l02-CI** エントリをクリックし、「**az400m10l02-CI**」ペインの「**実行**」タブで、最新の実行を選択します。実行の「**概要**」タブで、「**ジョブ**」セクションの「**ビルド**」をクリックし、正常に完了するまでジョブをと監視します。
 1. ジョブが完了したら、Azure DevOps ポータルの左側の垂直ナビゲーションペインの「**パイプライン**」セクションで、「**リリース**」をクリックします。
-1. **az400m10l02-CD** ペインの「**リリース**」タブで「**リリース-2**」エントリをクリックし、「**リリース-2**」ペインの「**パイプライン**」タブで **開発** ステージをクリックし、「**開発**」ペインで「**ログの表示**」をクリックして、**テスト アセンブリ** 段階で失敗するまで、デプロイの進行状況を監視します。
+1. **az400m10l02-CD** ペインの **[リリース]** タブで **[リリース-3]** エントリをクリックし、 **[リリース-3]** ペインの **[パイプライン]** タブで **開発** ステージをクリックし、 **[開発]** ペインで **[ログの表示]** をクリックして、**テスト アセンブリ** 段階で失敗するまで、デプロイの進行状況を監視します。
 
 #### <a name="task-3-create-an-azure-devops-release-dashboard"></a>タスク 3:Azure DevOps リリース ダッシュボードを作成する
 

@@ -2,12 +2,12 @@
 lab:
   title: ラボ 06:外部ソース管理と Azure Pipelines の統合
   module: 'Module 03: Implement CI with Azure Pipelines and GitHub Actions'
-ms.openlocfilehash: d725318a4b016a5e32eef84993b2c3989d6d4c6c
-ms.sourcegitcommit: d78aebd7b14277a53f152e26cea68a30b0e90d73
+ms.openlocfilehash: af9b06398bffd5ede41513f4423ce875a018d214
+ms.sourcegitcommit: 73179152f51e48ada9641c4a6a33ea941606c469
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 06/13/2022
-ms.locfileid: "146276076"
+ms.lasthandoff: 07/01/2022
+ms.locfileid: "146774605"
 ---
 # <a name="lab-06-integrating-external-source-control-with-azure-pipelines"></a>ラボ 06:外部ソース管理と Azure Pipelines の統合
 
@@ -174,7 +174,7 @@ Azure Pipelines は、無制限の CI/CD 分と 10 の並列ジョブをすべ�
     > **注**:変更は、各変数の前のプラス記号がそれらの変数をそれらの数値表現に強制変換するために必要であることに気付いていない誰かによって行われたようです。 それらを削除することにより、Java Script は中央のプラス記号を文字列連結演算子として解釈しました。これは、失敗したテストで 21 + 21 = 2121 である理由を説明しています。
 
 1. **[追加機能 #1 の変更]** GitHub ページで、 **[変更の確認]** ボタンのすぐ下にある省略記号をクリックし、ドロップダウン メニューで **[ファイルの編集]** をクリックします。
-1. **a** と **b** の変数の前にプラス記号を追加して元の変更を元に戻し、'add':      function(a,b) { return +a + +b } とします。`// Using + operator to type cast variables as integers in order to prevent string concatenation` (文字列の連結を防ぐために + 演算子を整数として型指定します) `. In addition, include a comment on the preceding line stating`
+1. **a** 変数と **b** 変数の前にプラス記号を追加して元の変更を元に戻し、結果として `'add':      function(a,b) { return +a + +b },`: さらに、前の行 `// Using + operator to type cast variables as integers in order to prevent string concatenation` にコメントを含めます。
 1. ページの一番下までスクロールし、デフォルトのコミット メッセージを「**追加機能の修正**」に置き換え、 **[追加クリーンアップ ブランチに直接コミットする]** オプションが選択されていることを確認して、 **[変更のコミット]** をクリックします。
 1. **追加関数 #1 の変更** GitHub ページで、 **[会話]** タブを選択します。
 
