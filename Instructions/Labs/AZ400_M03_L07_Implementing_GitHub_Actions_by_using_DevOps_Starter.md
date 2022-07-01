@@ -2,12 +2,12 @@
 lab:
   title: ラボ 07:DevOps Starter を使用して GitHub Actions を実装する
   module: 'Module 03: Implement CI with Azure Pipelines and GitHub Actions'
-ms.openlocfilehash: d4369acd15a31e2fae611bf74d3514abb500e367
-ms.sourcegitcommit: d78aebd7b14277a53f152e26cea68a30b0e90d73
+ms.openlocfilehash: aa16fd8e941c3e94eef0d4c9b0fdd23caa3e7866
+ms.sourcegitcommit: 73179152f51e48ada9641c4a6a33ea941606c469
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 06/13/2022
-ms.locfileid: "146276075"
+ms.lasthandoff: 07/01/2022
+ms.locfileid: "146774603"
 ---
 # <a name="lab-07-implementing-github-actions-by-using-devops-starter"></a>ラボ 07:DevOps Starter を使用して GitHub Actions を実装する
 
@@ -121,17 +121,18 @@ ms.locfileid: "146276075"
 1. 「**すべてのワークフロー**」セクションで、「**Index.cshtml の更新**」エントリをクリックします。
 1. **devops-starter-workflow.yml** セクションで、デプロイの進行状況を監視し、正常に完了したことを確認します。
      > **注**: **"azure/CLI@1" を使用するアクションが失敗** した場合は、**devops-starter-workflow.yml** ファイルに次の変更をコミットし (既定の azure cli バージョンを変更)、正常に完了したことを確認します。
-
-       ```
-       - name: Deploy ARM Template
-          uses: azure/CLI@v1
-          continue-on-error: false
-          with:
-            azcliversion: 2.29.2
-            inlineScript: |
-              az group create --name "${{ env.RESOURCEGROUPNAME }}" --location "${{ env.LOCATION }}"
-              az deployment group create --resource-group "${{ env.RESOURCEGROUPNAME }}" --template-file ./ArmTemplates/windows-webapp-     template.json --parameters webAppName="${{ env.AZURE_WEBAPP_NAME }}" hostingPlanName="${{ env.HOSTINGPLANNAME }}"   appInsightsLocation="${{ env.APPINSIGHTLOCATION }}" sku="${{ env.SKU }}"
-       ```
+     > <!-- {% raw %}) -->
+     > ```
+     >     - name: Deploy ARM Template
+     >       uses: azure/CLI@v1
+     >       continue-on-error: false
+     >       with:
+     >         azcliversion: 2.29.2
+     >         inlineScript: |
+     >           az group create --name "${{ env.RESOURCEGROUPNAME }}" --location "${{ env.LOCATION }}"
+     >           az deployment group create --resource-group "${{ env.RESOURCEGROUPNAME }}" --template-file ./ArmTemplates/windows-webapp-template.json --parameters webAppName="${{ env.AZURE_WEBAPP_NAME }}" hostingPlanName="${{ env.HOSTINGPLANNAME }}" appInsightsLocation="${{ env.APPINSIGHTLOCATION }}" sku="${{ env.SKU }}"
+     > ```
+     > <!-- {% endraw %}) -->
 
 1. Azure portal に 「DevOps Starter」ブレードを表示しているブラウザー ウィンドウに切り替え、**アプリケーション エンドポイント** エントリの横にある 「**参照**」リンクをクリックします。
 1. 新しく開いた Web ブラウザー ウィンドウで、GitHub リポジトリでコミットした変更を表す更新されたテキストが Web アプリのホームページに表示されていることを確認します。
