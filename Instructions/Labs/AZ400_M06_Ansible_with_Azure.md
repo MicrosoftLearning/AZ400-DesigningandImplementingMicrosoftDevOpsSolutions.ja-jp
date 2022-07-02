@@ -68,7 +68,7 @@ Ansible では、管理対象リソースをホスト インベントリで指�
 #### <a name="prepare-an-azure-subscription"></a>Azure サブスクリプションの準備
 
 -   既存の Azure サブスクリプションを識別するか、新しいものを作成します。
--   Azure サブスクリプションでは所有者のロール、Azure サブスクリプションに関連のある Azure AD テナントではグローバル管理者のロールで Microsoft アカウントまたは Azure AD アカウントがあることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://docs.microsoft.com/en-us/azure/active-directory/roles/manage-roles-portal#view-my-roles)を参照してください。
+-   Azure サブスクリプションでは所有者のロール、Azure サブスクリプションに関連のある Azure AD テナントではグローバル管理者のロールで Microsoft アカウントまたは Azure AD アカウントがあることを確認します。 詳細については、「[Azure portal を使用して Azure ロールの割り当てを一覧表示する](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-list-portal)」と「[Azure Active Directory で管理者ロールを表示して割当てる](https://docs.microsoft.com/en-us/azure/active-directory/roles/manage-roles-portal#view-my-roles)」を参照してください。
 
 ### <a name="exercise-1-deploy-configure-and-manage-azure-vms-by-using-ansible"></a>演習 1:Ansible を使用して Azure VM をデプロイ、構成、管理する
 
@@ -86,7 +86,7 @@ Ansible では、管理対象リソースをホスト インベントリで指�
 
 1.  **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。 
 
-    >**注**:**Cloud Shell** を初めて起動し、「**ストレージがマウントされていません**」というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、 **[ストレージの作成]** を選択します。 
+    >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。 
 
 1.  Cloud Shell ペインの Bash セッションから、以下を実行して、このラボでデプロイするリソースをホストする Azure リージョンの名前を指定します (`<Azure_region>` プレースホルダーを、リソースをデプロイする予定の Azure リージョンの名前に置き換えます。 名前にスペースが含まれていないことを確認してください (例: `westeurope`)。
 
@@ -224,7 +224,7 @@ Ansible では、管理対象リソースをホスト インベントリで指�
 
     >**注**:コマンドが失敗した場合は、Azure CLI のインストールを再実行してください。
 
-1.  以前のコマンドの出力として表示されているコードを確認し、ラボのコンピューターに切り替えます。 ラボのコンピューターから Azure portal が表示されているブラウザー ウィンドウで別のタブを開き、[Microsoft デバイス ログイン ページ](https://microsoft.com/devicelogin) に移動します。指示されたらコードを入力し、「**次へ**」を選択します。
+1.  以前のコマンドの出力として表示されているコードを確認し、ラボのコンピューターに切り替えます。 ラボのコンピューターから Azure portal が表示されているブラウザー ウィンドウで別のタブを開き、[Microsoft デバイス ログイン ページ](https://microsoft.com/devicelogin) に移動します。指示されたらコードを入力し、**[次へ]** を選択します。
 
 1.  指示されたら、このラボで使用している資格情報を使ってサインインし、ブラウザー タブを閉じます。
 
@@ -298,7 +298,7 @@ Ansible では、管理対象リソースをホスト インベントリで指�
     ssh 127.0.0.1
     ```
 
-1.  **「exit」** と入力し、**Enter** キーを押して、確立したループバック接続を終了します。 
+1.  「**exit**」と入力し、**Enter** キーを押して、確立したループバック接続を終了します。 
 
 >**注**:パスワードのない SSH 認証を設定することは、Ansible 環境を設定するための重要なステップです。 
 
@@ -401,7 +401,7 @@ Ansible では、管理対象リソースをホスト インベントリで指�
     sudo ansible --user azureuser --private-key=/home/azureuser/.ssh/id_rsa all -m ping -i ./myazure_rm.yml
     ```
 
-1.  接続を続行するかどうかを確認するメッセージが表示されたら、 **「yes」** と入力し、**Enter** キーを押します。
+1.  接続を続行するかどうかを確認するメッセージが表示されたら、「**yes**」と入力し、**Enter** キーを押します。
 
     >**注**:出力は次のようになります。
 
@@ -415,14 +415,14 @@ Ansible では、管理対象リソースをホスト インベントリで指�
     }
     ```
 
-    >**注**:コマンドを初めて実行する際は、ターゲット VM の信頼性を認識する必要があります。「**yes**」と入力してから **Enter** キーを押してください。 
+    >**注**: コマンドを初めて実行する際は、ターゲット VM の信頼性を認識する必要があります。「**yes**」と入力してから **Enter** キーを押してください。 
 
 
 #### <a name="task-7-configure-an-azure-vm-by-using-an-ansible-playbook"></a>タスク 7:Ansible プレイブックを使用して Azure VM を構成する
 
 このタスクでは、別の Ansible プレイブックを実行し、新しくデプロイされた Azure VM を構成します。 ソフトウェア パッケージ httpd をインストールし、HTML ページを GitHub リポジトリからダウンロードするプレイブックを使用します。 これが完了すると、Web サーバーは完全に機能するようになります。
 
->**注**:サンプル プレイブック「 **~/PartsUnlimitedMRP/Labfiles/AZ-400T05-ImplemntgAppInfra/Labfiles/ansible/httpd.yml**」を使用します。 プレイブックのホスト パラメーターを変更するために **vmname** 変数を使用します。これは、プレイブックが (動的インベントリのスクリプトから返されたホストのうち) どのホストをターゲットにするのかを定義するものです。 
+>**注**: サンプル プレイブック **~/PartsUnlimitedMRP/Labfiles/AZ-400T05-ImplemntgAppInfra/Labfiles/ansible/httpd.yml** を使用します。 プレイブックのホスト パラメーターを変更するために **vmname** 変数を使用します。これは、プレイブックが (動的インベントリのスクリプトから返されたホストのうち) どのホストをターゲットにするのかを定義するものです。 
 
 1.  Cloud Shell ペインの Bash セッションで、Ansible コントロール ノードとして構成された Azure VM への SSH セッション内で、以下を実行して、新しくデプロイされた Azure VM のパブリック IP アドレスを特定します (**必ず `<VM_name>` プレースホルダーを新しくプロビジョニングされた Azure VM に割り当てた名前に置き換えてください**)。
 

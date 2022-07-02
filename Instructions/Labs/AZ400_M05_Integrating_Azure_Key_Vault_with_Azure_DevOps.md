@@ -55,7 +55,7 @@ Azure Key Vault は、キー、パスワード、証明書などの機密デー�
 #### <a name="prepare-an-azure-subscription"></a>Azure サブスクリプションの準備
 
 -   既存の Azure サブスクリプションを識別するか、新しいものを作成します。
--   Azure サブスクリプションでは所有者のロール、Azure サブスクリプションに関連のある Azure AD テナントではグローバル管理者のロールで Microsoft アカウントまたは Azure AD アカウントがあることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://docs.microsoft.com/en-us/azure/active-directory/roles/manage-roles-portal#view-my-roles)を参照してください。
+-   Azure サブスクリプションでは所有者のロール、Azure サブスクリプションに関連のある Azure AD テナントではグローバル管理者のロールで Microsoft アカウントまたは Azure AD アカウントがあることを確認します。 詳細については、「[Azure portal を使用して Azure ロールの割り当てを一覧表示する](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-list-portal)」と「[Azure Active Directory で管理者ロールを表示して割当てる](https://docs.microsoft.com/en-us/azure/active-directory/roles/manage-roles-portal#view-my-roles)」を参照してください。
 
 #### <a name="set-up-an-azure-devops-organization"></a>Azure DevOps 組織を設定する
 
@@ -73,15 +73,15 @@ Azure Key Vault は、キー、パスワード、証明書などの機密デー�
 
     > **注**:サイトの詳細については、 https://docs.microsoft.com/en-us/azure/devops/demo-gen を参照してください。
 
-1.  「**サインイン**」をクリックし、Azure DevOps サブスクリプションに関連のある Microsoft アカウントを使用してサインインします。
-1.  必要な場合は、「**Azure DevOps Demo Generator**」ページで「**承諾する**」をクリックし、Azure DevOps サブスクリプションへのアクセス許可要求を承諾します。
-1.  **[新しいプロジェクトの作成]** ページの **[新しいプロジェクト名]** テキストボックスに、「**Azure KeyVault と Azure DevOps の統合**」と入力し、 **[組織の選択]** ドロップダウンリストで、Azure DevOps 組織を選択して、 **[テンプレートの選択]** をクリックします。
+1.  **[サインイン]** をクリックし、Azure DevOps サブスクリプションに関連のある Microsoft アカウントを使用してサインインします。
+1.  必要な場合は、**[Azure DevOps Demo Generator]** ページで **[承諾する]** をクリックし、Azure DevOps サブスクリプションへのアクセス許可要求を承諾します。
+1.  **[新しいプロジェクトの作成]** ページの **[新しいプロジェクト名]** テキストボックスに、「**Azure KeyVault と Azure DevOps の統合**」と入力し、**[組織の選択]** ドロップダウンリストで、Azure DevOps 組織を選択して、**[テンプレートの選択]** をクリックします。
 1.  **[テンプレートの選択]** ページのヘッダー メニューで、 **[DevOps ラボ]** をクリックし、テンプレートのリストで **[Azure Key Vault テンプレート]** をクリックしてから、 **[テンプレートの選択]** をクリックします。
 1.  **[新しいプロジェクトの作成]** ページに戻り、 **[ARM 出力]** ラベルの下のチェックボックスを選択して、 **[プロジェクトの作成]** をクリックします。
 
     > **注**:プロセスが完了するまでお待ちください。 これには 2 分ほどかかります。 プロセスが失敗した場合は、DevOps 組織に移動し、プロジェクトを削除して、再試行してください。
 
-1.  「**新しいプロジェクトの作成**」ページで「**プロジェクトに移動**」をクリックします。
+1.  **[新しいプロジェクトの作成]** ページで **[プロジェクトに移動]** をクリックします。
 
 ### <a name="exercise-1-integrate-azure-key-vault-with-azure-devops"></a>演習 1:Azure Key Vault を Azure DevOps と統合する
 
@@ -104,7 +104,7 @@ Azure Pipelines からAzure リソースにアプリをデプロイするには�
 1.  Azure portal で、ページ上部の検索テキスト ボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。 
 1.  **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。 
 
-   >**注**:**Cloud Shell** を初めて起動し、「**ストレージがマウントされていません**」というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、 **[ストレージの作成]** を選択します。 
+   >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。 
 
 1.  **Bash** プロンプトの **Cloud Shell** ペインで、次のコマンドを実行してサービス プリンシパルを作成します (`<service-principal-name>` を文字と数字で構成される一意の文字列に置き換えます)。
 
@@ -166,7 +166,7 @@ Azure Pipelines からAzure リソースにアプリをデプロイするには�
 
     | 設定 | 値 |
     | --- | --- |
-    | Upload options | **手動** |
+    | Upload options | **[手動]** |
     | Name | **sqldbpassword** |
     | 値 | 任意の有効な MySQL のパスワード値 |
 
@@ -200,9 +200,9 @@ Azure Pipelines からAzure リソースにアプリをデプロイするには�
     - TenantId: `az ad sp create-for-rbac ` を実行して生成された出力の **tenant** というラベルの付いた値。
 
 1.  **[新しいサービスの接続]** ペインで、 **[確認]** をクリックして、指定した情報が有効かどうかを確認します。 
-1.  「**検証に成功しました**」という応答を受け取ったら、 **[サービス接続名]** テキストボックスに「**kv-service-connection**」と入力し、 **[検証して保存]** をクリックします。
+1.  **[検証に成功しました]** という応答を受け取ったら、**[サービス接続名]** テキストボックスに「**kv-service-connection**」と入力し、**[検証して保存]** をクリックします。
 1.  パイプラインの定義と **Azure Key Vault** タスクを表示している Web ブラウザー タブに戻ります。
-1.  **Azure Key Vault** タスクを選択した状態で、 **[Azure Key Vault]** ペインの **[更新]** ボタンをクリックし、 **[Azure サブスクリプション]** ドロップダウン リストで **kv-service-connection** エントリを選択し、 **[Key Vault]** ドロップダウン リストで、最初のタスクで作成した Azure Key Vault を表すエントリを選択し、 **[シークレット フィルター]** テキストボックスに「**sqldbpassword**」と入力します。 最後に、 **[出力変数]** セクションを展開し、 **[参照名]** テキストボックスに「**sqldbpassword**」と入力します。 
+1.  **Azure Key Vault** タスクを選択した状態で、**[Azure Key Vault]** ペインの **[更新]** ボタンをクリックし、**[Azure サブスクリプション]** ドロップダウン リストで **kv-service-connection** エントリを選択し、**[Key Vault]** ドロップダウン リストで、最初のタスクで作成した Azure Key Vault を表すエントリを選択し、**[シークレット フィルター]** テキストボックスに「**sqldbpassword**」と入力します。 最後に、**[出力変数]** セクションを展開し、**[参照名]** テキストボックスに「**sqldbpassword**」と入力します。 
 
     > **注**:実行時に、Azure Pipelines はシークレットの最新の値をフェッチし、それをタスク変数 **$(sqldbpassword)** として設定します。 タスクは、その変数を参照することにより、後続のタスクによって消費される可能性があります。  
 
