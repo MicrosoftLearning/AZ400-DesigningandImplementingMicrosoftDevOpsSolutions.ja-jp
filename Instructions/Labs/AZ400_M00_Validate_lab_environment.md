@@ -2,14 +2,15 @@
 lab:
   title: ラボ 00:ラボ環境を検証する
   module: 'Module 0: Welcome'
-ms.openlocfilehash: 6f17dfd8417f4e2b15f1e2ebedd9c88c961532cd
-ms.sourcegitcommit: b1421ee189fd5d980b6455e44b45cd3efea2a62a
+ms.openlocfilehash: f41ca6d4990f666ea9d33f4662ad131f23432516
+ms.sourcegitcommit: d78aebd7b14277a53f152e26cea68a30b0e90d73
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 05/09/2022
-ms.locfileid: "144822530"
+ms.lasthandoff: 06/13/2022
+ms.locfileid: "146276043"
 ---
 # <a name="lab-00-validate-lab-environment"></a>ラボ 00:ラボ環境を検証する
+
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 
 ## <a name="instructions"></a>Instructions
@@ -20,10 +21,10 @@ ms.locfileid: "144822530"
 2. プライベート ブラウザー セッションを使用し、[https://account.microsoft.com](https://account.microsoft.com) で新しい **個人 Microsoft アカウント (MSA)** を取得します。
 3. 同じブラウザー セッションを使用し、[https://www.microsoftazurepass.com](https://www.microsoftazurepass.com) にアクセスし、Microsoft アカウント (MSA) を使用して Azure Pass を利用します。 詳しくは、[Microsoft Azure Pass の引き換え](https://www.microsoftazurepass.com/Home/HowTo?Length=5)に関するページをご覧ください。 引き換えの手順に従います。 
 
-4. ブラウザーを開き、[https://portal.azure.com](https://portal.azure.com) に移動し、Azure portal 画面の上部で **Azure DevOps** を検索します。 表示されたページで、「**Azure DevOps 組織**」をクリックします。 
+4. ブラウザーを開き、[https://portal.azure.com](https://portal.azure.com) に移動し、Azure portal 画面の上部で **Azure DevOps** を検索します。 表示されたページで、**[Azure DevOps 組織]** をクリックします。 
 5. 次に、**My Azure DevOps Organizations** というラベルの付いたリンクをクリックするか、[https://aex.dev.azure.com](https://aex.dev.azure.com) に直接移動します。
 6. **[We need a few more details]\(詳細情報をいくつか入力する必要があります\)** ページで、 **[続行]** を選びます。
-7. 左側のドロップダウン ボックスで、"Microsoft アカウント" の代わりに「**既定のディレクトリ**」を選択します。
+7. 左側のドロップダウン ボックスで、"Microsoft アカウント" の代わりに **[既定のディレクトリ]** を選択します。
 8. プロンプト ( *[We need a few more details]\(詳細情報をいくつか入力する必要があります\)* ) が表示されたら、名前、メールアドレス、場所を入力して、 **[続行]** をクリックします。
 9. **[既定のディレクトリ]** を選択した状態で [https://aex.dev.azure.com](https://aex.dev.azure.com) に戻り、青いボタン **[新しい組織の作成]** をクリックします。
 10. **[続行]** をクリックして *利用規約* に同意します。
