@@ -2,60 +2,60 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vmSize": {
-            "type": "string",
-            "defaultValue": "Standard_D2s_v3",
-            "metadata": {
-                "description": "仮想マシンのサイズ"
-            }
-        },
-        "adminUsername": {
-            "type": "string",
-            "metadata": {
-                "description": "管理者ユーザー名"
-            }
-        },
-        "adminPassword": {
-            "type": "securestring",
-            "metadata": {
-                "description": "管理者パスワード"
-            }
-        },
-        "storageAccountName": {
-            "type": "string",
-            "metadata": {
-                "description": "ストレージ アカウント名"
-            }
-        },
-        "imageUrl": {
-            "type": "string",
-            "metadata": {
-                "description": "イメージ URL"
-            }
-        },
-        "diskContainer": {
-            "type": "string",
-            "defaultValue": "disks",
-            "metadata": {
-                "description": "ディスク コンテナー"
-            }
+      "vmSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+          "description": "Virtual machine size"
         }
+      },
+      "adminUsername": {
+        "type": "string",
+        "metadata": {
+          "description": "Admin username"
+        }
+      },
+      "adminPassword": {
+        "type": "securestring",
+        "metadata": {
+          "description": "Admin password"
+        }
+      },
+      "storageAccountName": {
+        "type": "string",
+        "metadata": {
+           "description": "storage account name"
+        }
+      },
+      "imageUrl": {
+        "type": "string",
+        "metadata": {
+           "description": "image Url"
+        }
+      },
+      "diskContainer": {
+        "type": "string",
+        "defaultValue": "disks",
+        "metadata": {
+          "description": "disk container"
+        }
+      }
     },
-    "variables": {
-        "vmName": "az400m05-vm0",
-        "osType": "Windows",
-        "osDiskVhdName": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',parameters('diskContainer'),'/',variables('vmName'),'-osDisk.vhd')]",
-        "nicName": "az400m05-vm0-nic0",
-        "virtualNetworkName": "az400m05-vnet0",
-        "publicIPAddressName": "az400m05-vm0-nic0-pip",
-        "nsgName": "az400m05-vm0-nic0-nsg",
-        "vnetIpPrefix": "10.0.0.0/22",
-        "subnetIpPrefix": "10.0.0.0/24",
-        "subnetName": "subnet0",
-        "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
-        "computeApiVersion": "2018-06-01",
-        "networkApiVersion": "2018-08-01"
-    },
+  "variables": {
+    "vmName": "az400m05-vm0",
+    "osType": "Windows",
+    "osDiskVhdName": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',parameters('diskContainer'),'/',variables('vmName'),'-osDisk.vhd')]",
+    "nicName": "az400m05-vm0-nic0",
+    "virtualNetworkName": "az400m05-vnet0",
+    "publicIPAddressName": "az400m05-vm0-nic0-pip",
+    "nsgName": "az400m05-vm0-nic0-nsg",
+    "vnetIpPrefix": "10.0.0.0/22", 
+    "subnetIpPrefix": "10.0.0.0/24", 
+    "subnetName": "subnet0",
+    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
+    "computeApiVersion": "2018-06-01",
+    "networkApiVersion": "2018-08-01"
+  },
     "resources": [
         {
             "name": "[variables('vmName')]",
