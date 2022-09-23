@@ -1,86 +1,98 @@
-name: Bug Report
-description: File a bug report
-title: "M00-LAB00: QUICK_DESCRIPTION"
-labels: ["bug"]
+### YamlMime:Yaml
+ms.openlocfilehash: 86c393b67ca2892d896033bd181801a1c5952aed
+ms.sourcegitcommit: d78aebd7b14277a53f152e26cea68a30b0e90d73
+ms.translationtype: HT
+ms.contentlocale: ja-JP
+ms.lasthandoff: 06/13/2022
+ms.locfileid: "146276030"
+name: バグ報告
+description: バグ報告を提出する
+title: M00-LAB00:QUICK_DESCRIPTION
+labels:
+- bug
 body:
-  - type: markdown
-    attributes:
-      value: |
-        # Thanks for taking the time to fill out this bug report!
-        
-        **Replace issue name M00-LAB00:QUICK_DESCRIPTION, for example "M01-LAB01: My new issue"**
-  - type: input
-    id: contact
-    attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info 😉?
-      placeholder: ex. email@example.com
-    validations:
-      required: false
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What happened?
-      description: What happened?
-      placeholder: Tell us what you see!
-      value: |
-        Exercise : 00
-        Task: 00
-        Step: 00
-        
-        Description of issue:
+- type: markdown
+  attributes:
+    value: >
+      # Thanks for taking the time to fill out this bug report!
 
-        Repro steps:
-        1.
-        1.
-        1.
-    validations:
-      required: true
-  - type: dropdown
-    id: version
-    attributes:
-      label: Lab
-      description: Lab name
-      options:
-        - Other
-        - Lab 00 Validate lab environment
-        - Lab 01 Agile Planning and Portfolio Management with Azure Boards
-        - Lab 02 Version Controlling with Git in Azure Repos
-        - Lab 03 Sharing Team Knowledge using Azure Project Wikis
-        - Lab 04 Version Controlling with Git in Azure Repos
-        - Lab 05 Configuring Agent Pools and Understanding Pipeline Styles
-        - Lab 06a Enabling Continuous Integration with Azure Pipelines
-        - Lab 06b Integrating External Source Control with Azure Pipelines
-        - Lab 07 Integrating Azure Key Vault with Azure DevOps
-        - Lab 08 Implementing GitHub Actions by using DevOps Starter
-        - Lab 09 Package Management with Azure Artifacts
-        - Lab 10a Controlling Deployments using Release Gates
-        - Lab 10b Creating a Release Dashboard
-        - Lab 11a Configuring Pipelines as Code with YAML
-        - Lab 11b Setting Up and Running Functional Tests
-        - Lab 12 Feature Flag Management with LaunchDarkly and Azure DevOps
-        - Lab 13 Azure Deployments Using Resource Manager Templates
-        - Lab 14a Ansible with Azure
-        - Lab 14b Automating infrastructure deployments in the Cloud with Terraform and Azure Pipelines
-        - Lab 15 Deploying Docker containers to Azure App Service web apps
-        - Lab 16 Deploying a multi-container application to Azure Kubernetes Services
-        - Lab 17 Monitoring Application Performance with Application Insights
-        - Lab 18 Integration between Azure DevOps and Teams
-        - Lab 19 Implement Security and Compliance in an Azure DevOps pipeline
-        - Lab 20 Managing technical debt with SonarCloud and Azure DevOps
-    validations:
-      required: true
-  - type: textarea
-    id: Screenshots
-    attributes:
-      label: Relevant screenshots
-      description: Please copy and paste any relevant screenshots 📸
-      value: paste here 😉 
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Do you want to help us? 👏
-      description: GitHub/Git uses Pull Requests (PR) to propose and collaborate on changes to a repository. **No git/github experience?** Follow the [video in the Contribution Guide](https://github.com/MicrosoftLearning/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/blob/master/.github/CONTRIBUTING.md#easy-prs-using-github-no-gitgithub-knowledge-needed)
-      options:
-        - label: Create a Pull Request by following this project's [Contribution Guide](https://github.com/MicrosoftLearning/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/blob/master/.github/CONTRIBUTING.md#how-can-i-collaborate)
-          required: false
+
+      **Replace issue name LAB00:QUICK_DESCRIPTION, for example "LAB01: My new issue"**
+- type: input
+  id: contact
+  attributes:
+    label: Contact Details
+    description: "さらに情報が必要な場合は、どうすれば連絡を取ることができますか \U0001F609。"
+    placeholder: ex. email@example.com
+  validations:
+    required: false
+- type: textarea
+  id: what-happened
+  attributes:
+    label: What happened?
+    description: 何が起きましたか?
+    placeholder: Tell us what you see!
+    value: >
+      Exercise : 00
+
+      Task: 00
+
+      Step: 00
+
+
+      Description of issue:
+
+
+      Repro steps:
+
+      1.
+
+      1.
+
+      1.
+  validations:
+    required: true
+- type: dropdown
+  id: version
+  attributes:
+    label: Lab
+    description: ラボ名
+    options:
+    - Other
+    - Lab 00 Validate lab environment
+    - Lab 01 Agile planning and portfolio management with Azure Boards
+    - Lab 02 Version controlling with Git in Azure Repos
+    - Lab 03 Version controlling with Git in Azure Repos
+    - Lab 04 Configuring agent pools and understanding pipeline styles
+    - Lab 05 Enabling continuous integration with Azure Pipelines
+    - Lab 06 Integrating external source control with Azure Pipelines
+    - Lab 07 Implementing GitHub Actions by using DevOps Starter
+    - Lab 08 Deploying Docker Containers to Azure App Service web apps
+    - Lab 09 Control Deployments using Release Gates
+    - Lab 10 Creating a release dashboard
+    - Lab 11 Configuring pipelines as code with YAML
+    - Lab 12 Setting up and running functional tests
+    - Lab 13 Integrate Azure Key Vault with Azure DevOps
+    - Lab 14 Azure deployments using Azure Resource Manager templates
+    - Lab 15 Implement security and compliance in Azure DevOps Pipelines
+    - Lab 16 Managing technical debt with SonarQube and Azure DevOps
+    - Lab 17 Package management with Azure Artifacts
+    - Lab 18 Monitoring application performance with Application Insights
+    - Lab 19 Integration between Azure DevOps and Microsoft Teams
+    - Lab 20 Sharing Team Knowledge using Azure Project Wikis
+  validations:
+    required: true
+- type: textarea
+  id: Screenshots
+  attributes:
+    label: Relevant screenshots
+    description: "関連するスクリーンショットをコピーして貼り付けてください \U0001F4F8"
+    value: "paste here \U0001F609"
+- type: checkboxes
+  id: terms
+  attributes:
+    label: "Do you want to help us? \U0001F44F"
+    description: GitHub/Git は Pull Requests (PR) を使用して、リポジトリへの変更を提案および共同作業します。 **git/github の経験がない場合** [コントリビューション ガイドのビデオ](https://github.com/MicrosoftLearning/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/blob/master/.github/CONTRIBUTING.md#easy-prs-using-github-no-gitgithub-knowledge-needed)に従ってください
+    options:
+    - label: Create a Pull Request by following this project's [Contribution Guide](https://github.com/MicrosoftLearning/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/blob/master/.github/CONTRIBUTING.md#how-can-i-collaborate)
+      required: false

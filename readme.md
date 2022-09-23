@@ -1,22 +1,34 @@
 ---
-ms.openlocfilehash: 96cdce14ac1cb4bf8b5e773f301de2b072378c2d
-ms.sourcegitcommit: d8f0a6eb53689d119ce8cf3a4416ad2c80cf919d
+ms.openlocfilehash: c7a689e184a4f1475d50dad2c44ed0f83506c1ba
+ms.sourcegitcommit: d78aebd7b14277a53f152e26cea68a30b0e90d73
 ms.translationtype: HT
 ms.contentlocale: ja-JP
-ms.lasthandoff: 01/27/2022
-ms.locfileid: "137894842"
+ms.lasthandoff: 06/13/2022
+ms.locfileid: "146276036"
 ---
 # <a name="az-400-designing-and-implementing-microsoft-devops-solutions"></a>AZ-400: Microsoft DevOps ソリューションの設計と実装
 
-- **[最新の学生ハンドブックと AllFiles コンテンツをダウンロードする](../../releases/latest)**
+## <a name="welcome"></a>ようこそ
+
+このリポジトリは、Microsoft コースを教える講師向けです。 クラスに参加している場合は、講師に支援を依頼してください。 
+
+- **[ラボへのリンク (HTML 形式)](https://microsoftlearning.github.io/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/)**
 - **あなたは MCT ですか?** - [MCT 向けの GitHub ユーザー ガイド](https://microsoftlearning.github.io/MCT-User-Guide/)をご覧ください
+- **[最新の学生ハンドブックと AllFiles コンテンツをダウンロードする](../../releases/latest)**
 - **ラボの手順を手動で作成する必要がありますか?** - 手順は、[MicrosoftLearning/Docker-Build](https://github.com/MicrosoftLearning/Docker-Build) リポジトリで確認できます
 
-## <a name="what-are-we-doing"></a>ここでの内容
+## <a name="security-issue---february-2022"></a>セキュリティの問題 - 2022 年 2 月
 
-- このコースをサポートするために、コースのコンテンツを頻繁に更新し、コースで使用されている Azure サービスを最新の状態に保つ必要があります。  GitHub のラボの手順とラボ ファイルを公開することで、コース作成者と MCT の間のオープンな投稿を可能にし、Azure プラットフォームの変更に関するコンテンツを最新の状態に保っています。
+一部の Azure トレーニング ラボでは、特定のユーザー名とパスワードを使用するように受講者に指示しています。 悪意のあるアクターは、絶えず仮想マシンをスキャンし、これらの資格情報を使用してログインを試みます。
+いったんログインされると、そのマシンが暗号化マイニングや他のクラスルーム以外のアクティビティに使用される可能性があります。
 
-- これにより、今まで経験したことがないようなコラボレーション感がラボに生まれると期待しています。Azure が変更され、ライブ配信中にあなたがそれを最初に見つけた場合は、ラボ ソースで機能強化を行ってください。  同僚の MCT を支援してください。
+**修復**: 自分で選択したパスワードを使用するように受講生に指示する必要があります。 ラボの手順で、受講生にこのパスワードを使用させないようにしてください。 
+
+## <a name="what-are-we-doing"></a>説明
+
+- このコースをサポートするには、コースで使用される Azure サービスを最新の状態に保つために、コース コンテンツを頻繁に更新する必要があります。  ラボの手順とラボ ファイルは GitHub で公開しています。これにより、コースの作成者と MCT 間でのオープンな作業が可能となり、Azure プラットフォームの変更に合わせてコンテンツを最新の状態に保つことができます。
+
+- これにより、今まで経験したことがないようなコラボレーション感がラボに生まれると期待しています。Azure が変更され、ライブ配信中にあなたがそれを最初に見つけた場合は、ラボ ソースで機能強化を行ってください。  仲間の MCT を支援しましょう。
 
 ## <a name="how-should-i-use-these-files-relative-to-the-released-moc-files"></a>リリースされた MOC のファイルに対してこれらのファイルを使用する方法
 
@@ -30,7 +42,7 @@ ms.locfileid: "137894842"
 
 - すべての MCT は、GitHub repro のコードまたはコンテンツに pull request を送信できます。Microsoft とコース作成者は、必要に応じてコンテンツとラボ コードの変更をトリアージして追加します。
 
-- バグ、変更、改善、アイデアを送信できます。  新しい Azure 機能を見つけましたか?  新しいデモを提出しましょう。
+- バグ、変更、改善、アイデアを送信できます。  新しい Azure 機能を先に見つけたら、  新しいデモを提出しましょう。
 
 ## <a name="what-about-changes-to-the-student-handbook"></a>受講者ハンドブックの変更については?
 
@@ -38,6 +50,6 @@ ms.locfileid: "137894842"
 
 ## <a name="notes"></a>Notes
 
-### <a name="classroom-materials"></a>教室向け素材
+### <a name="classroom-materials"></a>コース資料
 
 MCT とパートナーが、これらの資料にアクセスし、学生に個別に提供することを強く推奨します。  進行中のクラスの一部としてラボ ステップにアクセスできるように、学生に直接 GitHub を指示するには、学生がコースの一部として別の UI にもアクセスする必要がありますが、これは混乱の原因となります。 個別のラボの手順を受け取る理由を学生に説明すると、クラウドベースのインターフェイスとプラットフォームが常に変化しているという性質を強調できます。 GitHub 上のファイルにアクセスするための Microsoft Learning サポートと GitHub サイトのナビゲーションのサポートは、このコースを教える MCT のみに限定されています。
