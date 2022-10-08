@@ -1,11 +1,3 @@
----
-ms.openlocfilehash: c7a689e184a4f1475d50dad2c44ed0f83506c1ba
-ms.sourcegitcommit: d78aebd7b14277a53f152e26cea68a30b0e90d73
-ms.translationtype: HT
-ms.contentlocale: ja-JP
-ms.lasthandoff: 06/13/2022
-ms.locfileid: "146276036"
----
 # <a name="az-400-designing-and-implementing-microsoft-devops-solutions"></a>AZ-400: Microsoft DevOps ソリューションの設計と実装
 
 ## <a name="welcome"></a>ようこそ

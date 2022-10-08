@@ -1,14 +1,9 @@
 ---
 lab:
-  title: ラボ 14:Azure Resource Manager テンプレートを使用した Azure のデプロイ
+  title: 'ラボ 14:Azure Resource Manager テンプレートを使用した Azure のデプロイ'
   module: 'Module 06: Manage infrastructure as code using Azure and DSC'
-ms.openlocfilehash: 943ae78045dffc1bf0bd77c281870f7f6f1177b2
-ms.sourcegitcommit: d78aebd7b14277a53f152e26cea68a30b0e90d73
-ms.translationtype: HT
-ms.contentlocale: ja-JP
-ms.lasthandoff: 06/13/2022
-ms.locfileid: "146276081"
 ---
+
 # <a name="lab-14-azure-deployments-using-azure-resource-manager-templates"></a>ラボ 14:Azure Resource Manager テンプレートを使用した Azure のデプロイ
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
@@ -62,7 +57,7 @@ ms.locfileid: "146276081"
 
 このタスクでは、Visual Studio Code を使用して Resource Manager テンプレートを作成します
 
-1. ラボのコンピューターから Visual Studio Code を起動し、Visual Studio Code で **[ファイル]** トップ レベル メニューをクリックします。ドロップダウン メニューで **[基本設定]** を選択します。カスケード メニューで **[拡張機能]** を選択し、 **[拡張機能の選択]** テキストボックスに「**Azure Resource Manager (ARM) ツール**」と入力します。該当する検索結果を選択し、 **[インストール]** をクリックして Azure Resource Manager ツールをインストールします。
+1. ラボのコンピューターから Visual Studio Code を起動し、Visual Studio Code で **[ファイル]** トップ レベル メニューをクリックします。ドロップダウン メニューで **[基本設定]** を選択します。カスケード メニューで **[拡張機能]** を選択し、**[拡張機能の選択]** テキストボックスに「**Azure Resource Manager (ARM) ツール**」と入力します。該当する検索結果を選択し、**[インストール]** をクリックして Azure Resource Manager ツールをインストールします。
 1. Web ブラウザーで、 **<https://github.com/Azure/azure-quickstart-templates/blob/master/quickstarts/microsoft.compute/vm-simple-windows/azuredeploy.json>** に接続します。 ファイルの **[Raw]** オプションをクリックします。 コード ウィンドウの内容をコピーして、Visual Studio コード エディターに貼り付けます。
 
     > **注**:テンプレートを最初から作成するよりも、[Azure クイックスタート テンプレート](https://azure.microsoft.com/en-us/resources/templates/) のひとつ (**シンプルな Windows テンプレート VM のデプロイ**) を使用します。 テンプレートは GitHub - [vm-simple-windows](https://github.com/Azure/azure-quickstart-templates/blob/master/quickstarts/microsoft.compute/vm-simple-windows) からダウンロードできます。
@@ -87,7 +82,7 @@ ms.locfileid: "146276081"
 
 #### <a name="task-2-create-a-linked-template-for-storage-resources"></a>タスク 2:ストレージ リソース向けのリンク済みテンプレートを作成する
 
-このタスクでは、前のタスクで保存したテンプレートを変更し、リンク済みのストレージ テンプレート「**storage.json**」がストレージ アカウントのみを作成し、最初のテンプレートで実行が起動されるようにします。 リンク済みのストレージ テンプレートは、メイン テンプレート「**azuredeploy.json**」に値を戻す必要があります。この値は、リンク済みストレージ テンプレートの出力要素で定義されます。
+このタスクでは、前のタスクで保存したテンプレートを変更し、リンク済みのストレージ テンプレート **storage.json** がストレージ アカウントのみを作成し、最初のテンプレートで実行が起動されるようにします。 リンク済みのストレージ テンプレートは、メイン テンプレート **azuredeploy.json** に値を戻す必要があります。この値は、リンク済みストレージ テンプレートの出力要素で定義されます。
 
 1. Visual Studio Code ウィンドウに表示されている **storage.json** ファイルの **[リソース セクション]** で、**storageAccounts** リソース以外のすべてのリソース要素を削除します。 これによりリソース セクションは以下のようになるはずです。
 
@@ -240,7 +235,7 @@ ms.locfileid: "146276081"
 
 このタスクでは、前のタスクで作成したリンク済みテンプレートを Azure Blob Storage にアップロードし、SAS トークンを生成して、その後のデプロイ中のアクセスを提供します。
 
-> **注**:テンプレートにリンクする際、Azure Resource Manager サービスは http または https のいずれかを介してこれにアクセスできなくてはなりません。 これを実行するため、リンク済みストレージ テンプレート「**storage.json**」を Azure の Blob ストレージにアップロードします。 その後、デジタル署名された URL を生成します。これは、該当する BLOB への限定的なアクセスを提供します。 これらのステップは、Azure Cloud Shell で Azure CLI を使用して実行します。 また、Azure Portal を介して BLOB コンテナーを手動で作成し、ファイルをアップロードして URL を生成するか、ラボのコンピューターにインストールされている Azure CLI または Azure PowerShell のいずれかのモジュールを使用します。
+> **注**:テンプレートにリンクする際、Azure Resource Manager サービスは http または https のいずれかを介してこれにアクセスできなくてはなりません。 これを実行するため、リンク済みストレージ テンプレート **storage.json** を Azure の Blob ストレージにアップロードします。 その後、デジタル署名された URL を生成します。これは、該当する BLOB への限定的なアクセスを提供します。 これらのステップは、Azure Cloud Shell で Azure CLI を使用して実行します。 また、Azure Portal を介して BLOB コンテナーを手動で作成し、ファイルをアップロードして URL を生成するか、ラボのコンピューターにインストールされている Azure CLI または Azure PowerShell のいずれかのモジュールを使用します。
 
 1. ラボのコンピューターで、Web ブラウザーを起動し、[**Azure Portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで少なくとも共同作成者のロールがあるユーザー アカウントを使ってサインインします。
 
@@ -250,7 +245,7 @@ ms.locfileid: "146276081"
 
 1. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、 **[PowerShell]** を選択します。
 
-    >**注**:**Cloud Shell** を初めて起動し、「**ストレージがマウントされていません**」というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、 **[ストレージの作成]** を選択します。
+    >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。
 
 1. Cloud Shell ペインの **PowerShell** セッションから、以下を実行して BLOB ストレージ コンテナーを作成し、前のタスクで作成したテンプレート ファイルをアップロードします。その後、メイン テンプレートで参照してリンク済みテンプレートにアクセスできるように SAS トークンを生成します。
 1. まず、以下のコードのラインをコピーして貼り付け、デプロイ先の Azure リージョンの値を設定します。 プロンプトに示されているように、コマンドは入力を待ちます。
@@ -431,7 +426,7 @@ ms.locfileid: "146276081"
 
 > **注**:テンプレートは複数の方法でデプロイできます。Azure Portal から直接デプロイしたり、ローカルで、または Azure Cloud Shell からインストールされた Azure CLI や PowerShell を使用したりできます。 このラボでは、Azure Cloud Shell から Azure CLI を使用します。  
 
-> **注**:Azure Cloud Shell を使用するには、メイン デプロイ テンプレート「azuredeploy.json」を Cloud Shell のホーム ディレクトリにアップロードします。 また、リンク済みテンプレートをアップロードした場合と同様に、Azure Blob Storage にアップロードし、ローカル ファイルのシステム パスではなく URI を使用して参照することもできます。
+> **注**: Azure Cloud Shell を使用するには、メイン デプロイ テンプレート azuredeploy.json を Cloud Shell のホーム ディレクトリにアップロードします。 また、リンク済みテンプレートをアップロードした場合と同様に、Azure Blob Storage にアップロードし、ローカル ファイルのシステム パスではなく URI を使用して参照することもできます。
 
 1. ラボのコンピューターで、Azure Portal が表示されている Web ブラウザーで **[Cloud Shell]** アイコンをクリックして Cloud Shell を開きます。
     > **注**:この演習で以前に使用した PowerShell セッションがまだアクティブな場合は、Bash に切り替えなくてもこれを使用できます (次のステップ)。 Cloud Shell の PowerShell と Bash セッションの両方で以下のステップを実行できます。 新しい Cloud Shell セッションを開く場合は手順に従ってください。
@@ -444,7 +439,7 @@ ms.locfileid: "146276081"
     az deployment group create --name az400m13l01deployment --resource-group az400m13l01-RG --template-file azuredeploy.json
     ```
 
-1. 'adminUsername’ の値を提供するよう指示されたら、「**Student**」と入力して **Enter** キーを押します。
+1. 'adminUsername' の値を提供するよう指示されたら、「**Student**」と入力して **Enter** キーを押します。
 1. 'adminPassword' の値を提供するよう指示されたら、「**Pa55w.rd1234**」と入力して **Enter** キーを押します。 (パスワードの入力は表示されません)
 
 1. テンプレートをデプロイする上記のコマンドの実行時にエラーが出た場合は以下を試してください。
@@ -454,7 +449,7 @@ ms.locfileid: "146276081"
 
 > **注**:次のステップでは、メイン デプロイ テンプレートで残りのリソース定義 (ネットワークや仮想マシンのリソース定義など) をモジュラー化できます。
 
-> **注**:デプロイされたリソースを使用する予定がない場合は、関連した料金が発生しないようにリソースを削除してください。 リソース グループ「**az400m13l01-RG**」を削除するだけです。
+> **注**:デプロイされたリソースを使用する予定がない場合は、関連した料金が発生しないようにリソースを削除してください。 リソース グループ **az400m13l01-RG** を削除するだけです。
 
 ### <a name="exercise-2-remove-the-azure-lab-resources"></a>演習 2:Azure ラボ リソースを削除する
 
