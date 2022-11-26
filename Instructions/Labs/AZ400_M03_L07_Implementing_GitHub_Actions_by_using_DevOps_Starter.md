@@ -76,35 +76,32 @@ lab:
     | リポジトリ | **az400m08l01** |
     | サブスクリプション | このラボに使用する Azure サブスクリプションの名前 |
     | Web アプリの名前 | **azurewebsites.net** DNS 名前空間内の有効でグローバルに一意のホスト名 |
-    | 場所 | Azure Web アプリをプロビジョニングできる Azure リージョンの名前 **米国東部**が推奨されます |
+    | 場所 | Azure Web アプリをプロビジョニングできる Azure リージョンの名前 **注**:プロビジョニングが完了するまで待ちます。 |
 
-   > **注**:一部の**場所**では、リソースが使用できないため失敗する可能性があります。 **米国東部**が推奨されます。
-   > **注**:プロビジョニングが完了するまで待ちます。 これには 1 分ほどかかります。
+   > これには 1 分ほどかかります。 「**Deploy_DevOps_Project_az400m08l01\| の概要**」ブレードで、**[リソースに移動]** をクリックします。
+   > **[az400m08l01]** ブレードの **[GitHub ワークフロー]** タイルで、**[承認]** をクリックします。 **[GitHub 認可]** ブレードで、もう一度 **[承認]** をクリックします。
 
-1. 「**Deploy_DevOps_Project_az400m08l01\| の概要**」ブレードで、**[リソースに移動]** をクリックします。
-1. **[az400m08l01]** ブレードの **[GitHub ワークフロー]** タイルで、**[承認]** をクリックします。
-1. **[GitHub 認可]** ブレードで、もう一度 **[承認]** をクリックします。
 1. **[az400m08l01]** ブレードに戻り、**[GitHub ワークフロー]** タイルでのアクションの進行状況を監視します。
+1. **注**:GitHub ワークフローのビルド、デプロイ、機能テストのジョブが完了するのを待ちます。
+1. これには 5 分ほどかかります。
+1. タスク 2:DevOps Starter プロジェクトの作成結果を確認する
 
-    > **注**:GitHub ワークフローのビルド、デプロイ、機能テストのジョブが完了するのを待ちます。 これには 5 分ほどかかります。
+    > このタスクでは、DevOps Starter プロジェクトの作成結果を確認します。 Azure portal が表示されている Web ブラウザー ウィンドウの **[az400m08l01]** ブレードで、**[GitHub ワークフロー]** セクションを確認し、**[ビルド]**、**[デプロイ]**、**[機能テスト]** の各ジョブが正常に完了したことを確認します。
 
-#### <a name="task-2-review-the-results-of-creating-the-devops-starter-project"></a>タスク 2:DevOps Starter プロジェクトの作成結果を確認する
+#### <a name="task-2-review-the-results-of-creating-the-devops-starter-project"></a>**[az400m08l01]** ブレードで、**[Azure リソース]** セクションを確認し、App Service Web アプリ インスタンスと、対応する Application Insights リソースが含まれていることを確認します。
 
-このタスクでは、DevOps Starter プロジェクトの作成結果を確認します。
+**[az400m08l01]** ブレードの上部で、**Workflow ファイル**へのリンクと、前のタスクで作成した GitHub リポジトリへのリンクをメモします。
 
-1. Azure portal が表示されている Web ブラウザー ウィンドウの **[az400m08l01]** ブレードで、**[GitHub ワークフロー]** セクションを確認し、**[ビルド]**、**[デプロイ]**、**[機能テスト]** の各ジョブが正常に完了したことを確認します。
-1. **[az400m08l01]** ブレードで、**[Azure リソース]** セクションを確認し、App Service Web アプリ インスタンスと、対応する Application Insights リソースが含まれていることを確認します。
-1. **[az400m08l01]** ブレードの上部で、**Workflow ファイル**へのリンクと、前のタスクで作成した GitHub リポジトリへのリンクをメモします。
 1. **[az400m08l01]** ブレードの上部で、GitHub リポジトリへのリンクをクリックします。
 1. [GitHub リポジトリ] ページで、次のラベルが付けられた 3 つのフォルダーに注意してください。
+1. **.github\workflows** - YAML 形式のワークフロー ファイルが含まれています
+1. **Application** - サンプル Web サイトのコードが含まれています
+1. **ArmTemplates** ‐ ワークフローが Azure リソースのプロビジョニングに使用する Azure Resource Manager テンプレートが含まれています
 
-    - **.github\workflows** - YAML 形式のワークフロー ファイルが含まれています
-    - **Application** - サンプル Web サイトのコードが含まれています
-    - **ArmTemplates** ‐ ワークフローが Azure リソースのプロビジョニングに使用する Azure Resource Manager テンプレートが含まれています
+    - [GitHub リポジトリ] ページで、「**.github/workflows**」をクリックしてから、「**devops-starter-workflow.yml**」エントリをクリックします。
+    - **devops-starter-workflow.yml** のコンテンツが表示されている [GitHub リポジトリ] ページで、そのコンテンツを確認し、そこに **[ビルド]**、**[デプロイ]**、**[機能テスト]** の各ジョブ定義が含まれていることに注意してください。
+    - [GitHub リポジトリ] ページのツールバーで、**[アクション]** をクリックします。
 
-1. [GitHub リポジトリ] ページで、「**.github/workflows**」をクリックしてから、「**devops-starter-workflow.yml**」エントリをクリックします。
-1. **devops-starter-workflow.yml** のコンテンツが表示されている [GitHub リポジトリ] ページで、そのコンテンツを確認し、そこに **[ビルド]**、**[デプロイ]**、**[機能テスト]** の各ジョブ定義が含まれていることに注意してください。
-1. [GitHub リポジトリ] ページのツールバーで、**[アクション]** をクリックします。
 1. [GitHub リポジトリ] ページの **[アクション]** タブの **[すべてのワークフロー]** セクションで、最新のワークフロー実行を表すエントリをクリックします。
 1. [ワークフロー実行] ページで、ワークフローの状態に加え、**[注釈]** と **[成果物]** の一覧を確認します。
 1. [GitHub リポジトリ] ページのツールバーで **[設定]** をクリックし、**[設定]** タブで **[シークレット]** をクリックします。
@@ -115,7 +112,10 @@ lab:
 1. [GitHub リポジトリ] ページのツールバーで、**[アクション]** をクリックします。
 1. **[すべてのワークフロー]** セクションで、**[Index.cshtml の更新]** エントリをクリックします。
 1. **devops-starter-workflow.yml** セクションで、デプロイの進行状況を監視し、正常に完了したことを確認します。
-     > **注**: **"azure/CLI@1" を使用するアクションが失敗**した場合は、**devops-starter-workflow.yml** ファイルに次の変更をコミットし (既定の azure cli バージョンを変更)、正常に完了したことを確認します。
+1. **注**: **"azure/CLI@1" を使用するアクションが失敗**した場合は、**devops-starter-workflow.yml** ファイルに次の変更をコミットし (既定の azure cli バージョンを変更)、正常に完了したことを確認します。
+1. Azure portal で [DevOps Starter] ブレードが表示されているブラウザー ウィンドウに切り替え、**[アプリケーション エンドポイント]** エントリの横にある **[参照]** リンクをクリックします。
+1. 新しく開いた Web ブラウザー ウィンドウで、GitHub リポジトリでコミットした変更を表す更新されたテキストが Web アプリのホームページに表示されていることを確認します。
+     > 演習 2:Azure ラボ リソースを削除する
      > <!-- {% raw %}) -->
      > ```
      >     - name: Deploy ARM Template
@@ -129,34 +129,34 @@ lab:
      > ```
      > <!-- {% endraw %}) -->
 
-1. Azure portal で [DevOps Starter] ブレードが表示されているブラウザー ウィンドウに切り替え、**[アプリケーション エンドポイント]** エントリの横にある **[参照]** リンクをクリックします。
-1. 新しく開いた Web ブラウザー ウィンドウで、GitHub リポジトリでコミットした変更を表す更新されたテキストが Web アプリのホームページに表示されていることを確認します。
+1. この演習では、このラボでプロビジョニングした Azure リソースを削除し、予期しない料金を排除します。
+1. **注**:新規に作成し、使用しなくなったすべての Azure リソースを削除することを忘れないでください。
 
-### <a name="exercise-2-remove-the-azure-lab-resources"></a>演習 2:Azure ラボ リソースを削除する
+### <a name="exercise-2-remove-the-azure-lab-resources"></a>使用していないリソースを削除することで、予期しない料金が発生しなくなります。
 
-この演習では、このラボでプロビジョニングした Azure リソースを削除し、予期しない料金を排除します。
+タスク 1:Azure ラボ リソースを削除する
 
->**注**:新規に作成し、使用しなくなったすべての Azure リソースを削除することを忘れないでください。 使用していないリソースを削除することで、予期しない料金が発生しなくなります。
+>このタスクでは、Azure Cloud Shell を使用して、このラボでプロビジョニングされた Azure リソースを削除し、不要な料金を排除します。 Azure portal で、**Cloud Shell** ウィンドウ内で **Bash** シェル セッションを開きます。
 
-#### <a name="task-1-remove-the-azure-lab-resources"></a>タスク 1:Azure ラボ リソースを削除する
+#### <a name="task-1-remove-the-azure-lab-resources"></a>次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
 
-このタスクでは、Azure Cloud Shell を使用して、このラボでプロビジョニングされた Azure リソースを削除し、不要な料金を排除します。
+次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
 
-1. Azure portal で、**Cloud Shell** ウィンドウ内で **Bash** シェル セッションを開きます。
-1. 次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
+1. **注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。
+1. 確認
 
     ```sh
     az group list --query "[?starts_with(name,'az400m08l01')].name" --output tsv
     ```
 
-1. 次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
+1. このラボでは、DevOps Starter を使用してAzure Web アプリをデプロイする GitHub アクション ワークフローを実装しました。
 
     ```sh
     az group list --query "[?starts_with(name,'az400m08l01')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
     ```
 
-    >**注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。
+    ><bpt id="p1">**</bpt>Note<ept id="p1">**</ept>: The command executes asynchronously (as determined by the --nowait parameter), so while you will be able to run another Azure CLI command immediately afterwards within the same Bash session, it will take a few minutes before the resource groups are actually removed.
 
-## <a name="review"></a>確認
+## <a name="review"></a>Review
 
-このラボでは、DevOps Starter を使用してAzure Web アプリをデプロイする GitHub アクション ワークフローを実装しました。
+In this lab, you implemented a GitHub Action workflow that deploys an Azure web app by using DevOps Starter.

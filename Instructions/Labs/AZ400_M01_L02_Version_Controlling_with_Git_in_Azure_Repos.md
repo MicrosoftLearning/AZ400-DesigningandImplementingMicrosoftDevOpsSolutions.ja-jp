@@ -176,7 +176,7 @@ Git コミットは、次のもので構成されます。
 このタスクでは、Visual Studio Codeを 使用してステージングの変更の使用方法を検討します。 ステージングの変更により、他のファイルで行われた変更を渡しながら、特定のファイルを選択的にコミットに追加できます。
 
 1. **[Visual Studio Code]** ウィンドウに切り替えます。
-1. 最初のコメントを `//My second change` に変更し、ファイルを保存して、開いている **CartItem.cs** クラスを更新します。
+1. 最初のコメントを以下に変更し、ファイルを保存して、開いている **CartItem.cs** クラスを更新します。
 1. Visual Studio Code ウィンドウで、**[エクスプローラー]** タブに戻り、**/PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/Models/Category.cs** ファイルに移動して選択します。 これにより、コンテンツが詳細ペインに自動的に表示されます。
 1. **Category.cs** ファイルの `public int CategoryId { get; set; }` エントリのすぐ上に次のコメントを含む行を追加し、ファイルを保存します。
 
