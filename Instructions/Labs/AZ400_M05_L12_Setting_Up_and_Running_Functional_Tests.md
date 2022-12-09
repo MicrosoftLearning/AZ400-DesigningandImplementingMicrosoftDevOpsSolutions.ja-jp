@@ -66,7 +66,7 @@ lab:
 1. **[[Azure にデプロイ]](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Falmvm%2Fmaster%2Flabs%2Fvstsextend%2Fselenium%2Farmtemplate%2Fazuredeploy.json)** リンクをクリックします。 これで、自動的に Azure portal の **[カスタム デプロイ]** ブレードにリダイレクトされます。
 1. 指示されたら、このラボで使用する Azure サブスクリプションで所有者のロールがあり、このサブスクリプションに関連のある Azure AD テナントでグローバル管理者のロールがあるユーザー アカウントを使用してサインインします。
 1. **[カスタム デプロイ]** ブレードで、**[パラメーターの編集]** を選択します。
-1. **[テンプレートの編集]** ブレードで、行 `"https://raw.githubusercontent.com/microsoft/azuredevopslabs/master/labs/vstsextend/selenium/armtemplate/chrome_firefox_VSTSagent_IIS.ps1"` を探して `https://raw.githubusercontent.com/MicrosoftLearning/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/master/Allfiles/Labs/11b/chrome_firefox_VSTSagent_IIS.ps1` に置き換え、 **[保存]** をクリックします。
+1. **[テンプレートの編集]** ブレードで、行 `"https://raw.githubusercontent.com/microsoft/azuredevopslabs/master/labs/vstsextend/selenium/armtemplate/chrome_firefox_VSTSagent_IIS.ps1"` を探して `"https://raw.githubusercontent.com/MicrosoftLearning/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/master/Allfiles/Labs/11b/chrome_firefox_VSTSagent_IIS.ps1"` に置き換え、 **[保存]** をクリックします。
 1. **[カスタム デプロイ]** ブレードに戻って、次の設定を指定します。
 
     | 設定 | 値 |
