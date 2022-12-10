@@ -1,10 +1,10 @@
 ---
 lab:
-  title: 'ラボ 05:Azure Pipelines を使用した継続的インテグレーションの有効化'
+  title: Azure Pipelines を使用した継続的インテグレーションの有効化
   module: 'Module 03: Implement CI with Azure Pipelines and GitHub Actions'
 ---
 
-# <a name="lab-05-enabling-continuous-integration-with-azure-pipelines"></a>ラボ 05:Azure Pipelines を使用した継続的インテグレーションの有効化
+# <a name="enabling-continuous-integration-with-azure-pipelines"></a>Azure Pipelines を使用した継続的インテグレーションの有効化
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 

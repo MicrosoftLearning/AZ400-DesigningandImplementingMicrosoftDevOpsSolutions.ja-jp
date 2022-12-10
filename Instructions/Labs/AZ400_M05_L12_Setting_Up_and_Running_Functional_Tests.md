@@ -1,10 +1,10 @@
 ---
 lab:
-  title: 'ラボ 12:機能テストの設定と実行'
+  title: 機能テストの設定と実行
   module: 'Module 05: Implement a secure continuous deployment using Azure Pipelines'
 ---
 
-# <a name="lab-12-settingupandrunningfunctionaltests"></a>ラボ 12:機能テストの設定と実行
+# <a name="settingupandrunningfunctionaltests"></a>機能テストの設定と実行
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 
@@ -76,7 +76,7 @@ lab:
     | リージョン | このラボで Azure リソースをデプロイする Azure リージョンの名前 |
     | 仮想マシン名 | **az40011bvm** |
 
-1. **[Review + create]\(レビュー + 作成\)** をクリックし、 **[作成]** をクリックします。
+1. **[Review + create](レビュー + 作成)** をクリックし、 **[作成]** をクリックします。
 
     > **注**:プロセスが完了するまでお待ちください。 通常は 15 分ほどかかります。
 
@@ -112,9 +112,9 @@ lab:
     Config.cmd
     ```
 
-1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter server URL]** \(サーバーの URL を入力します\) と表示されたら **https://dev.azure.com/\<your-DevOps-organization-name\>** と入力します。ここで **\<your-DevOps-organization-name\>** は、Azure DevOps 組織を表します。次に **Enter** キーを押します。
-1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter Authentication type (press enter for PAT)]** \(認証タイプを入力します \(PAT の場合は Enter を押します\)\) と表示されたら**Enter キー**を押します。
-1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter personal access token]** \(個人用アクセス トークンを入力します\) と表示されたら、Azure DevOps ポータルに切り替え、 **[エージェントの取得]** パネルを閉じ、Azure DevOps ページの右上隅で **[ユーザー設定]** アイコンをクリックします。ドロップダウン メニューで **[個人用アクセス トークン]** をクリックし、 **[個人用アクセス トークン]** ペインで **[+ 新しいトークン]** をクリックします。
+1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter server URL]** (サーバーの URL を入力します) と表示されたら **https://dev.azure.com/\<your-DevOps-organization-name\>** と入力します。ここで **\<your-DevOps-organization-name\>** は、Azure DevOps 組織を表します。次に **Enter** キーを押します。
+1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter Authentication type (press enter for PAT)]** (認証タイプを入力します (PAT の場合は Enter を押します)) と表示されたら**Enter キー**を押します。
+1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter personal access token]** (個人用アクセス トークンを入力します) と表示されたら、Azure DevOps ポータルに切り替え、 **[エージェントの取得]** パネルを閉じ、Azure DevOps ページの右上隅で **[ユーザー設定]** アイコンをクリックします。ドロップダウン メニューで **[個人用アクセス トークン]** をクリックし、 **[個人用アクセス トークン]** ペインで **[+ 新しいトークン]** をクリックします。
 1. **[新しい個人用アクセス トークンの作成]** ペインで次の設定を指定して、**[作成]** をクリックします (他の設定はすべて既定値のままにします)。
 
     | 設定 | 値 |
@@ -130,11 +130,11 @@ lab:
 
 1. **[成功]** ペインで **[閉じる]** をクリックします。
 1. **管理者:コマンド プロンプト** ウィンドウに戻り、クリップボードの内容を貼り付けてから **Enter** キーを押します。
-1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter agent pool (press enter for default)]** \(エージェント プールを入力します \(既定を使用する場合は Enter キーを押します\)\) と表示されたら **Enter キー**を押します。
-1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter agent name (press enter for az40011bvm)]** \(エージェント名を入力します\(az40011bvm の場合は Enter キーを押します\)\) と表示されたら **Enter キー**を押します。
-1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter work folder (press enter for _work)]** \(作業フォルダーを入力します\(_work の場合は Enter キーを押します\)\) と表示されたら **Enter キー**を押します。
-1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter run agent as service (Y/N) (press enter for N)]** \(サービスとしてのエージェントの実行を入力します\(はい/いいえ\) いいえの場合は Enter キーを押します\)\) と表示されたら **Enter キー**を押します。
-1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter configure autologon and run agent on startup (Y/N) (press enter for N)]** \(起動時の自動ログオンの構成とエージェントの実行を入力します\(はい/いいえ\) いいえの場合は Enter キーを押します\)\) と表示されたら **Enter キー**を押します。
+1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter agent pool (press enter for default)]** (エージェント プールを入力します (既定を使用する場合は Enter キーを押します)) と表示されたら **Enter キー**を押します。
+1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter agent name (press enter for az40011bvm)]** (エージェント名を入力します(az40011bvm の場合は Enter キーを押します)) と表示されたら **Enter キー**を押します。
+1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter work folder (press enter for _work)]** (作業フォルダーを入力します(_work の場合は Enter キーを押します)) と表示されたら **Enter キー**を押します。
+1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter run agent as service (Y/N) (press enter for N)]** (サービスとしてのエージェントの実行を入力します(はい/いいえ) いいえの場合は Enter キーを押します)) と表示されたら **Enter キー**を押します。
+1. **[管理者:コマンド プロンプト]** ウィンドウで、 **[Enter configure autologon and run agent on startup (Y/N) (press enter for N)]** (起動時の自動ログオンの構成とエージェントの実行を入力します(はい/いいえ) いいえの場合は Enter キーを押します)) と表示されたら **Enter キー**を押します。
 1. エージェントが登録されたら **[管理者: コマンド プロンプト]** ウィンドウに、「**run.cmd**」と入力し、**Enter** キーを押して、エージェントを起動します。
 
     > **注**:Dac Framework もインストールする必要があります。ラボで後ほどデプロイするアプリケーションで使用されます。

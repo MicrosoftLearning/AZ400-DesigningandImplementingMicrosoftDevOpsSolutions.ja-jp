@@ -1,10 +1,10 @@
 ---
 lab:
-  title: 'ラボ 04:エージェント プールの構成とパイプライン スタイルの把握'
+  title: エージェント プールの構成とパイプライン スタイルの把握
   module: 'Module 03: Implement CI with Azure Pipelines and GitHub Actions'
 ---
 
-# <a name="lab-04-configuring-agent-pools-and-understanding-pipeline-styles"></a>ラボ 04:エージェント プールの構成とパイプライン スタイルの把握
+# <a name="configuring-agent-pools-and-understanding-pipeline-styles"></a>エージェント プールの構成とパイプライン スタイルの把握
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 

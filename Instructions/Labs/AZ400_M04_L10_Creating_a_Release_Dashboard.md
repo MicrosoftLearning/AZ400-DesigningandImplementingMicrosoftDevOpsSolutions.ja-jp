@@ -1,10 +1,10 @@
 ---
 lab:
-  title: 'ラボ 10:リリース ダッシュボードの作成'
+  title: リリース ダッシュボードの作成
   module: 'Module 04: Design and implement a release strategy'
 ---
 
-# <a name="lab-10-creating-a-release-dashboard"></a>ラボ 10:リリース ダッシュボードの作成
+# <a name="creating-a-release-dashboard"></a>リリース ダッシュボードの作成
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 

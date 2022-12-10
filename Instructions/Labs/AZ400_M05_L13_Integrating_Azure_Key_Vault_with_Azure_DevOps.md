@@ -145,7 +145,7 @@ Azure Pipelines からAzure リソースにアプリをデプロイするには�
 
     | 設定 | 値 |
     | --- | --- |
-    | Upload options | **[手動]** |
+    | Upload options | **手動** |
     | Name | **sqldbpassword** |
     | 値 | 任意の有効な MySQL のパスワード値 |
 

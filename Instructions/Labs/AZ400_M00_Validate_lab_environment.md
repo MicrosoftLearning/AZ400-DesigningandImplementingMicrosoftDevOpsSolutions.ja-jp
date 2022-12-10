@@ -1,10 +1,10 @@
 ---
 lab:
-  title: 'ラボ 00:ラボ環境を検証する'
+  title: ラボ環境を検証する
   module: 'Module 0: Welcome'
 ---
 
-# <a name="lab-00-validate-lab-environment"></a>ラボ 00:ラボ環境を検証する
+# <a name="validate-lab-environment"></a>ラボ環境を検証する
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 
