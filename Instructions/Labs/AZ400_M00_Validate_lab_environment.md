@@ -14,9 +14,9 @@ lab:
 
 1. 講師またはその他のソースから、新しい **Azure Pass プロモーションコード**を入手します。
 2. プライベート ブラウザー セッションを使用し、[https://account.microsoft.com](https://account.microsoft.com) で新しい **個人 Microsoft アカウント (MSA)** を取得します。
-3. 同じブラウザー セッションを使用し、[https://www.microsoftazurepass.com](https://www.microsoftazurepass.com) にアクセスし、Microsoft アカウント (MSA) を使用して Azure Pass を利用します。 詳しくは、[Microsoft Azure Pass の引き換え](https://www.microsoftazurepass.com/Home/HowTo?Length=5)に関するページをご覧ください。 引き換えの手順に従います。 
+3. 同じブラウザー セッションを使用し、[https://www.microsoftazurepass.com](https://www.microsoftazurepass.com) にアクセスし、Microsoft アカウント (MSA) を使用して Azure Pass を利用します。 詳しくは、[Microsoft Azure Pass の引き換え](https://www.microsoftazurepass.com/Home/HowTo?Length=5)に関するページをご覧ください。 引き換えの手順に従います。
 
-4. ブラウザーを開き、[https://portal.azure.com](https://portal.azure.com) に移動し、Azure portal 画面の上部で **Azure DevOps** を検索します。 表示されたページで、**[Azure DevOps 組織]** をクリックします。 
+4. ブラウザーを開き、[https://portal.azure.com](https://portal.azure.com) に移動し、Azure portal 画面の上部で **Azure DevOps** を検索します。 表示されたページで、**[Azure DevOps 組織]** をクリックします。
 5. 次に、**My Azure DevOps Organizations** というラベルの付いたリンクをクリックするか、[https://aex.dev.azure.com](https://aex.dev.azure.com) に直接移動します。
 6. **[We need a few more details]\(詳細情報をいくつか入力する必要があります\)** ページで、 **[続行]** を選びます。
 7. 左側のドロップダウン ボックスで、"Microsoft アカウント" の代わりに **[既定のディレクトリ]** を選択します。
@@ -27,7 +27,7 @@ lab:
 12. 新しく作成した組織が **Azure DevOps** で開いたら、左下隅にある **[組織の設定]** をクリックします。
 13. **[組織の設定]** 画面で、 **[課金]** をクリックします (この画面を開くには数秒かかります)。
 14. **[課金の設定]** をクリックし、画面の右側で **[Azure Pass] - [スポンサーシップ** サブスクリプション] を選択し、 **[保存]** をクリックしてサブスクリプションを組織にリンクします。
-15. 画面の上部にリンクされた Azure サブスクリプション ID が表示されたら、**MS Hosted CI/CD** の**有料並列ジョブ**の数を 0 から **1** に変更します。 次に、下部にある **[保存]** をクリックします。 
+15. 画面の上部にリンクされた Azure サブスクリプション ID が表示されたら、**MS Hosted CI/CD** の**有料並列ジョブ**の数を 0 から **1** に変更します。 次に、下部にある **[保存]** をクリックします。
 16. **[組織設定]** で、 **[セキュリティ]** セクションに移動し、 **[ポリシー]** をクリックします。
 17. **[OAuth を使用したサード パーティ アプリケーションのアクセス]** のスイッチを **[オン]** に切り替えます。
     > 注: OAuth 設定は、DemoDevOpsGenerator などのツールで拡張機能を登録できるようにするのに役立ちます。 これがないと、必要な拡張機能が不足して、いくつかのラボが失敗するおそれがあります。
