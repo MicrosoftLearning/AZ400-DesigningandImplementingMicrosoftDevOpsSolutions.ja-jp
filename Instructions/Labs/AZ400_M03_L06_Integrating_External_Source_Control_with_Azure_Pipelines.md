@@ -1,10 +1,10 @@
 ---
 lab:
-  title: 'ラボ 06:外部ソース管理と Azure Pipelines の統合'
+  title: 外部ソース管理と Azure Pipelines の統合
   module: 'Module 03: Implement CI with Azure Pipelines and GitHub Actions'
 ---
 
-# <a name="lab-06-integrating-external-source-control-with-azure-pipelines"></a>ラボ 06:外部ソース管理と Azure Pipelines の統合
+# <a name="integrating-external-source-control-with-azure-pipelines"></a>外部ソース管理と Azure Pipelines の統合
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 
