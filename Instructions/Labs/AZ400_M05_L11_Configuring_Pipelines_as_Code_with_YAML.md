@@ -1,10 +1,10 @@
 ---
 lab:
-  title: 'ラボ 11:YAML を使用したコードとしてのパイプラインの構築'
+  title: YAML を使用したコードとしてのパイプラインの構築
   module: 'Module 05: Implement a secure continuous deployment using Azure Pipelines'
 ---
 
-# <a name="lab-11-configuring-pipelines-as-code-with-yaml"></a>ラボ 11:YAML を使用したコードとしてのパイプラインの構築
+# <a name="configuring-pipelines-as-code-with-yaml"></a>YAML を使用したコードとしてのパイプラインの構築
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 
@@ -34,181 +34,116 @@ lab:
 
 ### <a name="exercise-0-configure-the-lab-prerequisites"></a>演習 0:ラボの前提条件の構成
 
-この演習では、ラボの前提条件を設定します。これは、Azure DevOps Demo Generator テンプレートと Azure リソースに基づいて事前に構成された Parts Unlimited チーム プロジェクトで構成され、Azure Web アプリと Azure SQL データベースが含まれます。
+この演習では、ラボの前提条件を設定します。これは、[eShopOnWeb](https://dev.azure.com/unhueteb/_git/eshopweb-az400) に基づくリポジトリを含む新しい Azure DevOps プロジェクトで構成されます。
 
-#### <a name="task-1-configure-the-team-project"></a>タスク 1:チーム プロジェクトを構成する
+#### <a name="task-1--skip-if-done-create-and-configure-the-team-project"></a>タスク 1: (完了している場合はスキップしてください) チーム プロジェクトを作成して構成する
 
-このタスクでは、Azure DevOps Demo Generator を使用して、**PartsUnlimited-YAML** テンプレートに基づいて新しいプロジェクトを生成します。
+このタスクでは、複数のラボで使用される **eShopOnWeb_MultiStageYAML** Azure DevOps プロジェクトを作成します。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[Azure DevOps Demo Generator](https://azuredevopsdemogenerator.azurewebsites.net) に移動します。 このユーティリティ サイトは、ラボで必要なコンテンツ (作業項目、リポジトリなど) が事前設定されている新しい Azure DevOps プロジェクトをアカウント内で作成するプロセスを自動化します。
+1.  ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織を開きます。 **[新しいプロジェクト]** をクリックします。 プロジェクトに「**eShopOnWeb_MultiStageYAML**」という名前を付け、他のフィールドは既定値のままにします。 **[作成]** をクリックします。
 
-    > **注**: このサイトの詳細については、「[Azure DevOps Services Demo Generator とは](https://docs.microsoft.com/en-us/azure/devops/demo-gen)」を参照してください。
+    ![Create Project](images/create-project.png)
 
-1. **[サインイン]** をクリックし、Azure DevOps サブスクリプションに関連のある Microsoft アカウントを使用してサインインします。
-1. 必要な場合は、**[Azure DevOps Demo Generator]** ページで **[承諾]** をクリックし、Azure DevOps サブスクリプションへのアクセス許可要求を承諾します。
-1. **[新しいプロジェクトの作成]** ページで **[新しいプロジェクト名]** テキストボックスに「**YAML を使用したコードとしてのパイプラインの構築**」と入力し、**[組織の選択]** ドロップダウン リストで Azure DevOps 組織を選択したら、**[テンプレートの選択]** をクリックします。
-1. テンプレートの一覧のツールバーで、**[全般]** をクリックし、**[PartsUnlimited-YAML]** テンプレートを選択して、**[テンプレートの選択]** をクリックします。
-1. もう一度、**[新しいプロジェクトの作成]** ページで **[プロジェクトの作成]** をクリックします
+#### <a name="task-2--skip-if-done-import-eshoponweb-git-repository"></a>タスク 2: (完了している場合はスキップしてください) eShopOnWeb Git リポジトリをインポートする
 
-    > **注**:プロセスが完了するまでお待ちください。 これには 2 分ほどかかります。 プロセスが失敗した場合は、DevOps 組織に移動し、プロジェクトを削除して、再試行してください。
+このタスクでは、複数のラボで使用される eShopOnWeb Git リポジトリをインポートします。
 
-1. 「**新しいプロジェクトの作成**」ページで「**プロジェクトに移動**」をクリックします。
+1.  ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、前に作成した **eShopOnWeb_MultiStageYAML** プロジェクトを開きます。 **[リポジトリ] > [ファイル]** 、 **[リポジトリをインポートする]** をクリックします。 **[インポート]** を選択します。 **[Git リポジトリをインポートする]** ウィンドウで、URL https://github.com/MicrosoftLearning/eShopOnWeb.git を貼り付けて、 **[インポート]** をクリックします。
+
+    ![インポートリポジトリ](images/import-repo.png)
+
+1.  リポジトリは次のように編成されています。
+    - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています
+    - **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)
+    - **.azure** フォルダーには、一部のラボ シナリオで使用される Bicep&ARM コードとしてのインフラストラクチャ テンプレートが含まれています。
+    - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
+    - **src** フォルダーには、ラボ シナリオで使用される .NET 6 Web サイトが含まれています。
 
 #### <a name="task-2-create-azure-resources"></a>タスク 2: Azure リソースを作成する
 
-このタスクでは、Azure portal を使用して Azure Web アプリと Azure SQL データベースを作成します。
+このタスクでは、Azure portal を使って Azure Web アプリを作成します。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで、所有者のロールがあり、このサブスクリプションに関連付けられている Azure AD テナントでグローバル管理者のロールがあるユーザー アカウントを使ってサインインします。
+1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure Portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで所有者ロールがあり、このサブスクリプションに関連のある Azure AD テナントでグローバル管理者ロールがあるユーザー アカウントを使ってサインインします。
 1. Azure portal のツールバーで、検索テキスト ボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
 1. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
 
     >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。
 
-1. **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行してリソース グループを作成します (`<region>` プレースホルダーを 'eastus' などのご自分の場所に最も近い Azure リージョンの名前に置き換えます)。
+    > **注:** リージョンとそのエイリアスの一覧を表示するには、Azure Cloud Shell - Bash から次のコマンドを実行します。
+
+    ```bash
+    az account list-locations -o table
+    ```
+
+1. **[Cloud Shell]** ペインの **Bash** プロンプトから、次のコマンドを実行してリソース グループを作成します (`<region>` プレースホルダーを、"centralus"、"westeurope" など、自分の場所に最も近い Azure リージョンの名前に置き換えます)。
 
     ```bash
     LOCATION='<region>'
     ```
 
     ```bash
-    RESOURCEGROUPNAME='az400m11l01-RG'
+    RESOURCEGROUPNAME='az400m05l11-RG'
     az group create --name $RESOURCEGROUPNAME --location $LOCATION
     ```
 
 1. 次のコマンドを実行して Windows App Service プランを作成するには、次のようにします。
 
     ```bash
-    SERVICEPLANNAME='az400l11a-sp1'
+    SERVICEPLANNAME='az400m05l11-sp1'
     az appservice plan create --resource-group $RESOURCEGROUPNAME --name $SERVICEPLANNAME --sku B3
     ```
 
 1. 一意の名前を指定して Web アプリを作成します。
 
     ```bash
-    WEBAPPNAME=partsunlimited$RANDOM$RANDOM
+    WEBAPPNAME=eshoponWebYAML$RANDOM$RANDOM
     az webapp create --resource-group $RESOURCEGROUPNAME --plan $SERVICEPLANNAME --name $WEBAPPNAME
     ```
 
     > **注**:Web アプリの名前を記録します。 このラボで後ほど必要になります。
 
-1. 次に、Azure SQL Server を作成します。
-
-    ```bash
-    USERNAME="Student"
-    SQLSERVERPASSWORD="Pa55w.rd1234"
-    SERVERNAME="partsunlimitedserver$RANDOM"
-
-    az sql server create --name $SERVERNAME --resource-group $RESOURCEGROUPNAME \
-    --location $LOCATION --admin-user $USERNAME --admin-password $SQLSERVERPASSWORD
-    ```
-
-1. Web アプリは、SQL サーバーにアクセスできる必要があります。そのため、SQL Server ファイアウォール規則で Azure リソースへのアクセスを許可する必要があります。
-
-    ```bash
-    STARTIP="0.0.0.0"
-    ENDIP="0.0.0.0"
-    az sql server firewall-rule create --server $SERVERNAME --resource-group $RESOURCEGROUPNAME \
-    --name AllowAzureResources --start-ip-address $STARTIP --end-ip-address $ENDIP
-    ```
-
-1. 次に、そのサーバー内にデータベースを作成します。
-
-    ```bash
-    az sql db create --server $SERVERNAME --resource-group $RESOURCEGROUPNAME --name PartsUnlimited \
-    --service-objective S0
-    ```
-
-1. 作成した Web アプリの構成にはデータベース接続文字列が必要です。そのため、次のコマンドを実行してそれを準備し、Web アプリのアプリ設定に追加します。
-
-    ```bash
-    CONNSTRING=$(az sql db show-connection-string --name PartsUnlimited --server $SERVERNAME \
-    --client ado.net --output tsv)
-
-    CONNSTRING=${CONNSTRING//<username>/$USERNAME}
-    CONNSTRING=${CONNSTRING//<password>/$SQLSERVERPASSWORD}
-
-    az webapp config connection-string set --name $WEBAPPNAME --resource-group $RESOURCEGROUPNAME \
-    -t SQLAzure --settings "DefaultConnectionString=$CONNSTRING" 
-    ```
+1. Azure Cloud Shell は閉じますが、Azure Portal はブラウザーで開いたままにします。
 
 ### <a name="exercise-1-configure-cicd-pipelines-as-code-with-yaml-in-azure-devops"></a>演習 1:Azure DevOps で YAML を使用して CI/CD パイプラインをコードとして構成する
 
 この演習では、Azure DevOps で YAML を使用して CI/CD パイプラインをコードとして構成します。
 
-#### <a name="task-1-delete-the-existing-pipeline"></a>タスク 1:既存のパイプラインを削除する
-
-このタスクでは、既存のパイプラインを削除します。
-
-1. ラボのコンピューターで、Azure DevOps ポータルに **[YAML を使用したコードとしてのパイプラインの構築]** プロジェクトが表示されているブラウザー ウィンドウに切り替え、垂直のナビゲーション ウィンドウで **[パイプライン]** を選択します。
-
-    > **注**:YAML パイプラインを構成する前に、既存のビルド パイプラインを無効にします。
-
-1. **[パイプライン]** ペインで **[PartsUnlimited]** エントリを選択します。
-1. **[PartsUnlimited]** ブレードの右上隅で、縦の省略記号をクリックし、ドロップダウン メニューで **[削除]** を選択します。
-1. 「**PartsUnlimited**」と記述し、**[削除]** をクリックします。
-1. 垂直のナビゲーション ウィンドウで、**[リポジトリ] > [ファイル]** を選択します。 **master** ブランチ (**[ファイル]** ウィンドウの上部にあるドロップダウン) を使用していることを確認し、**azure-pipelines.yml** ファイルで縦の省略記号をクリックして、ドロップダウン メニューで **[削除]** を選択します。 **[コミット]** をクリックして、master ブランチで変更をコミットします (既定のオプションのままにします)。
-
-#### <a name="task-2-add-a-yaml-build-definition"></a>タスク 2:YAML ビルド定義を追加する
+#### <a name="task-1-add-a-yaml-build-definition"></a>タスク 1: YAML ビルド定義を追加する
 
 このタスクでは、既存のプロジェクトに YAML ビルドの定義を追加します。
 
 1. **[パイプライン]** ハブで **[パイプライン]** に戻ります。
 1. **[最初のパイプラインを作成]** ウィンドウで、**[パイプラインの作成]** をクリックします。
 
-    > **注**:ウィザードを使い、プロジェクトに基づいて YAML の定義を自動的に作成します。
+    > **注**: ウィザードを使い、プロジェクトに基づいて新しい YAML パイプラインの定義を作成します。
 
 1. **[コードはどこにありますか?]** ペインで **[Azure Repos Git (YAML)]** オプションをクリックします。
-1. **[リポジトリの選択]** ペインで **[PartsUnlimited]** をクリックします。
-1. **[パイプラインの構成]** ペインで **[ASP.<nolink>NET]** をクリックし、このテンプレートをパイプラインの起点として利用します。 これにより、**[パイプライン YAML をレビューする]** ペインが開きます。
-
-    > **注**: パイプラインの定義は、リポジトリのルートで **"azure-pipelines.yml"** という名前のファイルとして保存されます。 このファイルには、典型的な ASP<nolink>.NET ソリューションを構築してテストするために必要なステップが含まれます。 また、必要に応じてビルドをカスタマイズすることもできます。 このシナリオでは、**プール**を更新し、Windows 2019 を実行している VM を使用できるようにします。
-
-1. `trigger` が **master** である必要があります。
-
-    > **注**:リポジトリに**マスター** ブランチまたは**メイン** ブランチがある場合は、リポジトリで確認します。組織は、新しいリポジトリに既定のブランチ名を選択できます。[既定のブランチを変更する](https://docs.microsoft.com/en-us/azure/devops/repos/git/change-default-branch?view=azure-devops#choosing-a-name)。
-
-1. **[パイプライン YAML のレビュー]** ペインの **10** 行目で、`vmImage: 'windows-latest'` を `vmImage: 'windows-2019'` に置き換えます。
-1. **VSTest@2** タスクを削除します。
-
-    ```yaml
-    - task: VSTest@2
-      inputs:
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-    ```
-
-1. **[パイプライン YAML をレビューする]** ペインで **[保存して実行]** をクリックします。
-1. **[保存して実行]** ペインで既定の設定を承諾し、**[保存して実行]** をクリックします。
-1. [パイプライン実行] ペインの **[ジョブ]** セクションで **[ジョブ]** をクリックし、進捗状況を監視して、完了したことを確認します。
+1. **[リポジトリの選択]** ペインで **eShopOnWeb_MultiStageYAML** をクリックします。
+1. **[パイプラインを構成する]** ペインで、 **[既存の Azure Pipelines YAML ファイル]** を選びます。
+1. **[既存の YAML ファイルを選択する]** ペインで、次のパラメーターを指定します。
+- [ブランチ]: **main**
+- パス: **.ado/eshoponweb-ci.yml**
+1. **[続行]** をクリックして、これらの設定を保存します。
+1. **[パイプライン YAML をレビューする]** 画面で **[実行]** をクリックして、ビルド パイプライン プロセスを開始します。
+1. ビルド パイプラインが正常に完了するまで待ちます。 ソース コード自体に関する警告は無視します。これらは、このラボ演習には関係ありません。
 
     > **注**:警告やエラーなど、YAML ファイルの各タスクをレビューできます。
 
-#### <a name="task-3-add-continuous-delivery-to-the-yaml-definition"></a>タスク 3:YAML 定義に継続的デリバリーを追加する
+#### <a name="task-2-add-continuous-delivery-to-the-yaml-definition"></a>タスク 2: YAML の定義に継続的デリバリーを追加する
 
 このタスクでは、以前のタスクで作成したパイプラインの YAML ベースの定義に継続的デリバリーを追加します。
 
 > **注**:ビルドとテストのプロセスに成功すると、YAML 定義にデリバリーを追加できます。
 
 1. [パイプライン実行] ペインで、右上隅にある省略記号をクリックし、ドロップダウン メニューで **[パイプラインの編集]** をクリックします。
-1. **azure-pipelines.yaml** ファイルのコンテンツが表示されているペインで **8** 行目の `trigger` セクションの後に以下のコンテンツを追加し、YAML パイプラインの **ビルド** ステージを定義します。
+1. **eShopOnWeb_MultiStageYAML/.ado/eshoponweb-ci.yml** ファイルの内容が表示されているペインで、ファイルの末尾 (56 行目) に移動し、**Enter/Return** キーを押して新しい空の行を追加します。
+1. **57** 行目に移動し、YAML パイプラインの**リリース** ステージを定義する次の内容を追加します。
 
     > **注**:パイプラインの進捗状況をよりよく整理して追跡するために必要なステージを定義できます。
 
     ```yaml
-    stages:
-    - stage: Build
-      jobs:
-      - job: Build
-    ```
-
-1. YAML ファイルの残りのコンテンツを選択し、**Tab** キーを 2 回押してスペース 4 つ分をインデントします (```job: Build``` と同じインデントに配置される必要があります)。
-
-    > **注**:これにより、`pool` セクションで始まるものはすべて `job: Build` の一部になります。
-
-1. ファイルの最下部で、以下の項性を追加して 2 番目のステージを定義します。
-
-    ```yaml
     - stage: Deploy
+      displayName: Deploy to an Azure Web App
       jobs:
       - job: Deploy
         pool:
@@ -225,120 +160,253 @@ lab:
 
     - **[Azure サブスクリプション]** ドロップダウン リストで、このラボの前半に Azure リソースをデプロイした Azure サブスクリプションを選択し、**[承認]** をクリックします。プロンプトが表示されたら、Azure リソース デプロイで使用したものと同じユーザー アカウントを使用して認証します。
     - **[App Service の名前]** ドロップダウン リストで、このラボの前半にデプロイした Web アプリの名前を選択します。
-    - **[パッケージまたはフォルダー]** テキスト ボックスに「`$(System.ArtifactsDirectory)/drop/*.zip`」と入力します。
+    - **[パッケージまたはフォルダー]** テキスト ボックスで、既定値を `$(Build.ArtifactStagingDirectory)/**/Web.zip` に**更新**します。
+1. **[追加]** ボタンをクリックし、[アシスタント] ペインで設定を確認します。
 
     > **注**:これにより、デプロイ タスクが YAML パイプラインの定義に自動的に追加されます。
 
-1. エディターで追加されたタスクを選択したままの状態にして、**Tab** キーを 2 回押し、スペース 4 つ分をインデントします。これにより、**steps** タスクの子としてリストされます。
+1. エディターには次のようなコード スニペットが追加されていて、azureSubscription と WebappName パラメーターには実際の名前が反映されている必要があります。
+
+```yaml
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'AZURE SUBSCRIPTION HERE (b999999abc-1234-987a-a1e0-27fb2ea7f9f4)'
+        appType: 'webApp'
+        WebAppName: 'eshoponWebYAML369825031'
+        packageForLinux: '$(Build.ArtifactStagingDirectory)/**/Web.zip'
+```
+
+1. タスクが **steps** タスクの子として一覧に表示されていることを確認します。 そうでない場合は、追加したタスクのすべての行を選び、**Tab** キーを 2 回押してスペース 4 つ分だけインデントして、**steps** タスクの子として一覧に表示されるようにします。
 
     > **注**:**packageForLinux** パラメーターは、このラボの状況では不適切ですが、Windows または Linux では有効です。
 
-    > **注**:既定により、2 つのステージは独立して実行されます。 このため、最初のステージのビルド出力は、さらに変更を加えなければ 2 番目のステージで利用できない可能性があります。 このような変更を実装するには、ひとつのタスクを使用してビルド出力をビルド ステージの最後に公開し、別のタスクを使ってデプロイ ステージの最初にこれをダウンロードします。
+    > **注**:既定により、2 つのステージは独立して実行されます。 このため、最初のステージのビルド出力は、さらに変更を加えなければ 2 番目のステージで利用できない可能性があります。 これらの変更を実装するため、デプロイ ステージの先頭でデプロイ成果物をダウンロードする新しいタスクを追加します。
 
-1. ビルド ステージの最後に空白のライン上にカーソルを配置して、別のタスクを追加します。 (`task: VSBuild@1` のすぐ下)
-1. **[タスク]** ペインで **[ビルド成果物の公開]** タスクを検索して選択します。
-1. **[ビルド成果物の公開]** ペインで既定の設定を承諾し、**[追加]** をクリックします。
-
-    > **注**: これにより、**"drop"** というエイリアスでダウンロードできる場所にビルド成果物が公開されます。
-
-1. 追加したタスクをエディターで選択したまま、**Tab** キーを 2 回押して、4 つのスペースをインデントします (または、タスクが上記のようにインデントされるまで **Tab** キーを押します)。
-
-    > **注**:また、前後に空白のラインを追加して読みやすくすることをお勧めします。
-
-1. **デプロイ** ステージの **steps** ノードで最初のラインにカーソルを配置します。
+1. **deploy** ステージの **steps** ノードの下の最初の行にカーソルを置き、Enter/Return キーを押して新しい空の行 (64 行目) を追加します。
 1. **[タスク]** ペインで **[ビルド成果物のダウンロード]** タスクを検索して選択します。
+1. このタスクに対する次のパラメーターを指定します。
+- ダウンロードする成果物の生成元: **現在のビルド**
+- ダウンロードの種類: **特定の成果物**
+- 成果物の名前: **一覧から "Website" を選びます**
+- ダウンロード先ディレクトリ: **$(Build.ArtifactStagingDirectory)**
 1. **[追加]** をクリックします。
-1. エディターで追加されたタスクを選択したままの状態にして、**Tab** キーを 2 回押し、スペース 4 つ分をインデントします。
+1. 追加されたコードのスニペットは、次のようになります。
+
+```yaml
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'Website'
+        downloadPath: '$(Build.ArtifactStagingDirectory)'
+```
+1. YAML のインデントがオフになっている場合は、エディターで追加されたタスクを選んだまま、**Tab** キーを 2 回押してスペース 4 つ分インデントします。
 
     > **注**:ここでも、前後に空白のラインを追加して読みやすくすることをお勧めします。
 
-1. ダウンロード タスクにプロパティを追加し、`drop` の `artifactName` を指定します (必ずスペースを一致させます):
-
-    ```
-    artifactName: 'drop'
-    ```
-
 1. **[保存]** をクリックし、**[保存]** ペインでもう一度 **[保存]** をクリックして、master ブランチに変更を直接コミットします。
 
-    > **注**:これにより、新しいビルドが自動的にトリガーされます。
+    > **注**: 元の CI-YAML は新しいビルドを自動的にトリガーするように構成されていなかったため、手動で開始する必要があります。
 
-1. パイプラインは次の例のようになります (**最後のタスクで独自のサブスクリプションと Web アプリを参照します**)。
+1. Azure DevOps の左側のメニューから **[パイプライン]** に移動し、もう一度 **[パイプライン]** を選びます。 
+1. **EShopOnWeb_MultiStageYAML** パイプラインを開いて、 **[パイプラインの実行]** をクリックします。
+1. 表示されるペインで **[実行]** を確認します。
+1. **[Build .Net Core Solution] (.Net Core ソリューションをビルドする)** と **[Deploy to Azure Web App] (Azure Web アプリにデプロイする)** という 2 つの異なるステージが表示されることに注意してください。
+1. パイプラインが開始され、ビルド ステージが正常に完了するまで待ちます。
+1. デプロイ ステージが開始できる状態になると、 **[アクセス許可が必要です]** というプロンプトとオレンジ色のバーが表示されます 
+```
+This pipeline needs permission to access a resource before this run can continue to Deploy to an Azure Web App
+```
+1. **[表示]** をクリックします
+1. **[レビューを待機しています]** ペインで、 **[許可]** をクリックします。
+1. **[許可]** ポップアップ ウィンドウでメッセージを確認し、 **[許可]** をクリックして確認します。
+1. これにより、デプロイ ステージが開始します。 これが正常に完了するまで待ちます。
 
-     > **注**:これを機能させるには、正しくインデントする必要があります。コピーして貼り付けると、変更される場合があります。
+     > **注**: YAML パイプライン構文に問題があるためにデプロイが失敗する場合は、以下を参照として使用します。
 
-    ```
-    trigger:
-    - master
+ ```yaml
+#NAME THE PIPELINE SAME AS FILE (WITHOUT ".yml")
+# trigger:
+# - main
 
-    stages:
-    - stage: Build
-      jobs:
-      - job: Build
-        pool:
-            vmImage: 'windows-2019'
+resources:
+  repositories:
+    - repository: self
+      trigger: none
 
-        variables:
-            solution: '**/*.sln'
-            buildPlatform: 'Any CPU'
-            buildConfiguration: 'Release'
+stages:
+- stage: Build
+  displayName: Build .Net Core Solution
+  jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: 'restore'
+        projects: '**/*.sln'
+        feedsToUse: 'select'
 
-        steps:
-        - task: NuGetToolInstaller@1
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: '**/*.sln'
+    
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: 'test'
+        projects: 'tests/UnitTests/*.csproj'
+    
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '-o $(Build.ArtifactStagingDirectory)'
+    
+    - task: PublishBuildArtifacts@1
+      displayName: Publish Artifacts ADO - Website
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: Website
+    
+    - task: PublishBuildArtifacts@1
+      displayName: Publish Artifacts ADO - Bicep
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)/.azure/bicep/webapp.bicep'
+        ArtifactName: 'Bicep'
+        publishLocation: 'Container'
 
-        - task: NuGetCommand@2
-          inputs:
-            restoreSolution: '$(solution)'
+- stage: Deploy
+  displayName: Deploy to an Azure Web App
+  jobs:
+  - job: Deploy
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'Website'
+        downloadPath: '$(Build.ArtifactStagingDirectory)'
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'AZURE SUBSCRIPTION HERE (b999999abc-1234-987a-a1e0-27fb2ea7f9f4)'
+        appType: 'webApp'
+        WebAppName: 'eshoponWebYAML369825031'
+        packageForLinux: '$(Build.ArtifactStagingDirectory)/**/Web.zip'
 
-        - task: VSBuild@1
-          inputs:
-            solution: '$(solution)'
-            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-            platform: '$(buildPlatform)'
-            configuration: '$(buildConfiguration)'
-
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'drop'
-            publishLocation: 'Container'
-
-    - stage: Deploy
-      jobs:
-      - job: Deploy
-        pool:
-            vmImage: 'windows-2019'
-        steps:
-        - task: DownloadBuildArtifacts@0
-          inputs:
-            buildType: 'current'
-            downloadType: 'single'
-            downloadPath: '$(System.ArtifactsDirectory)'
-            artifactName: 'drop'
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: 'YOUR-AZURE-SUBSCRIPTION'
-            appType: 'webApp'
-            WebAppName: 'YOUR-WEBAPP-NAME'
-            packageForLinux: '$(System.ArtifactsDirectory)/drop/*.zip'
-    ```
-
-1. Azure DevOps ポータルが表示されている Web ブラウザー ウィンドウの垂直のナビゲーション ウィンドウで、**[パイプライン]** を選択します。
-1. **[パイプライン]** ペインで、新しく構成されたパイプラインを示すエントリをクリックします。
-1. 最新の実行 (自動的に開始) をクリックします。
-1. **[概要]** ペインで、パイプライン実行の進捗状況を監視します。
-1. *"このパイプラインには、この実行のデプロイを継続する前にリソースのアクセス許可が必要です"* というメッセージが表示されたら、**[表示]** をクリックします。**[レビューの待機中]** ダイアログ ボックスで **[許可]** をクリックします。**[アクセス許可?]** ペインでもう一度 **[許可]** をクリックします。
-1. **[概要]** ペインの下部で **[デプロイ]** ステージをクリックすると、デプロイの詳細が表示されます。
-
-    > **注**:タスクが完了すると、アプリが Azure Web アプリにデプロイされます。
+```
 
 #### <a name="task-4-review-the-deployed-site"></a>タスク 4:デプロイされたサイトをレビューする
 
 1. Azure portal を表示している Web ブラウザー ウィンドウに戻り、Azure Web アプリのプロパティが表示されているブレードに移動します。
 1. [Azure Web アプリ] ブレードで **[概要]** をクリックします。[概要] ブレードで **[参照]** をクリックし、新しい Web ブラウザー タブでサイトを開きます。
-1. デプロイされたサイトが新しいブラウザー タブで期待されているように読み込まれていることを確認します。
+1. デプロイされたサイトが新しいブラウザー タブに期待どおりに読み込まれ、EShopOnWeb eコマース Web サイトが表示されることを確認します。
 
-### <a name="exercise-2-remove-the-azure-lab-resources"></a>演習 2:Azure ラボ リソースを削除する
+### <a name="exercise-2-configure-environment-settings-for-cicd-pipelines-as-code-with-yaml-in-azure-devops"></a>演習 2: Azure DevOps で YAML を使用してコードとしての CI/CD パイプラインの環境設定を構成する
+
+この演習では、Azure DevOps の YAML ベースのパイプラインに承認を追加します。
+
+#### <a name="task-1-set-up-pipeline-environments"></a>タスク 1: パイプラインの環境を設定する
+
+コードとしての YAML パイプラインには、Azure DevOps クラシック リリース パイプラインのようなリリースおよび品質ゲートがありません。 ただし、 **[環境]** を使ってコードとしての YAML パイプライン用に同様のものを構成できます。 このタスクでは、このメカニズムを使ってビルド ステージ用に承認を構成します。
+
+1. Azure DevOps プロジェクト **EShopOnWeb_MultiStageYAML** から、 **[パイプライン]** に移動します。
+1. 左側の [パイプライン] メニューで、 **[環境]** を選びます。
+1. **[環境の作成]** をクリックします。
+1. **[新しい環境]** ペインで、環境に **approvals** という名前を追加します。
+1. **[リソース]** で **[なし]** を選びます。
+1. **[作成]** ボタンを選んで設定を確定します。
+1. 環境が作成されたら、[リソースの追加] ボタンの横にある "省略記号" [...] をクリックします。
+1. **[承認とチェック]** を選びます。
+1. **[最初のチェックを追加]** で、 **[承認]** を選びます。
+1. 自分の Azure DevOps ユーザー アカウント名を **[承認者]** フィールドに追加します。
+
+    > **注:** 実際のシナリオでは、このプロジェクトで作業する DevOps チームの名前にします。
+
+1. **[作成]** ボタンを選んで、定義された承認設定を確定します。
+1. 最後に、デプロイ ステージの YAML パイプライン コードに必要な "environment: approvals" 設定を追加する必要があります。 これを行うには、 **[リポジトリ]** に移動し、 **.ado** フォルダーを参照して、コードとしてのパイプラインのファイル **eshoponweb-ci.yml** を選びます。
+1. [コンテンツ] ビューで、 **[編集]** ボタンをクリックして編集モードに切り替えます。
+1. **デプロイ ジョブ**の開始に移動します (60 行目の -job: Deploy)
+1. すぐ下に新しい空の行を追加して、次のスニペットを追加します。
+
+```yaml
+  environment: approvals
+```
+
+結果のコード スニペットは次のようになります。
+
+```yaml
+ jobs:
+  - job: Deploy
+    environment: approvals
+    pool:
+      vmImage: 'windows-2019'
+```
+1. 環境はデプロイ ステージに固有の設定なので、"jobs" では使用できません。 したがって、現在のジョブ定義にいくつか追加の変更を行う必要があります。
+1. **60** 行目で、名前を "- job: Deploy" から **- deployment: Deploy** に変更します
+1. 次に、**63** 行目 (vmImage: Windows-2019) で、新しい空の行を追加します。
+1. 次の Yaml スニペットを貼り付けます。
+
+```yaml
+    strategy:
+      runOnce:
+        deploy:
+```
+1. 残りのスニペット (**67** 行目から最後まで) を選び、**Tab** キーを使用して YAML のインデントを修正します。 
+
+結果の YAML スニペットは、**デプロイ ステージ**を反映した次のようなものになります。
+
+```yaml
+- stage: Deploy
+  displayName: Deploy to an Azure Web App
+  jobs:
+  - deployment: Deploy
+    environment: approvals
+    pool:
+      vmImage: 'windows-2019'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'Website'
+              downloadPath: '$(Build.ArtifactStagingDirectory)'
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'AZURE SUBSCRIPTION HERE (b999999abc-1234-987a-a1e0-27fb2ea7f9f4)'
+              appType: 'webApp'
+              WebAppName: 'eshoponWebYAML369825031'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)/**/Web.zip'
+```
+
+1. **[コミット]** をクリックし、表示される [コミット] ペインで **[コミット]** をもう一度クリックして、コードの YAML ファイルに対する変更を確定します。
+1. 左側の Azure DevOps プロジェクト メニューに移動し、 **[パイプライン]** を選び、 **[パイプライン]** を選んで、前に使った **EshopOnWeb_MultiStageYAML** パイプラインを見つけます。
+1. そのパイプラインを開きます。
+1. **[パイプラインの実行]** をクリックして、新しいパイプラインの実行をトリガーします。 **[実行]** をクリックして確認します。
+1. 前と同じように、ビルド ステージが想定どおりに開始されます。 それが正常に完了するまで待ちます。
+1. 次に、デプロイ ステージに対して *environment:approvals* を構成してあるため、開始する前に承認の確認を求められます。
+1. これは [パイプライン] ビューから表示され、 **[待機中 (0/1 件のチェックが合格しました)]** と表示されます。 **この実行を続行して Azure Web アプリへのデプロイに進む前に承認をレビューする必要がある**ことを示す通知メッセージも表示されます。
+1. このメッセージの隣の **[表示]** ボタンをクリックします。
+1. 表示される **[Checks and manual validations for Deploy to Azure Web App] (Azure Web アプリへのデプロイのチェックと手動検証)** ペインで、**承認待機中**メッセージをクリックします。
+1. **[Approve](承認)** をクリックします。
+1. これにより、デプロイ ステージは開始して、Azure Web アプリのソース コードを正常にデプロイできます。
+
+    > **注:** この例では承認のみを使っていますが、Azure Monitor や REST API などの他のチェックも同様の方法で使用できます
+
+### <a name="exercise-3-remove-the-azure-lab-resources"></a>演習 3:Azure ラボ リソースを削除する
 
 この演習では、このラボでプロビジョニングした Azure リソースを削除し、予期しない料金を排除します。
 
@@ -352,13 +420,13 @@ lab:
 1. 次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
 
     ```sh
-    az group list --query "[?starts_with(name,'az400m11l01-RG')].name" --output tsv
+    az group list --query "[?starts_with(name,'az400m05l11-RG')].name" --output tsv
     ```
 
 1. 次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
 
     ```sh
-    az group list --query "[?starts_with(name,'az400m11l01-RG')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
+    az group list --query "[?starts_with(name,'az400m05l11-RG')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
     ```
 
     >**注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。

@@ -1,41 +1,38 @@
 ---
 lab:
-  title: 'ラボ 13:Azure Key Vault と Azure DevOps の統合'
+  title: Azure Key Vault と Azure DevOps の統合
   module: 'Module 05: Implement a secure continuous deployment using Azure Pipelines'
 ---
 
-# <a name="lab-13-integrating-azure-key-vault-with-azure-devops"></a>ラボ 13:Azure Key Vault と Azure DevOps の統合
+# <a name="integrating-azure-key-vault-with-azure-devops"></a>Azure Key Vault と Azure DevOps の統合
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 
 ## <a name="lab-requirements"></a>ラボの要件
 
-- このラボには、**Microsoft Edge** または [Azure DevOps 対応ブラウザー](https://docs.microsoft.com/en-us/azure/devops/server/compatibility?view=azure-devops#web-portal-supported-browsers)が必要です。
+- このラボには、**Microsoft Edge** または [Azure DevOps 対応ブラウザー](https://learn.microsoft.com/azure/devops/server/compatibility?view=azure-devops#web-portal-supported-browsers)が必要です。
 
-- **Azure DevOps 組織を設定する:** このラボで使用できる Azure DevOps 組織がまだない場合は、[組織またはプロジェクト コレクションの作成](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization?view=azure-devops)に関するページの手順に従って作成してください。
+- **Azure DevOps 組織を設定する:** このラボで使用できる Azure DevOps 組織がまだない場合は、[組織またはプロジェクト コレクションの作成](https://learn.microsoft.com/azure/devops/organizations/accounts/create-organization?view=azure-devops)に関するページの手順に従って作成してください。
 
 - 既存の Azure サブスクリプションを識別するか、新しいものを作成します。
 
-- Azure サブスクリプションでは所有者のロール、Azure サブスクリプションに関連のある Azure AD テナントではグローバル管理者のロールで Microsoft アカウントまたは Azure AD アカウントがあることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://docs.microsoft.com/en-us/azure/active-directory/roles/manage-roles-portal#view-my-roles)を参照してください。
-
 ## <a name="lab-overview"></a>ラボの概要
 
-Azure Key Vault は、キー、パスワード、証明書などの機密データの安全な保管と管理を行います。 Azure Key Vault には、ハードウェア セキュリティ モジュールのサポート、およびさまざまな暗号化アルゴリズムとキーの長さが含まれています。 Azure Key Vault を使用することで、開発者がよく犯す間違いである、ソース コードを介して機密データを開示してしまう可能性を最小限に抑えることができます。 Azure Key Vault にアクセスするには、コンテンツに対するきめ細かいアクセス許可をサポートする適切な認証と認可が必要です。
+Azure Key Vault は、キー、パスワード、証明書などの機密データの安全な保管と管理を行います。 Azure Key Vault には、ハードウェア セキュリティ モジュールのサポートに加えて、さまざまな暗号化アルゴリズムとキーの長さが含まれています。 Azure Key Vault を使用することで、開発者がよく犯す間違いであるソース コードを介して機密データを開示する可能性を最小限に抑えることができます。 Azure Key Vault にアクセスするには、コンテンツに対するきめ細かいアクセス許可をサポートする適切な認証と承認が必要です。
 
-このラボでは、次の手順を使用して、Azure Key Vault を Azure Pipeline と統合する方法を説明します。
+このラボでは、次の手順を使用して、Azure Key Vault を Azure Pipelines と統合する方法について説明します。
 
-- MySQL サーバーのパスワードをシークレットとして保存する Azure Key Vault を作成します。
+- ACR のパスワードをシークレットとして保存する Azure キー コンテナーを作成します。
 - Azure Key Vault 内のシークレットへのアクセスを提供する Azure サービス プリンシパルを作成します。
-- サービス プリンシパルがシークレットを読み取れるようにするアクセス許可を構成します。
+- サービス プリンシパルがシークレットを読み取れるようにする権限を構成します。
 - Azure Key Vault からパスワードを取得し、それを後続のタスクに渡すようにパイプラインを構成します。
 
 ## <a name="objectives"></a>目標
 
 このラボを完了すると、次のことができるようになります。
 
-- Azure Active Directory (Azure AD) サービス プリンシパルを作成します。
-- Azure Key Vault を作成します。
-- Azure Pipeline を介して pull request を追跡します。
+-   Azure Active Directory (Azure AD) サービス プリンシパルを作成する。
+-   Azure Key Vault を作成します。
 
 ## <a name="estimated-timing-40-minutes"></a>推定時間:40 分
 
@@ -43,59 +40,56 @@ Azure Key Vault は、キー、パスワード、証明書などの機密デー�
 
 ### <a name="exercise-0-configure-the-lab-prerequisites"></a>演習 0:ラボの前提条件の構成
 
-この演習では、ラボの前提条件を設定します。Azure DevOps Demo Generator テンプレートに基づいて事前構成された Parts Unlimited チームプロジェクトで構成されます。
+この演習では、ラボの前提条件を設定します。これは、[eShopOnWeb](https://github.com/MicrosoftLearning/eShopOnWeb) に基づくリポジトリを含む新しい Azure DevOps プロジェクトで構成されます。
 
-#### <a name="task-1-configure-the-team-project"></a>タスク 1:チーム プロジェクトを構成する
+#### <a name="task-1-skip-if-done-create-and-configure-the-team-project"></a>タスク 1: (完了している場合はスキップしてください) チーム プロジェクトを作成して構成する
 
-このタスクでは、Azure DevOps Demo Generator を使用して、**Azure Key Vault** テンプレートに基づいて新しいプロジェクトを生成します。
+このタスクでは、複数のラボで使用される **eShopOnWeb** Azure DevOps プロジェクトを作成します。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[Azure DevOps Demo Generator](https://azuredevopsdemogenerator.azurewebsites.net) に移動します。 このユーティリティ サイトは、ラボで必要なコンテンツ (作業項目、リポジトリなど) が事前設定されている新しい Azure DevOps プロジェクトをアカウント内で作成するプロセスを自動化します。
+1.  ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織を開きます。 **[新しいプロジェクト]** をクリックします。 プロジェクトに **eShopOnWeb** という名前を付け、他のフィールドは既定値のままにします。 **[作成]** をクリックします。
 
-    > **注**:サイトの詳細については、 <https://docs.microsoft.com/en-us/azure/devops/demo-gen> を参照してください。
+    ![Create Project](images/create-project.png)
 
-1. **[サインイン]** をクリックし、Azure DevOps サブスクリプションに関連のある Microsoft アカウントを使用してサインインします。
-1. 必要な場合は、**[Azure DevOps Demo Generator]** ページで **[承諾する]** をクリックし、Azure DevOps サブスクリプションへのアクセス許可要求を承諾します。
-1. **[新しいプロジェクトの作成]** ページの **[新しいプロジェクト名]** テキストボックスに、「**Azure KeyVault と Azure DevOps の統合**」と入力し、**[組織の選択]** ドロップダウンリストで、Azure DevOps 組織を選択して、**[テンプレートの選択]** をクリックします。
-1. **[テンプレートの選択]** ページのヘッダー メニューで、 **[DevOps ラボ]** をクリックし、テンプレートのリストで **[Azure Key Vault テンプレート]** をクリックしてから、 **[テンプレートの選択]** をクリックします。
-1. **[新しいプロジェクトの作成]** ページに戻り、 **[ARM 出力]** ラベルの下のチェックボックスを選択して、 **[プロジェクトの作成]** をクリックします。
+#### <a name="task-2-skip-if-done-import-eshoponweb-git-repository"></a>タスク 2: (完了している場合はスキップしてください) eShopOnWeb Git リポジトリをインポートする
 
-    > **注**:プロセスが完了するまでお待ちください。 これには 2 分ほどかかります。 プロセスが失敗した場合は、DevOps 組織に移動し、プロジェクトを削除して、再試行してください。
+このタスクでは、複数のラボで使用される eShopOnWeb Git リポジトリをインポートします。
 
-1. 「**新しいプロジェクトの作成**」ページで「**プロジェクトに移動**」をクリックします。
+1.  ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、以前に作成した **eShopOnWeb** プロジェクトを開きます。 **[リポジトリ] > [ファイル]** 、 **[インポート]** をクリックします。 **[Git リポジトリをインポートする]** ウィンドウで、URL https://github.com/MicrosoftLearning/eShopOnWeb.git を貼り付けて、 **[インポート]** をクリックします。
 
-### <a name="exercise-1-integrate-azure-key-vault-with-azure-devops"></a>演習 1:Azure Key Vault を Azure DevOps と統合する
+    ![インポートリポジトリ](images/import-repo.png)
 
-- Azure Key Vault 内のシークレットへのアクセスを提供する Azure サービス プリンシパルを作成します。
-- MySQL サーバーのパスワードをシークレットとして保存する AzureKey Vault を作成します。
-- サービス プリンシパルがシークレットを読み取れるようにする権限を構成します。
-- Azure Key Vault からパスワードを取得し、それを後続のタスクに渡すようにパイプラインを構成します。
+1.  リポジトリは次のように編成されています。
+    - **.ado** フォルダーには Azure DevOps YAML パイプラインが含まれています
+    - **.devcontainer** フォルダーには、(VS Code でローカルに、または GitHub Codespaces で) コンテナーを使って開発するためのセットアップが含まれています
+    - **.azure** フォルダーには、一部のラボ シナリオで使用される Bicep&ARM コードとしてのインフラストラクチャ テンプレートが含まれています。
+    - **.github** フォルダーには YAML GitHub ワークフロー定義が含まれています。
+    - **src** フォルダーには、ラボ シナリオで使用される .NET 6 Web サイトが含まれています。
 
-#### <a name="task-1-create-a-service-principal"></a>タスク 1:サービス プリンシパルを作成する
+### <a name="exercise-1-setup-ci-pipeline-to-build-eshoponweb-container"></a>演習 1: CI パイプラインを設定して eShopOnWeb コンテナーをビルドする
 
-このタスクでは、Azure CLI を使用してサービス プリンシパルを作成します。
+次のために CI YAML パイプラインを設定します。
+- コンテナー イメージを保持するための Azure コンテナー レジストリを作成する
+- Docker Compose を使って **eshoppublicapi** と **eshopwebmvc** のコンテナー イメージをビルドしてプッシュする。 **eshopwebmvc** コンテナーのみがデプロイされます。
 
-> **注**:サービス プリンシパルが既にある場合は、次のタスクに直接進むことができます。
+#### <a name="task-1-skip-if-done-create-a-service-principal"></a>タスク 1: (完了している場合はスキップしてください) サービス プリンシパルを作成する
 
-Azure Pipelines からAzure リソースにアプリをデプロイするには、サービス プリンシパルが必要です。 パイプラインでシークレットを取得するため、Azure Key Vault を作成するときにサービスにアクセス許可を付与する必要があります。
+このタスクでは、Azure CLI を使ってサービス プリンシパルを作成します。これにより、Azure DevOps で次のことができるようになります。
+- Azure サブスクリプションでリソースをデプロイする
+- 後で作成する Key Vault シークレットに対する読み取りアクセス権を取得する。
 
-サービス プリンシパルは、パイプライン定義内から Azure サブスクリプションに接続するとき、またはプロジェクト設定ページから新しいサービス接続を作成するときに、Azure Pipeline によって自動的に作成されます。 ポータルから、または Azure CLI を使用してサービス プリンシパルを手動で作成し、プロジェクト間で再利用することもできます。 事前定義された権限のセットが必要な場合は、既存のサービス プリンシパルを使用することをお勧めします。
+> **注**: サービス プリンシパルが既にある場合は、次のタスクに直接進むことができます。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで、所有者のロールがあり、このサブスクリプションに関連付けられている Azure AD テナントでグローバル管理者のロールがあるユーザー アカウントを使ってサインインします。
-1. Azure portal で、ページ上部の検索テキスト ボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
-1. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
+Azure Pipelines から Azure リソースをデプロイするには、サービス プリンシパルが必要です。 パイプラインでシークレットを取得するため、Azure キー コンテナーを作成するときにサービスにアクセス許可を付与する必要があります。
+
+サービス プリンシパルは、パイプライン定義内から Azure サブスクリプションに接続するとき、またはプロジェクト設定ページから新しいサービス接続を作成するときに (自動オプション)、Azure Pipelines によって自動的に作成されます。 ポータルから、または Azure CLI を使用してサービス プリンシパルを手動で作成し、プロジェクト間で再利用することもできます。
+
+1.  ラボのコンピューターで Web ブラウザーを起動し、[**Azure Portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで所有者ロールがあり、このサブスクリプションに関連のある Azure AD テナントでグローバル管理者ロールがあるユーザー アカウントを使ってサインインします。
+1.  Azure portal で、ページ上部の検索テキストボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
+1.  **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
 
    >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。
 
-1. **Bash** プロンプトの **Cloud Shell** ペインで、次のコマンドを実行してサービス プリンシパルを作成します (`<service-principal-name>` を文字と数字で構成される一意の文字列に置き換えます)。
-
-    ```
-    SUB_ID=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac --name <service-principal-name> --role contributor --scope /subscriptions/$SUB_ID
-    ```
-
-    > **注**:このコマンドは JSON 出力を生成します。 出力をテキスト ファイルにコピーします。 このラボで後ほど必要になります。
-
-1. **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行して、Azure サブスクリプション ID とサブスクリプション名の属性の値を取得します。
+1.  **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行して、Azure サブスクリプション ID とサブスクリプション名の属性の値を取得します。
 
     ```
     az account show --query id --output tsv
@@ -104,103 +98,157 @@ Azure Pipelines からAzure リソースにアプリをデプロイするには�
 
     > **注**:両方の値をテキスト ファイルにコピーします。 これらは、このラボの後半で必要になります。
 
+1.  **Bash** プロンプトの **Cloud Shell** ペインで、次のコマンドを実行してサービス プリンシパルを作成します (**myServicePrincipalName** を文字と数字で構成される一意の文字列に、**mySubscriptionID** をご自分の Azure subscriptionId に置き換えてください)。
+
+    ```
+    az ad sp create-for-rbac --name myServicePrincipalName \
+                         --role contributor \
+                         --scopes /subscriptions/mySubscriptionID
+    ```
+
+    > **注**:このコマンドは JSON 出力を生成します。 出力をテキスト ファイルにコピーします。 このラボで後ほど必要になります。
+
+1. 次に、ラボ コンピューターから Web ブラウザーを起動し、Azure DevOps **eShopOnWeb** プロジェクトに移動します。 **[プロジェクトの設定] > [サービス接続] ([パイプライン] の下)** 、 **[新しいサービス接続]** の順にクリックします。
+
+    ![新しいサービス接続](images/new-service-connection.png)
+
+1. **[新しいサービス接続]** ブレードで、 **[Azure Resource Manager]** と **[次へ]** を選択します (下にスクロールする必要がある場合があります)。
+
+1. **[サービス プリンシパル (手動)]** を選択し、 **[次へ]** をクリックします。
+
+1. 前の手順で収集した情報を使って、空のフィールドに入力します。
+    - サブスクリプション ID と名前
+    - サービス プリンシパル ID (または clientId)、Key (または Password)、TenantId。
+    - **[サービス接続名]** に「**azure subs**」と入力します。 この名前は、Azure サブスクリプションと通信するために Azure DevOps サービス接続が必要になるときに、YAML パイプラインで参照されます。
+
+    ![Azure サービス接続](images/azure-service-connection.png)
+
+1. **[確認して保存]** をクリックします。
+
+#### <a name="task-2-setup-and-run-ci-pipeline"></a>タスク 2: CI パイプラインのセットアップと実行
+
+このタスクでは、既存の CI YAML パイプライン定義をインポートし、変更して実行します。 新しい Azure Container Registry (ACR) を作成し、eShopOnWeb コンテナー イメージをビルドして発行します。
+
+1. ラボ コンピューターから Web ブラウザーを起動し、Azure DevOps **eShopOnWeb** プロジェクトに移動します。 **[パイプライン] > [パイプライン]** に移動し、 **[パイプラインを作成]** (または **[新しいパイプライン]** ) をクリックします。
+
+1.  **[コードはどこにありますか?]** ウィンドウで、 **[Azure Repos Git (YAML)]** を選択し、**eShopOnWeb** リポジトリを選択します。
+
+1.  **[構成]** セクションで、 **[既存の Azure Pipelines YAML ファイル]** を選択します。 次のパス **/.ado/eshoponweb-ci-dockercompose.yml** を指定し、 **[続行]** をクリックします。
+
+    ![[パイプライン] を選択します](images/select-ci-container-compose.png)
+
+1. YAML パイプライン定義で、**AZ400-EWebShop-NAME** の **NAME** を置き換えることでリソース グループ名をカスタマイズし、**YOUR-SUBSCRIPTION-ID** をご自身の Azure subscriptionId に置き換えます。
+
+1. **[保存および実行]** をクリックし、パイプラインが正常に実行されるまで待ちます。
+
+    > **注**:このビルドは、完了するまで数分かかる場合があります。 ビルドの定義は以下のタスクで構成されます。
+    - **AzureResourceManagerTemplateDeployment** は、**bicep** を使用して Azure Container Registry をデプロイします。
+    - **PowerShell** タスクは bicep 出力 (acr ログイン サーバー) を受け取り、パイプライン変数を作成します。
+    - **DockerCompose** タスクは、eShopOnWeb のコンテナー イメージをビルドし、Azure Container Registry にプッシュします。
+
+1. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、作成したばかりのパイプラインをクリックします。 省略記号と **[名前の変更]/[削除]** オプションをクリックします。 **eshoponweb-ci-dockercompose** という名前を付け、 **[保存]** をクリックします。
+
+
+1. 実行が完了したら、Azure Portal で、以前に定義したリソース グループを開きます。そうすると、作成されたコンテナー イメージ **eshoppublicapi** と **eshopwebmvc** を含む Azure Container Registry (ACR) が見つかります。 デプロイ フェーズでは **eshopwebmvc** のみを使用します。
+
+    ![ACR 内のコンテナー イメージ](images/azure-container-registry.png)
+
+1. **[アクセス キー]** をクリックし、**パスワード**の値をコピーします。これは次のタスクで、Azure Key Vault のシークレットとして保持するために使用します。
+
+    ![ACR パスワード](images/acr-password.png)
+
+
 #### <a name="task-2-create-an-azure-key-vault"></a>タスク 2:Azure Key Vault を作成する
 
 このタスクでは、Azure portal を使用して Azure Key Vault を作成します。
 
-このラボ シナリオでは、MySQL データベースに接続するアプリがあります。 MySQL データベースのパスワードをシークレットとして Key Vault に保存します。
+このラボ シナリオでは、Azure Container Registry (ACR) に格納されているコンテナー イメージをプルして実行する Azure Container Instance (ACI) を使用します。 ACR のパスワードをシークレットとしてキー コンテナーに保存します。
 
-1. Azure portal の **[リソース、サービス、ドキュメントの検索]** テキスト ボックスに「**Key Vault**」と入力し、**Enter** キーを押します。
-1. **Key Vault** ブレードで、 **[+ 作成]** をクリックします。
-1. **[キー コンテナーの作成]** ブレードの **[基本]** タブで、次の設定を指定し、 **[次へ: アクセス ポリシー]** をクリックします。
+1.  Azure portal の **[リソース、サービス、ドキュメントの検索]** テキスト ボックスに「**Key Vault**」と入力し、**Enter** キーを押します。 
+1.  **[キー コンテナー]** ブレードを選択し、 **[作成] > [キー コンテナー]** をクリックします。 
+1.  **[キー コンテナーの作成]** ブレードの **[基本]** タブで、次の設定を指定して **[次へ]** をクリックします。
 
     | 設定 | 値 |
     | --- | --- |
     | サブスクリプション | このラボで使用している Azure サブスクリプションの名前 |
-    | リソース グループ | 新しいリソース グループ **az400m07l01-RG** の名前 |
-    | キー コンテナー名 | 任意の一意の有効な名前 |
+    | リソース グループ | 新しいリソース グループ **AZ400-EWebShop-NAME** の名前 |
+    | キー コンテナー名 | **ewebshop-kv-NAME** などの一意の有効な名前 (NAME を置き換えてください) |
     | リージョン | ラボ環境の場所に近い Azure リージョン |
     | Pricing tier | **Standard** |
     | 削除されたボールトを保持する日数 | **7** |
     | 消去保護 | **消去保護を無効にする** |
 
-1. **[キー ボールトの作成]** ブレードの **[アクセス ポリシー]** タブで、 **[+ 作成]** をクリックして、新しいポリシーを設定します。
+1.  **[キー コンテナーの作成]** ブレードの **[アクセス ポリシー]** タブで、 **[アクセス ポリシー]** セクションの **[+ 作成]** をクリックして、新しいポリシーを設定します。
 
-    > **注**:許可されたアプリケーションとユーザーのみを許可することにより、Key Vault のアクセスを保護する必要があります。 ボールトからデータにアクセスするには、パイプラインでの認証に使用するサービス プリンシパルに読み取り (取得) アクセス許可を提供する必要があります。
+    > **注**:許可されたアプリケーションとユーザーのみを許可することにより、Key Vault のアクセスを保護する必要があります。 コンテナーからデータにアクセスするには、パイプラインでの認証に使用する以前に作成したサービス プリンシパルに、読み取り (取得/一覧表示) アクセス許可を付与する必要があります。 
 
-1. **[アクセスポリシーの作成]** ブレードで、 **[プリンシパルの選択]** ラベルのすぐ下にある **[選択されていない]** リンクをクリックします。
-1. **プリンシパル** ブレードで、前の演習で作成したセキュリティ プリンシパルを検索して選択し、 **[選択]** をクリックします。
+    1. **[アクセス許可]** ブレードで、 **[シークレットのアクセス許可]** の下にある **[取得]** と **[一覧表示]** のアクセス許可をオンにします。 **[次へ]** をクリックします。
+    1. **[プリンシパル]** ブレードで、指定した Id または Name を使って、**以前に作成したサービス プリンシパル**を検索します。 **[次へ]** をクリックし、もう一度 **[次へ]** をクリックします。
+    1. **[確認と作成]** ブレードで、 **[作成]** をクリックします
 
-    > **注**:プリンシパルの名前または ID で検索できます。
-
-1. **[アクセス ポリシーの作成]** ブレードに戻り、 **[シークレット アクセス許可]** ドロップダウン リストで、 **[取得]** および **[リスト]** アクセス許可の横にあるチェックボックスを選択し、 **[追加]** をクリックします。
-1. **[Key Vault の作成]** ブレードの **[アクセス ポリシー]** タブに戻り、 **[レビュー+作成]** をクリックし、 **[レビュー+作成]** ブレードで **[作成]** をクリックします。
+1. **[キー コンテナーの作成]** ブレードに戻り、 **[確認と作成] > [作成]** をクリックします
 
     > **注**:Azure Key Vault がプロビジョニングされるのを待ちます。 これにかかる時間は 1 分未満です。
 
-1. **[デプロイが完了しました]** ブレードで、 **[リソースに移動]** をクリックします。
-1. Azure Key Vault ブレードのブレードの左側にある垂直メニューの **[オブジェクト]** セクションで、 **[シークレット]** をクリックします。
-1. **[シークレット]** ブレードで、 **[生成/インポート]** をクリックします。
-1. **[シークレット ブレードの作成]** で、次の設定を指定し、 **[作成]** をクリックします (他の設定はデフォルト値のままにします)。
+1.  **[デプロイが完了しました]** ブレードで、 **[リソースに移動]** をクリックします。
+1.  Azure Key Vault ブレードで、ブレードの左側にある垂直メニューの **[オブジェクト]** セクションから、 **[シークレット]** をクリックします。
+1.  **[シークレット]** ブレードで、 **[生成/インポート]** をクリックします。
+1.  **[シークレットの作成]** ブレードで、次の設定を指定し、 **[作成]** をクリックします (他の設定は既定値のままにします)。
 
     | 設定 | 値 |
     | --- | --- |
-    | Upload options | **手動** |
-    | Name | **sqldbpassword** |
-    | 値 | 任意の有効な MySQL のパスワード値 |
+    | Upload options | **[手動]** |
+    | 名前 | **acr-secret** |
+    | 値 | 前のタスクでコピーした ACR アクセス パスワード |
 
-#### <a name="task-3-check-the-azure-pipeline"></a>タスク 3:Azure Pipelines を確認する
 
-このタスクでは、Azure Key Vault からシークレットを取得するように Azure Pipelines を構成します。
+#### <a name="task-3-create-a-variable-group-connected-to-azure-key-vault"></a>タスク 3: Azure Key Vault に接続された変数グループを作成する
 
-1. ラボ コンピューターで、Web ブラウザーを起動し、前の演習で作成した **Azure KeyVault と Azure DevOps の統合**プロジェクトに移動します。
-1. Azure DevOps ポータルの垂直ナビゲーション ペインで、 **[パイプライン]** を選択し、 **[パイプライン]** ペインが表示されていることを確認します。
-1. **[パイプライン]** ペインで、**SmartHotel-CouponManagement-CI** パイプラインを表すエントリをクリックします。 **[Edit](編集)** をクリックします。
-2. パイプラインの定義で、 **[パイプライン]**  >  **[エージェントの指定]** が **ubuntu 18.04** であることを確認します。 **[保存してキューに登録]**  >  **[キュー]**  >  **[実行]** をクリックして、ビルドをトリガーします。
-3. Azure DevOps ポータルの垂直ナビゲーション ペインの **[パイプライン]** セクションで、 **[リリース]** を選択します。
-4. **SmartHotel-CouponManagement-CD** ペインで、右上隅にある **[編集]** をクリックします。
-5. **[すべてのパイプライン] > [SmartHotel-CouponManagement-CD]** ペインで、 **[タスク]** タブを選択し、ドロップダウン メニューで **[開発]** を選択します。
+このタスクでは、Azure DevOps に変数グループを作成します。それは、サービス接続 (サービス プリンシパル) を使って、Key Vault から ACR パスワード シークレットを取得します
 
-    > **注**:**開発**ステージのリリース定義には、**Azure Key Vault** タスクがあります。 このタスクは、Azure KeyVault から*シークレット*をダウンロードします。 ラボで以前に作成したサブスクリプションと Azure Key Vault リソースを指定する必要があります。
+1. ラボ コンピューターで Web ブラウザーを起動し、Azure DevOps プロジェクト **eShopOnWeb** に移動します。
 
-    > **注**:Azure にデプロイするには、パイプラインを承認する必要があります。 Azure Pipelines は、新しいサービス プリンシパルとのサービス接続を自動的に作成できます。**ただし、ここでは以前に作成したものを使います**。これは、シークレットの読み取りが認可されているからです。
+1.  Azure DevOps ポータルの垂直ナビゲーション ウィンドウで、 **[パイプライン] > [ライブラリ]** を選択します。 **[+ 変数グループ]** をクリックします。
 
-1. **[エージェントで実行]** を選び、 **[エージェント プール]** フィールドを **[Azure Pipelines]** に、[エージェントの指定] を **ubuntu 20.04** を変更します。
-1. **Azure Key Vault** タスクを選択し、右側の **Azure Key Vault** タスクのプロパティで、**Azure サブスクリプション** ラベルの横にある **[管理]** をクリックします。
-これにより、Azure DevOps ポータルの **[サービス接続]** ペインを表示する別のブラウザー タブが開きます。
-1. **[サービス接続]** ペインで、 **[新しいサービス接続]** をクリックします。
-1. **[新しいサービス接続]** ウィンドウで、 **[Azure Resource Manager]** オプションを選択し、 **[次へ]** をクリックして、 **[サービス プリンシパル (手動)]** を選択し、もう一度 **[次へ]** をクリックします。
-1. **[新しいサービス接続]** ペインで、Azure CLI を使用してサービス プリンシパルを作成した後、この演習の最初のタスクでテキスト ファイルにコピーした情報を使用して、次の設定を指定します。
+1. **[新しい変数グループ]** ブレードで、次の設定を指定します。
 
-    - サブスクリプション ID: `az account show --query id --output tsv` を実行して取得した値
-    - サブスクリプション名: `az account show --query name --output tsv` を実行して取得した値
-    - サービス プリンシパル ID: `az ad sp create-for-rbac` を実行して生成された出力の **appId** というラベルの付いた値。
-    - サービス プリンシパル キー: `az ad sp create-for-rbac` を実行して生成された出力の **password** というラベルの付いた値。
-    - TenantId: `az ad sp create-for-rbac` を実行して生成された出力の **tenant** というラベルの付いた値。
+    | 設定 | 値 |
+    | --- | --- |
+    | 変数グループ名 | **eshopweb-vg** |
+    | シークレットを Azure KV からリンクする ... | **enable** |
+    | Azure サブスクリプション | **[利用可能な Azure サービス接続] > [Azure subs]** |
+    | キー コンテナー名 | キー コンテナー名|
 
-1. **[新しいサービスの接続]** ペインで、 **[確認]** をクリックして、指定した情報が有効かどうかを確認します。
-1. **[検証に成功しました]** という応答を受け取ったら、**[サービス接続名]** テキストボックスに「**kv-service-connection**」と入力し、**[検証して保存]** をクリックします。
-1. パイプラインの定義と **Azure Key Vault** タスクを表示している Web ブラウザー タブに戻ります。
-1. **Azure Key Vault** タスクを選択した状態で、**[Azure Key Vault]** ペインの **[更新]** ボタンをクリックし、**[Azure サブスクリプション]** ドロップダウン リストで **kv-service-connection** エントリを選択し、**[Key Vault]** ドロップダウン リストで、最初のタスクで作成した Azure Key Vault を表すエントリを選択し、**[シークレット フィルター]** テキストボックスに「**sqldbpassword**」と入力します。 最後に、**[出力変数]** セクションを展開し、**[参照名]** テキストボックスに「**sqldbpassword**」と入力します。
+1. **[変数]** の下の **[+ 追加]** をクリックし、**acr-secret** シークレットを選択します。 **[OK]** をクリックします。
+1. **[Save]** をクリックします。
 
-    > **注**:実行時に、Azure Pipelines はシークレットの最新の値をフェッチし、それをタスク変数 **$(sqldbpassword)** として設定します。 タスクは、その変数を参照することにより、後続のタスクによって消費される可能性があります。  
+    ![変数グループの作成](images/vg-create.png)
 
-1. これを確認するには、次のタスクである **Azure Deployment** を選択します。このタスクは、ARM テンプレートをデプロイし、 **[テンプレート パラメーターのオーバーライド]** テキスト ボックスの内容を確認します。
+#### <a name="task-4-setup-cd-pipeline-to-deploy-container-in-azure-container-instanceaci"></a>タスク 4: CD パイプラインをセットアップして Azure Container Instance (ACI) にコンテナーをデプロイする
 
-    ```
-    -webAppName $(webappName) -mySQLAdminLoginName "azureuser" -mySQLAdminLoginPassword $(sqldbpassword)
-    ```
+このタスクでは、CD パイプラインをインポートし、カスタマイズして、前に作成したコンテナー イメージを Azure Container Instance にデプロイするために実行します。
 
-    > **注**:**テンプレート パラメーターのオーバーライド**のコンテンツは、**sqldbpassword** 変数を参照して mySQL 管理者パスワードを設定します。 これにより、キーボールトで指定したパスワードを使用して、ARM テンプレートで定義された MySQL データベースがプロビジョニングされます。
+1. ラボ コンピューターから Web ブラウザーを起動し、Azure DevOps **eShopOnWeb** プロジェクトに移動します。 **[パイプライン] > [パイプライン]** に移動し、 **[新しいパイプライン]** をクリックします。
 
-1. パイプライン定義を完了するには、サブスクリプション (プロジェクトで新しいサブスクリプションを使用する場合は、 **[承認]** をクリックします) とタスクの場所を指定します。 パイプライン **Azure App Service Deploy** の最後のタスクについても同じことを**繰り返します** (ドロップダウンの **[利用可能な Azure サービス接続]** セクションからサブスクリプションを選択します)。
+1.  **[コードはどこにありますか?]** ウィンドウで、 **[Azure Repos Git (YAML)]** を選択し、**eShopOnWeb** リポジトリを選択します。
 
-    > **注**:[Azure サブスクリプション] ドロップダウン リストに、Azure への接続が既に承認されているサブスクリプションで**使用可能な Azure サービス接続**が表示されます。 (**使用可能な Azure サブスクリプション** リストから) 承認済みサブスクリプションを再度選択して**承認**しようとすると、プロセスは失敗します。
+1.  **[構成]** セクションで、 **[既存の Azure Pipelines YAML ファイル]** を選択します。 次のパス **/.ado/eshoponweb-cd-aci.yml** を指定し、 **[続行]** をクリックします。
 
-1. **[変数]** タブの **resourcegroup** 変数をプレーンテキストに変更し (ロックをクリックします)、値フィールドに **az400m07l01-RG** と入力します。
-1. 最後に **[保存]** して **[新しいリリースの作成]**  >  **[作成]** をクリックし (既定のままにします)、デプロイを始めます。
+1. YAML パイプライン定義で、次をカスタマイズします。
 
-1. パイプラインが正常に実行されていることを確認し、終了したら、Azure portal でリソース グループ **az400m07l01-RG** を開いて、作成されたリソースを確認します。 **App Service** を開いて参照し **([概要] -> [参照])** 、公開された Web サイトを表示します。
+    - **YOUR-SUBSCRIPTION-ID** を使用する Azure サブスクリプション ID にします。
+    - **az400eshop-NAME** の NAME を置き換えて、グローバルに一意にします。
+    - **YOUR-ACR.azurecr.io** と **ACR-USERNAME** を使用する ACR ログイン サーバーにします (どちらも ACR 名が必要です。[ACR] > [アクセス キー] で確認できます)。
+    - **AZ400-EWebShop-NAME** をラボで前に定義したリソース グループ名にします。
+
+1. **[保存および実行]** をクリックし、パイプラインが正常に実行されるまで待ちます。
+
+    > **注**: デプロイが完了するまでに数分かかる場合があります。 CD の定義は以下のタスクで構成されます。
+    - **リソース** : CI パイプラインの完了に基づいて自動的にトリガーされるように準備されています。 また、bicep ファイルのリポジトリもダウンロードします。
+    - **変数 (デプロイ ステージ用)** は変数グループに接続して、Azure Key Vault シークレット **acr-secret** を使用します
+    - **AzureResourceManagerTemplateDeployment** は、bicep テンプレートを使用して Azure Container Instance (ACI) をデプロイし、ACR ログイン パラメーターを指定して、ACI が以前に作成したコンテナー イメージを Azure Container Registry (ACR) からダウンロードできるようにします。
+
+1. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、作成したばかりのパイプラインをクリックします。 省略記号と **[名前の変更]/[削除]** オプションをクリックします。 **eshoponweb-cd-aci** という名前を付け、 **[保存]** をクリックします。
 
 ### <a name="exercise-2-remove-the-azure-lab-resources"></a>演習 2:Azure ラボ リソースを削除する
 
@@ -212,26 +260,13 @@ Azure Pipelines からAzure リソースにアプリをデプロイするには�
 
 このタスクでは、Azure Cloud Shell を使用して、このラボでプロビジョニングされた Azure リソースを削除し、不要な料金を排除します。
 
-1. Azure portal で、**Cloud Shell** ウィンドウ内で **Bash** シェル セッションを開きます。
-1. 次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
-
-    ```sh
-    az group list --query "[?starts_with(name,'az400m07l01-RG')].name" --output tsv
-    ```
-
-1. 次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
-
-    ```sh
-    az group list --query "[?starts_with(name,'az400m07l01-RG')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-    ```
-
-    >**注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。
+1.  Azure portal で、作成したリソース グループを開き、 **[リソース グループの削除]** をクリックします。
 
 ## <a name="review"></a>確認
 
-このラボでは、次の手順を使用して、Azure Key Vault を Azure Pipeline と統合しました。
+このラボでは、次の手順を使用して、Azure KeyVault を Azure DevOps パイプラインと統合しました。
 
-- MySQL サーバーのパスワードをシークレットとして格納する Azure Key Vault を作成しました。
-- Azure Key Vault 内のシークレットへのアクセスを提供する Azure サービス プリンシパルを作成しました。
-- サービス プリンシパルがシークレットを読み取れるようにアクセス許可を構成しました。
-- Azure Key Vault からパスワードを取得し、それを後続のタスクに渡すようにパイプラインを構成しました。
+
+- Azure サービス プリンシパルを作成して Azure Key Vault 内のシークレットへのアクセスを提供し、Azure DevOps から Azure へのデプロイを認証しました。
+- Git リポジトリからインポートした 2 つの YAML パイプラインを実行しました。
+- ADO 変数グループを使って Azure Key Vault からパスワードを取得し、それを後続のタスクで使用するようにパイプラインを構成しました。

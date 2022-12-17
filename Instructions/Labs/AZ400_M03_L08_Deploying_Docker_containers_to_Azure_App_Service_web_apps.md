@@ -1,22 +1,22 @@
 ---
 lab:
-  title: 'ラボ 08: Docker コンテナーを Azure App Service Web アプリにデプロイする'
-  module: 'Module 03: Create and manage containers using Docker and Kubernetes'
+  title: Docker コンテナーを Azure App Service Web アプリにデプロイする
+  module: 'Module 03: Implement CI with Azure Pipelines and GitHub Actions'
 ---
 
-# <a name="lab-08-deploying-docker-containers-to-azure-app-service-web-apps"></a>ラボ 08: Docker コンテナーを Azure App Service Web アプリにデプロイする
+# <a name="deploying-docker-containers-to-azure-app-service-web-apps"></a>Docker コンテナーを Azure App Service Web アプリにデプロイする
 
 # <a name="student-lab-manual"></a>受講生用ラボ マニュアル
 
 ## <a name="lab-requirements"></a>ラボの要件
 
-- このラボには、**Microsoft Edge** または [Azure DevOps 対応ブラウザー](https://docs.microsoft.com/en-us/azure/devops/server/compatibility?view=azure-devops#web-portal-supported-browsers)が必要です。
+- このラボには、**Microsoft Edge** または [Azure DevOps 対応ブラウザー](https://learn.microsoft.com/azure/devops/server/compatibility?view=azure-devops#web-portal-supported-browsers)が必要です。
 
-- **Azure DevOps 組織を設定する:** このラボで使用できる Azure DevOps 組織がまだない場合は、[組織またはプロジェクト コレクションの作成](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization?view=azure-devops)に関するページの手順に従って作成してください。
+- **Azure DevOps 組織を設定する:** このラボで使用できる Azure DevOps 組織がまだない場合は、[組織またはプロジェクト コレクションの作成](https://learn.microsoft.com/azure/devops/organizations/accounts/create-organization?view=azure-devops)に関するページの手順に従って作成してください。
 
 - 既存の Azure サブスクリプションを識別するか、新しいものを作成します。
 
-- Azure サブスクリプションで共同作成者または所有者のロールを持つ Microsoft アカウントまたは Azure AD アカウントを持っていることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://docs.microsoft.com/en-us/azure/active-directory/roles/manage-roles-portal#view-my-roles)を参照してください。
+- Azure サブスクリプションで共同作成者または所有者のロールを持つ Microsoft アカウントまたは Azure AD アカウントを持っていることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://learn.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://learn.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
 
 ## <a name="lab-overview"></a>ラボの概要
 
@@ -26,217 +26,212 @@ lab:
 
 このラボを完了すると、次のことができるようになります。
 
-- Microsoft がホストする Linux エージェントを使用して、カスタム Docker イメージを構築する。
+- Microsoft がホストする Linux エージェントを使用して、カスタム Docker イメージを構築する
 - Azure Container Registry にイメージをプッシュする
 - Azure DevOps を使用して、Docker イメージをコンテナーとして Azure App Service にデプロイする
 
-## <a name="estimated-timing-60-minutes"></a>推定時間:60 分
+## <a name="estimated-timing-30-minutes"></a>推定時間:30 分
 
 ## <a name="instructions"></a>Instructions
 
-### <a name="exercise-1-configure-the-lab-prerequisites"></a>演習 1:ラボの前提条件の構成
+### <a name="exercise-0-configure-the-lab-prerequisites"></a>演習 0:ラボの前提条件の構成
 
-この演習では、ラボの前提条件を設定します。これは、Azure DevOps Demo Generator テンプレートと Azure リソース (Azure App Service Web アプリ、Azure Container Registry インスタンス、Azure SQL データベースなど) に基づくチーム プロジェクトで構成されています。
+この演習では、ラボの前提条件を設定します。これは、[eShopOnWeb](https://github.com/MicrosoftLearning/eShopOnWeb) に基づくリポジトリを含む新しい Azure DevOps プロジェクトで構成されます。
 
-#### <a name="task-1-configure-the-team-project"></a>タスク 1:チーム プロジェクトを構成する
+#### <a name="task-1-skip-if-done-create-and-configure-the-team-project"></a>タスク 1: (完了している場合はスキップしてください) チーム プロジェクトを作成して構成する
 
-このタスクでは、Azure DevOps Demo Generator を使用して、Docker テンプレートに基づいて新しいプロジェクトを生成します。
+このタスクでは、複数のラボで使用される **eShopOnWeb** Azure DevOps プロジェクトを作成します。
 
-> **注**:Docker テンプレートベースのプロジェクトは、コンテナー化された ASP.NET Core アプリをビルドして Azure App Service にデプロイします
+1.  ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織を開きます。 **[新しいプロジェクト]** をクリックします。 プロジェクトに **eShopOnWeb** という名前を付け、 **[作業項目プロセス]** ドロップダウンで **[スクラム]** を選びます。 **[作成]** をクリックします。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[Azure DevOps Demo Generator](https://azuredevopsdemogenerator.azurewebsites.net) に移動します。 このユーティリティ サイトは、ラボで必要なコンテンツ (作業項目、リポジトリなど) が事前設定されている新しい Azure DevOps プロジェクトをアカウント内で作成するプロセスを自動化します。
+#### <a name="task-2-skip-if-done-import-eshoponweb-git-repository"></a>タスク 2: (完了している場合はスキップしてください) eShopOnWeb Git リポジトリをインポートする
 
-    > **注**:サイトの詳細については、[https://docs.microsoft.com/en-us/azure/devops/demo-gen](https://docs.microsoft.com/en-us/azure/devops/demo-gen) を参照してください。
+このタスクでは、複数のラボで使用される eShopOnWeb Git リポジトリをインポートします。
 
-1. **[サインイン]** をクリックし、Azure DevOps サブスクリプションに関連のある Microsoft アカウントを使用してサインインします。
-1. 必要な場合は、**[Azure DevOps Demo Generator]** ページで **[承諾する]** をクリックし、Azure DevOps サブスクリプションへのアクセス許可要求を承諾します。
-1. **[新しいプロジェクトの作成]** ページの **[新しいプロジェクト名]** テキストボックスに「**Docker コンテナーを Azure App Service Web アプリにデプロイする**」と入力し、**[組織の選択]** ドロップダウン リストで、Azure DevOps 組織を選択して、**[テンプレートの選択]** をクリックします。
-1. テンプレートのリストのツールバーで、**[DevOps ラボ]** をクリックし、**[DevOps ラボ]** ヘッダーを選択し、**[Docker]** テンプレートをクリックして、**[テンプレートの選択]** をクリックします。
-1. 再び **[新しいプロジェクトの作成]** ページで、欠落している拡張機能をインストールするよう指示されたら **[Docker Integration]** ラベルの下にあるチェックボックスを選択し、**[プロジェクトの作成]** をクリックします。
+1.  ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、以前に作成した **eShopOnWeb** プロジェクトを開きます。 **[リポジトリ] > [ファイル]** 、 **[インポート]** をクリックします。 **[Git リポジトリをインポートする]** ウィンドウで、URL https://github.com/MicrosoftLearning/eShopOnWeb.git を貼り付けて、 **[インポート]** をクリックします。 
 
-    > **注**:プロセスが完了するまでお待ちください。 これには 2 分ほどかかります。 プロセスが失敗した場合は、DevOps 組織に移動し、プロジェクトを削除して、再試行してください。
+1.  リポジトリは次のように編成されています。
+    - **.ado** フォルダーには Azure DevOps YAML パイプラインが含まれています
+    - **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)
+    - **.azure** フォルダーには、一部のラボ シナリオで使用される Bicep&ARM コードとしてのインフラストラクチャ テンプレートが含まれています。
+    - **.github** フォルダーには YAML GitHub ワークフロー定義が含まれています。
+    - **src** フォルダーには、ラボ シナリオで使用される .NET 6 Web サイトが含まれています。
 
-1. 「**新しいプロジェクトの作成**」ページで「**プロジェクトに移動**」をクリックします。
+#### <a name="task-3-skip-if-done-set-main-branch-as-default-branch"></a>タスク 3: (完了している場合はスキップしてください) メイン ブランチを既定のブランチとして設定する
 
-#### <a name="task-2-create-azure-resources"></a>タスク 2: Azure リソースを作成する
+1. **[リポジトリ] > [ブランチ]** に移動します
+1. **メイン** ブランチにカーソルを合わせ、列の右側にある省略記号をクリックします
+1. **[既定のブランチとして設定]** をクリックします
 
-このタスクでは、Azure Cloud Shell を使用して、このラボで必要な Azure リソースを作成します。
+### <a name="exercise-1-manage-the-service-connection"></a>演習 1: サービス接続を管理する
 
-- Azure Container Registry
-- Azure Web App for Containers
-- Azure SQL データベース
+この演習では、Azure サブスクリプションとのサービス接続を構成し、CI パイプラインをインポートして実行します。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで、所有者のロールがあり、このサブスクリプションに関連付けられている Azure AD テナントでグローバル管理者のロールがあるユーザー アカウントを使ってサインインします。
-1. Azure portal を表示している Web ブラウザーのツールバーで、検索テキスト ボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
-1. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
+#### <a name="task-1-skip-if-done-manage-the-service-connection"></a>タスク 1: (完了している場合はスキップしてください) サービス接続を管理する
 
-    >**注**: **Cloud Shell** を初めて起動し、**[ストレージがマウントされていません]** というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。
+Azure Pipelines から外部およびリモート サービスへの接続を作成し、ジョブのタスクを実行できます。
 
-1. Cloud Shell ペインの **Bash** セッションから、以下を実行して、このラボでリソースをデプロイする Azure リージョンを表す変数を作成します。これらのリソースを含むリソース グループ、これらのリソースの名前 (Azure Container Registry インスタンス、Azure App Service プラン名、Azure Web アプリ名、Azure SQL Database 論理サーバー名、Azure SQL データベース名など)。
+このタスクでは、Azure CLI を使ってサービス プリンシパルを作成します。これにより、Azure DevOps で次のことができるようになります。
+- Azure サブスクリプションでリソースをデプロイする
+- Docker イメージを Azure Container Registry にプッシュする
+- ロールの割り当てを追加して、Azure App Service が Azure Container Registry から Docker イメージをプルできるようにする
 
-1. Cloud Shell ペインの Bash セッションから、以下を実行して、このラボでデプロイする Azure リソースをホストするリソースグループを作成します (`<Azure_region>` プレースホルダーを、これらのリソースをデプロイする予定の 'eastus' などの Azure リージョンの名前に置き換えます)。
+> **注**:サービス プリンシパルが既にある場合は、次のタスクに直接進むことができます。
 
-    ```bash
-    LOCATION='<Azure_region>'
+Azure Pipelines から Azure リソースをデプロイするには、サービス プリンシパルが必要です。
+
+サービス プリンシパルは、パイプライン定義内から Azure サブスクリプションに接続するとき、またはプロジェクト設定ページから新しいサービス接続を作成するときに (自動オプション)、Azure パイプラインによって自動的に作成されます。 ポータルから、または Azure CLI を使用してサービス プリンシパルを手動で作成し、プロジェクト間で再利用することもできます。 
+
+1.  ラボのコンピューターで Web ブラウザーを起動し、[**Azure Portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで所有者ロールがあり、このサブスクリプションに関連のある Azure AD テナントでグローバル管理者ロールがあるユーザー アカウントを使ってサインインします。
+1.  Azure portal で、ページ上部の検索テキストボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。 
+1.  **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。 
+
+   >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。 
+
+1.  **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行して、Azure サブスクリプション ID の属性の値を取得します。 
+
+    ```
+    subscriptionName=$(az account show --query name --output tsv)
+    subscriptionId=$(az account show --query id --output tsv)
+    echo $subscriptionName
+    echo $subscriptionId
     ```
 
-    >**注**:`az account list-locations -o table` を実行すると、Azure リージョンの名前を識別することができます。
+    > **注**:両方の値をテキスト ファイルにコピーします。 これらは、このラボの後半で必要になります。
 
-1. 次のコマンドを実行して、Azure Container Registry インスタンス、Azure App Servic eプラン名、Azure Web アプリ名、Azure SQL データベース論理サーバー名、Azure SQL Database 名などの Azure リソースの名前を表す変数を作成します。
+1.  **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行してサービス プリンシパルを作成します。
 
-    ```bash
-    RG_NAME='az400m1501a-RG'
-    ACR_NAME=az400m151acr$RANDOM$RANDOM
-    APP_SVC_PLAN='az400m1501a-app-svc-plan'
-    WEB_APP_NAME=az400m151web$RANDOM$RANDOM
-    SQLDB_SRV_NAME=az400m15sqlsrv$RANDOM$RANDOM
-    SQLDB_NAME='az400m15sqldb'
+    ```
+    az ad sp create-for-rbac --name sp-az400-azdo --role contributor --scopes /subscriptions/$subscriptionId
     ```
 
-    >**注**:`az account list-locations -o table` を実行すると、Azure リージョンの名前を識別することができます。
+    > **注**:このコマンドは JSON 出力を生成します。 出力をテキスト ファイルにコピーします。 このラボで後ほど必要になります。
 
-1. 以下を実行して、このラボに必要なすべてのリソースに必要な Azure リソースを作成します。
+1. 次に、ラボ コンピューターから Web ブラウザーを起動し、Azure DevOps **eShopOnWeb** プロジェクトに移動します。 **[プロジェクトの設定] > [サービス接続] ([パイプライン] の下)** 、 **[新しいサービス接続]** の順にクリックします。
 
-    ```bash
-    az group create --name $RG_NAME --location $LOCATION
-    az acr create --name $ACR_NAME --resource-group $RG_NAME --location $LOCATION --sku Standard --admin-enabled true
-    az appservice plan create --name 'az400m1501a-app-svc-plan' --location $LOCATION --resource-group $RG_NAME --is-linux
-    az webapp create --name $WEB_APP_NAME --resource-group $RG_NAME --plan $APP_SVC_PLAN --deployment-container-image-name elnably/dockerimagetest
-    IMAGE_NAME=myhealth.web
-    az webapp config container set --name $WEB_APP_NAME --resource-group $RG_NAME --docker-custom-image-name $IMAGE_NAME --docker-registry-server-url $ACR_NAME.azurecr.io/$IMAGE_NAME:latest --docker-registry-server-url https://$ACR_NAME.azurecr.io
-    az sql server create --name $SQLDB_SRV_NAME --resource-group $RG_NAME --location $LOCATION --admin-user sqladmin --admin-password Pa55w.rd1234
-    az sql db create --name $SQLDB_NAME --resource-group $RG_NAME --server $SQLDB_SRV_NAME --service-objective S0 --no-wait 
-    az sql server firewall-rule create --name AllowAllAzure --resource-group $RG_NAME --server $SQLDB_SRV_NAME --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
+1. **[新しいサービス接続]** ブレードで、 **[Azure Resource Manager]** と **[次へ]** を選択します (下にスクロールする必要がある場合があります)。
+
+1. **[サービス プリンシパル (手動)]** を選択し、 **[次へ]** をクリックします。
+
+1. 前の手順で収集した情報を使って、空のフィールドに入力します。
+    - サブスクリプション ID と名前
+    - サービス プリンシパル ID (または clientId)、Key (または Password)、TenantId。
+    - **[サービス接続名]** に「**azure-connection**」と入力します。 この名前は、Azure サブスクリプションと通信するために Azure DevOps サービス接続が必要になるときに、YAML パイプラインで参照されます。
+
+1. **[確認して保存]** をクリックします。
+
+### <a name="exercise-2-import-and-run-the-ci-pipeline"></a>演習 2: CI パイプラインをインポートして実行する
+
+この演習では、CI パイプラインをインポートして実行します。
+
+#### <a name="task-1-import-and-run-the-ci-pipeline"></a>タスク 1: CI パイプラインをインポートして実行する
+
+1. **[パイプライン] > [パイプライン]** に移動します
+
+1. **[新しいパイプライン]** ボタンをクリックします
+
+1. **[Azure Repos Git (Yaml)]** を選択します
+
+1. **eShopOnWeb** リポジトリを選択します
+
+1. **[既存の Azure Pipelines の YAML ファイル]** を選択します
+
+1. **/.ado/eshoponweb-ci-docker.yml** ファイルを選択し、 **[続行]** をクリックします
+
+1. YAML パイプライン定義で、次をカスタマイズします。
+- **YOUR-SUBSCRIPTION-ID** を使用する Azure サブスクリプション ID にします。
+- **rg-az400-container-NAME** をラボで前に定義したリソース グループ名にします。
+
+1. **[保存および実行]** をクリックし、パイプラインが正常に実行されるまで待ちます。
+
+    > **注**: デプロイが完了するまでに数分かかる場合があります。
+
+    CI の定義は以下のタスクで構成されます。
+    - **Resources**: 以下のタスクで使用されるリポジトリ ファイルをダウンロードします。
+    - **AzureResourceManagerTemplateDeployment**: bicep テンプレートを使用して Azure Container Registry をデプロイします。
+    - **PowerShell**: 前のタスクの出力から **ACR ログイン サーバー**の値を取得し、新しいパラメーター **acrLoginServer** を作成します
+    - [**Docker**](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/docker-v0?view=azure-pipelines) **- Build**: Docker イメージをビルドし、2 つのタグを作成します (Latest と現在の BuildID)
+    - **Docker - Push**: Azure Container Registry にイメージをプッシュします
+
+1. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、作成したばかりのパイプラインをクリックします。 省略記号と **[名前の変更]/[削除]** オプションをクリックします。 **eshoponweb-ci-docker** という名前を付け、 **[保存]** をクリックします。
+
+1. [**Azure Portal**](https://portal.azure.com) に移動し、最近作成したリソース グループから Azure Container Registry を検索します (**rg-az400-container-NAME** という名前であるはずです)。 **eshoponweb/web** が作成され、2 つのタグ (そのうちの 1 つは **Latest**) が含まれていることを確認します。
+
+### <a name="exercise-3-import-and-run-the-cd-pipeline"></a>演習 3: CD パイプラインをインポートして実行する
+
+この演習では、Azure サブスクリプションとのサービス接続を構成した後、CD パイプラインをインポートして実行します。
+
+#### <a name="task-1-add-a-new-role-assignment"></a>タスク 1: 新しいロールの割り当てを追加する
+
+このタスクでは、新しいロールの割り当てを追加して、Azure App Service が Azure Container Registry から Docker イメージをプルできるようにします。
+
+1. [**Azure Portal**](https://portal.azure.com) に移動します。
+1. Azure portal で、ページ上部の検索テキストボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。 
+1. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。 
+
+1. **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行して、Azure サブスクリプション ID の属性の値を取得します。 
+
+    ```sh
+    spId=$(az ad sp list --display-name sp-az400-azdo --query "[].id" --output tsv)
+    echo $spId
+    roleName=$(az role definition list --name "User Access Administrator" --query [0].name --output tsv)
+    echo $roleName
     ```
 
-    >**注**:プロビジョニング プロセスが完了するまで待ちます。 これには 5 分ほどかかる場合があります。
+1. サービス プリンシパル ID とロール名を取得したら、次のコマンドを実行してロールの割り当てを作成しましょう (**rg-az400-container-NAME** はリソース グループ名に置き換えてください)
 
-1. 以下を実行して、新しく作成された Azure Web アプリの接続文字列を構成します ($SQLDB_SRV_NAME および $SQLDB_NAME プレースホルダーをそれぞれ Azure SQL Database 論理サーバーとそのデータベース インスタンスの名前の値に置き換えます)。
-
-    ```bash
-    CONNECTION_STRING="Data Source=tcp:$SQLDB_SRV_NAME.database.windows.net,1433;Initial Catalog=$SQLDB_NAME;User Id=sqladmin;Password=Pa55w.rd1234;"
-    az webapp config connection-string set --name $WEB_APP_NAME --resource-group $RG_NAME --connection-string-type SQLAzure --settings defaultConnection="$CONNECTION_STRING"
+    ```sh
+    az role assignment create --assignee $spId --role $roleName --resource-group "rg-az400-container-NAME"
     ```
 
-1. Azure portal を表示している Web ブラウザーで、[Cloud Shell] ペインを閉じ、**[リソース グループ]** ブレードに移動し、**[リソース グループ]** ブレードで **az400m1501a-RG** エントリを選択します。
-1. **[az400m1501a-RG]** リソース グループ ブレードで、リソースのリストを確認します。
+これで、コマンド実行の成功を確認する JSON 出力が表示されるはずです。
 
-    >**注**:論理 Azure SQL Database サーバーの名前を記録します。 このラボで後ほど必要になります。
+#### <a name="task-2-import-and-run-the-cd-pipeline"></a>タスク 2: CD パイプラインをインポートして実行する
 
-1. **az400m1501a** リソース グループ ブレードのリソース リストで、コンテナー レジストリ インスタンスを表すエントリをクリックします。
-1. [コンテナー レジストリ] ブレードの左側の垂直メニューの **[設定]** セクションで、**[アクセス キー]** をクリックします。
-1. コンテナー レジストリ インスタンスの **[アクセス キー]** ブレードで、**レジストリ名**、**ログイン サーバー**、**管理者ユーザー**、および**パスワード** エントリの値を特定します。
+このタスクでは、CI パイプラインをインポートして実行します。
 
-    >**注**:**レジストリ名**と**ログイン サーバー**の値を記録します (レジストリ名と管理者ユーザー名は一致している必要があります)。 これらは、このラボの後半で必要になります。
+1. **[パイプライン] > [パイプライン]** に移動します
 
-### <a name="exercise-2-deploy-a-docker-container-to-azure-app-service-web-app-using-azure-devops"></a>演習 2:Azure DevOps を使用して、Docker コンテナーを Azure App Service Web アプリにデプロイする
+1. **[新しいパイプライン]** ボタンをクリックします
 
-この演習では、Azure DevOps を使用して、Docker コンテナーを Azure App Service Web アプリにデプロイします。
+1. **[Azure Repos Git (Yaml)]** を選択します
 
-#### <a name="task-1-configure-continuous-integration-ci-and-continuous-delivery-cd"></a>タスク 1:継続的インテグレーション (CI) と継続的デリバリー (CD) を構成する
+1. **eShopOnWeb** リポジトリを選択します
 
-このタスクでは、前の演習で生成した Azure DevOps プロジェクトを使用して、Docker コンテナーをビルドして Azure App Service Web アプリにデプロイする CI/CD パイプラインを実装します。
+1. **[既存の Azure Pipelines の YAML ファイル]** を選択します
 
-1. ラボのコンピューターで、**[Docker コンテナーを Azure App Service Web アプリにデプロイする]** プロジェクトを開いた状態で Azure DevOps ポータルを表示する Web ブラウザー ウィンドウに切り替え、Azure DevOps ポータルの左端にある垂直メニューバーで、**[リポジトリ]** をクリックします。
+1. **/.ado/eshoponweb-cd-webapp-docker.yml** ファイルを選択し、 **[続行]** をクリックします
 
-    >**注**:まず、Docker イメージへの参照を変更します。
+1. YAML パイプライン定義で、次をカスタマイズします。
+- **YOUR-SUBSCRIPTION-ID** を使用する Azure サブスクリプション ID にします。
+- **rg-az400-container-NAME** をラボで前に定義したリソース グループ名にします。
 
-1. **[Docker]** リポジトリ ペインのファイル リストで、**docker-compose.ci.build.yml** を選択します。
-1. **[docker-compose.ci.build.yml]** ペインで、 **[編集]** をクリックし、ターゲット Docker イメージを参照する **5** 行目を `image: az400mp/aspnetcore-build:1.0-2.0` に置き換え、 **[コミット]** を選択し、確認のダイアログが表示されたら、もう一度 **[コミット]** をクリックします。
-1. **[Docker]** リポジトリ ペインのファイルのリストで、**src/MyHealth.Web** フォルダーに移動し、 **[Dockerfile]** を選択します。
-1. **[Dockerfile]** ペインで、 **[編集]** をクリックし、ベース Docker イメージを参照する **1** 行目を `FROM az400mp/aspnetcore1.0:1.0.4` に置き換え、 **[コミット]** を選択し、確認のダイアログが表示されたら、もう一度 **[コミット]** をクリックします。
-1. **[Docker コンテナーを Azure App Service Web アプリにデプロイする]** プロジェクトを開いた状態で Azure DevOps ポータルを表示する Web ブラウザー ウィンドウで、Azure DevOps ポータルの左端にある垂直メニューバーで、**[パイプライン]** をクリックします。
+1. **[保存および実行]** をクリックし、パイプラインが正常に実行されるまで待ちます。
 
-    >**注**:次に、ビルド パイプラインを変更します。
+    > **注**: デプロイが完了するまでに数分かかる場合があります。
 
-1. **[パイプライン]** ペインで、**MHCDocker.build** パイプラインを示しているエントリをクリックし、**[MHCDocker.Build]** ペインで **[編集]** をクリックします。
+    CI の定義は以下のタスクで構成されます。
+    - **Resources**: 以下のタスクで使用されるリポジトリ ファイルをダウンロードします。
+    - **AzureResourceManagerTemplateDeployment**: bicep テンプレートを使用して Azure App Service をデプロイします。
+    - **AzureResourceManagerTemplateDeployment**: Bicep を使用してロールの割り当てを追加します
 
-    >**注**:ビルド パイプラインは以下のタスクで構成されます
+1. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、作成したばかりのパイプラインをクリックします。 省略記号と **[名前の変更]/[削除]** オプションをクリックします。 **eshoponweb-cd-webapp-docker** という名前を付け、 **[保存]** をクリックします。
 
-    | タスク | 使用 |
-    | ----- | ----- |
-    | **サービスの実行** | 必要なパッケージを復元してビルド環境を準備します |
-    | **サービスのビルド** | **myhealth.web** イメージを構築します |
-    | **サービスのプッシュ** | **$(Build.BuildId)** でタグ付けされ **myhealth.web** イメージをコンテナー レジストリにプッシュします |
-    | **成果物の公開** | Azure DevOps の成果物を介してデータベース デプロイ用の dacpac を共有できます |
+    > **注 1**: **/.azure/bicep/webapp-docker.bicep** テンプレートを使用すると、アプリ サービス プラン、システム割り当てマネージド ID が有効な Web アプリが作成され、前にプッシュされた Docker イメージ **${acr.properties.loginServer}/eshoponweb/web:latest** が参照されます。
 
-1. **[MHCDocker.build]** パイプライン ペインで、**[パイプライン]** エントリが選択されていることを確認し、**[エージェント仕様]** ドロップダウン リストで **[ubuntu-18.04]** を選択します。
-1. **[MHCDocker.build]** パイプライン ペインのパイプラインのタスクのリストで、**[サービスの実行]** タスクをクリックし、右側の **[Docker Compose]** ペインの **[Azure サブスクリプション]** ドロップダウン リストで、使用している Azure サブスクリプションを表すエントリを選択します。このラボで、**[承認]** をクリックして、対応するサービス接続を作成します。 指示されたら、Azure サブスクリプションで所有者のロール、Azure サブスクリプションに関連のある Azure AD テナントでグローバル管理者のロールがあるアカウントを使用してサインインします。
+    > **注 2**: **/.azure/bicep/webapp-to-acr-roleassignment.bicep** テンプレートを使用すると、Docker イメージを取得できるように、AcrPull ロールを使用して Web アプリの新しいロールの割り当てが作成されます。 これは最初のテンプレートで実行される可能性がありますが、ロールの割り当てが反映されるまでには時間がかかることがあるため、両方のタスクを個別に実行することをお勧めします。
 
-    >**注**:この手順では、Azure サービス接続が作成され、サービス プリンシパル認証 (SPA) を使用してターゲット Azure サブスクリプションへの接続が定義・確立されます。
+    > **注 3**: 
 
-1. **[サービスの実行]** タスクが選択されているパイプラインのタスク一覧で、右側の **[Docker Compose]** ペインにある **[Azure Container Registry]** ドロップダウン リストから、このラボで先ほど作成した ACR インタンスを示しているエントリを選択します (**必要に応じてリストを更新する**か、ログイン サーバーの名前を入力します)。
-1. 前の 2 つの手順を繰り返して、**ビルド サービス** タスクと**プッシュ サービス** タスクで **Azure サブスクリプション**と **Azure Container Registry** の設定を構成しますが、今回は、Azure サブスクリプションを選択する代わりに、新しく作成したサービス接続を選択します。
-1. 同じ **[MHCDocker.build]** パイプライン ペインのペインの上部で、**[保存してキューに登録]** ボタンの横にある下向きのキャレットをクリックし、**[保存]** をクリックして変更を保存し、もう一度プロンプトが表示されたら **[保存]** をクリックします。
+#### <a name="task-3-test-the-solution"></a>タスク 3: ソリューションをテストする
 
-    >**注**:次に、リリース パイプラインを変更します。
+1. Azure Portal で、最近作成したリソース グループに移動すると、3 つのリソース (Ap Service、App Service プラン、Container Registry) が表示されるはずです。
 
-1. Azure DevOps ポータルが表示されている Web ブラウザー ウィンドウで、Azure DevOps ポータルの一番左にある垂直メニュー バーの **[パイプライン]** セクションで **[リリース]** をクリックします。
-1. **[パイプライン/リリース]** ペインで、**MHCDocker.release** エントリが選択されていることを確認し、**[編集]** をクリックします。
-1. **[すべてのパイプライン/MHCDocker.Release]** ペインで、デプロイの **Dev** ステージを示す長方形の中にある **[2 ジョブ、2 タスク]** リンクをクリックします。
+1. App Service に移動し、 **[参照]** をクリックすると、Web サイトに移動します。
 
-    >**注**:リリース パイプラインは以下のタスクで構成されます
+お疲れさまでした。 この演習では、カスタム Docker イメージを使って Web サイトをデプロイしました。
 
-    | タスク | 使用 |
-    | ----- | ----- |
-    | **Azure SQL:DacpacTask の実行** | ターゲット スキーマとデータを含む dacpac 成果物を Azure SQL データベースにデプロイします |
-    | **Azure App Service のデプロイ** | ビルド段階で生成された Docker イメージを、指定されたコンテナー レジストリからプルし、そのイメージを Azure App Service Web アプリにデプロイします |
-
-1. パイプラインのタスクのリストで、 **[Azure SQL:DacpacTask の実行]** タスクをクリックし、右側の **[Azure SQL Database のデプロイ]** ペインの **[Azure サブスクリプション]** ドロップダウン リストで、このタスクの前半で作成した Azure サービス接続を示すエントリを選択します。
-1. パイプラインのタスクのリストで、**[Azure App Service デプロイ]** タスクをクリックし、右側の **[Azure App Service デプロイ]** ペインの **[Azure サブスクリプション]** ドロップダウン リストで、このタスクの前半で作成した Azure サービス接続を表すエントリを選択します。また、**[App Service 名]** ドロップダウンリストで、このラボの前半でデプロイした Azure App Service Web アプリを表すエントリを選択します。
-
-    >**注**:次に、デプロイに必要なエージェント プール情報を構成する必要があります。
-
-1. 右側の **[エージェント ジョブ]** ペインで **[DB デプロイ ジョブ]** を選択します。 **[エージェント プール]** ドロップダウン リストで **[Azure Pipelines]** を選択し、次に **[エージェント仕様]** ドロップダウン リストで **[windows-2019]** を選択します。
-1. 右側の **[エージェント ジョブ]** ペインで **[Web アプリ デプロイ]** ジョブを選択します。 **[エージェント プール]** ドロップダウン リストで **[Azure Pipelines]** を選択し、次に **[エージェント仕様]** ドロップダウン リストで **[ubuntu-18.04]** を選択します。
-1. ペインの上部にある **[変数]** ヘッダーをクリックします。
-1. パイプライン変数のリストで、次の変数の値を設定します。
-
-    | 変数 | 値 |
-    | -------- | ----- |
-    | ACR | このラボの前回の演習で記録した Azure Container Registry のログイン名 (**azurecr.io** サフィックスを含む) |
-    | DatabaseName | **az400m15sqldb** |
-    | パスワード | **Pa55w.rd1234** |
-    | SQLadmin | **sqladmin** |
-    | SQLServer | このラボの前回の演習で記録した Azure SQL Database 論理サーバー名 (**database.windows.net** サフィックスを含む) |
-
-1. ペインの右上隅にある **[保存]** ボタンをクリックして変更を保存し、再度プロンプトが表示されたら **[OK]** をクリックします。
-
-#### <a name="task-2-trigger-build-and-release-pipelines-by-using-code-commit"></a>タスク 2:コード コミットを使用して、ビルド パイプラインとリリース パイプラインをトリガーする
-
-この演習では、コード コミットを使用してビルド パイプラインとリリース パイプラインをトリガーします。
-
-1. Azure DevOps ポータルが表示されている Web ブラウザー ウィンドウで、Azure DevOps ポータルの一番左にある垂直メニュー バーの **[リポジトリ]** をクリックします。
-
-    >**注**: **[ファイル]** ペインが自動的に表示されます。
-
-1. **[ファイル]** ペインで、**src/MyHealth.Web/Views/Home** フォルダーに移動し、**Index.cshtml** ファイルを表すエントリをクリックしてから、**[編集]** をクリックして編集用に開きます。
-1. **[Index.cshtml]** ペインの **28** 行目で、**JOIN US** を **CONTACT US** に変更し、ペインの右上隅にある **[コミット]** をクリックし、確認を求められたら、もう一度 **[コミット]** をクリックします。
-
-    >**注**:このアクションにより、ソース コードの自動ビルドが開始されます。
-
-1. Azure DevOps ポータルが表示されている Web ブラウザー ウィンドウで、Azure DevOps ポータルの一番左にある垂直メニュー バーの **[パイプライン]** をクリックします。
-1. **[パイプライン]** ペインで、コミットによってトリガーされたパイプライン実行を表すエントリをクリックします。
-1. **[MHCDocker.build]** ペインで、パイプラインの実行を表すエントリをクリックします。
-1. パイプライン実行の **[概要]** タブの **[ジョブ]** セクションで、**Docker** エントリをクリックし、表示されるペインで、ジョブが正常に完了するまで個々のタスクの進行状況を監視します。
-
-    >**注**:ビルドは Docker イメージを生成し、それを Azure Container Registry にプッシュします。 ビルドが完了すると、その概要を確認できるようになります。
-
-1. Azure DevOps ポータルが表示されている Web ブラウザー ウィンドウで、Azure DevOps ポータルの一番左にある垂直メニュー バーの **[パイプライン]** セクションで **[リリース]** をクリックします。
-1. **[リリース]** ペインで、ビルドの成功によってトリガーされた最新のリリースを表すエントリをクリックします。
-1. **[MHCDocker.release > Release-1]** ペインで、**Dev** ステージを表す長方形を選択します。
-1. **[MHCDocker.release > Release-1 > Dev]** ペインで、正常に完了するまでリリース タスクの進行状況を監視します。
-
-    >**注**:このリリースでは、ビルド プロセスによって生成された Docker イメージがA pp Service Web アプリにデプロイされます。 リリースが完了すると、その概要とログを確認できます。
-
-1. リリース パイプラインが完了したら、[Azure portal](https://portal.azure.com) を表示している Web ブラウザー ウィンドウに切り替えて、このラボで以前にプロビジョニングした Azure App Service Web アプリのブレードに移動します。
-1. App Service Web アプリで、ターゲット Web アプリを表す **URL** リンク エントリをクリックします。
-
-    >**注**:これにより、ターゲット Web サイトを表示する新しい Web ブラウザー タブが自動的に開きます。
-
-1. CI/CD パイプラインをトリガーするために適用した変更を含め、ターゲット Web アプリに HealthClinic.biz Web サイトが表示されることを確認します。
-
-### <a name="exercise-3-remove-the-azure-lab-resources"></a>演習 3:Azure ラボ リソースを削除する
+### <a name="exercise-4-remove-the-azure-lab-resources"></a>演習 4:Azure ラボ リソースを削除する
 
 この演習では、このラボでプロビジョニングした Azure リソースを削除し、予期しない料金を排除します。
 
@@ -250,17 +245,17 @@ lab:
 1. 次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
 
     ```sh
-    az group list --query "[?starts_with(name,'az400m1501')].name" --output tsv
+    az group list --query "[?starts_with(name,'rg-az400-container-')].name" --output tsv
     ```
 
 1. 次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
 
     ```sh
-    az group list --query "[?starts_with(name,'az400m1501')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
+    az group list --query "[?starts_with(name,'rg-az400-container-')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
     ```
 
     >**注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。
 
 ## <a name="review"></a>確認
 
-このラボでは、Azure DevOps CI/CD パイプラインを使用してカスタム Docker イメージを構築し、それを Azure Container Registry にプッシュし、Azure DevOps を使用して Azure App Service にコンテナーとしてデプロイしました。
+このラボでは、Azure DevOps CI/CD パイプラインを使用してカスタム Docker イメージを構築し、それを Azure Container Registry にプッシュして、コンテナーとして Azure App Service にデプロイする方法を学習しました。
