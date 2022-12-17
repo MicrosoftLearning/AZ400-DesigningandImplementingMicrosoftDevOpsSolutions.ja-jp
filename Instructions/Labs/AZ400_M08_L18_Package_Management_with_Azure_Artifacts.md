@@ -146,7 +146,7 @@ Azure Artifacts は、Azure DevOps での NuGet、npm、Maven パッケージの
 1. 同じファイル エクスプローラー ウィンドウで、 **[ファイル]** メニュー ヘッダーを選択し、ドロップダウン メニューで **[Windows PowerShell を開く]** を選択し、カスケード メニューで **[管理者として Windows PowerShell を開く]** をクリックします。
 1. **管理者:Windows PowerShell** ウィンドウで、次を実行して、プロジェクトから **.nupkg** ファイルを作成します。
 
-    > **注**:これは、デプロイ用に NuGet ビットをパッケージ化するためのショートカットです。 NuGet は高度にカスタマイズ可能です。 詳細については、[NuGet パッケージの作成ページ](https://docs.microsoft.com/en-us/nuget/create-packages/overview-and-workflowhttps:/docs.microsoft.com/en-us/nuget/create-packages/overview-and-workflow)を参照してください。
+    > **注**:これは、デプロイ用に NuGet ビットをパッケージ化するためのショートカットです。 NuGet は高度にカスタマイズ可能です。 詳細については、[NuGet パッケージの作成ページ](https://docs.microsoft.com/en-us/nuget/create-packages/overview-and-workflow)を参照してください。
 
     ```
     ./nuget.exe pack ./PartsUnlimited.Shared.csproj
