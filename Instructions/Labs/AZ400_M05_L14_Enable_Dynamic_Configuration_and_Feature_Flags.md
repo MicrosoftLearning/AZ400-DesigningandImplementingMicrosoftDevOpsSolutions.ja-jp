@@ -140,6 +140,8 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 #### <a name="task-3-import-and-run-the-cd-pipeline"></a>タスク 3: CD パイプラインをインポートして実行する
 
+[eshoponweb-cd-webapp-code.yml](https://github.com/MicrosoftLearning/eShopOnWeb/blob/main/.ado/eshoponweb-cd-webapp-code.yml) という名前の CD パイプラインをインポートしてみましょう。
+
 1. **[パイプライン] > [パイプライン]** に移動します
 
 1. **[新しいパイプライン]** ボタンをクリックします
@@ -150,7 +152,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 1. **[既存の Azure Pipelines の YAML ファイル]** を選びます
 
-1. **/.ado/eshoponweb-ci.yml** ファイルを選び、 **[続行]** をクリックします
+1. **/.ado/eshoponweb-cd-webapp-code.yml** ファイルを選択し、 **[続行]** をクリックします
 
 1. YAML パイプライン定義で、次のようにカスタマイズします。
 - **YOUR-SUBSCRIPTION-ID** を使用する Azure サブスクリプション ID にします。
