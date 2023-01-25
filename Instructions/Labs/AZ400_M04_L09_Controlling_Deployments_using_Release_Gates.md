@@ -73,14 +73,14 @@ lab:
     ![インポートリポジトリ](images/import-repo.png)
 
 1.  リポジトリは次のように編成されています。
-    - **.ado** フォルダーには Azure DevOps YAML パイプラインが含まれています
-    - **.devcontainer** フォルダーには、(VS Code でローカルに、または GitHub Codespaces で) コンテナーを使って開発するためのセットアップが含まれています
+    - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています
+    - **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)
     - **.azure** フォルダーには、一部のラボ シナリオで使用される Bicep&ARM コードとしてのインフラストラクチャ テンプレートが含まれています。
-    - **.github** フォルダーには YAML GitHub ワークフロー定義が含まれています。
+    - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
     - **src** フォルダーには、ラボ シナリオで使用される .NET 6 Web サイトが含まれています。
 
 
-#### <a name="task-2-create-two-azure-web-apps"></a>タスク 2:2 つの Azure Web アプリを作成する
+#### <a name="task-3-create-two-azure-web-apps"></a>タスク 3: 2 つの Azure Web アプリを作成する
 
 このタスクでは、**カナリア**環境と**本番**環境を表す 2 つの Azure Web アプリを作成し、Azure Pipelines を介してアプリケーションをデプロイします。
 
@@ -119,7 +119,7 @@ lab:
 
 1. Web アプリ サービス リソースのプロビジョニング プロセスが完了するのを待ってから、 **[Cloud Shell]** ペインを閉じます。
 
-#### <a name="task-3-configure-an-application-insights-resource"></a>タスク 3:Application Insights リソースを構成する
+#### <a name="task-4-configure-an-application-insights-resource"></a>タスク 4: Application Insights リソースを構成する
 
 1. Azure portal で、ページ上部の **[リソース、サービス、ドキュメントの検索[** テキスト ボックスを使用して、「**Application Insights**」を検索し、結果のリストで、**[Application Insights]** を選択します。
 1. **[Application Insights]** ブレードで、 **[+ 作成]** を選択します。
@@ -210,13 +210,13 @@ lab:
 
 1. **[すべてのパイプライン] > [新しいリリース パイプライン]** ペインで、 **[カナリア]** ステージが選択されていることを確認します。 **[Azure サブスクリプション]** ドロップダウン リストで、Azure サブスクリプションを選択し、**[承認]** をクリックします。 プロンプトが表示されたら、Azure サブスクリプションの所有者ロールを持つユーザー アカウントを使用して認証します。
 1. [アプリの種類] が [Web App on Windows] に設定されていることを確認します。 次に、 **[アプリ サービス名]** ドロップダウン リストで、**カナリア** Web アプリの名前を選択します。
-1. タスク **[Deploy Azure App Service] (Azure App Service のデプロイ)** を選択します。 **[パッケージまたはフォルダー]** フィールドで、既定値の "$(System.DefaultWorkingDirectory)/ **/*.zip" を "$(System.DefaultWorkingDirectory)/** /Web.zip" に更新します** 
+1. タスク **[Deploy Azure App Service] (Azure App Service のデプロイ)** を選択します。 **[パッケージまたはフォルダー]** フィールドで、既定値の "$(System.DefaultWorkingDirectory)/\*\*/\*.zip" を "$(System.DefaultWorkingDirectory)/\*\*/Web.zip" に更新します 
 
     > [タスク] タブの横に感嘆符が表示されます。これは、運用ステージ用の設定を構成する必要があるため、予期されるものです。
 
 1. **[すべてのパイプライン] > [新しいリリース パイプライン]** ペインで、 **[パイプライン]** タブに移動し、今度は **[運用]** ステージ内で、 **[1 個のジョブ、2 個のタスク]** のラベルをクリックします。 前のカナリア ステージと同様に、パイプラインの設定を完了します。 [タスク] タブ / [運用環境デプロイ] プロセスの **[Azure サブスクリプション]** ドロップダウン リストで、 **[利用可能な Azure サービス接続]** の下に表示される **[カナリア環境]** ステージに使用した Azure サブスクリプションを選択します。これは、サブスクリプションの使用を承認する前にサービス接続をすでに作成しているためです。
 1. **[アプリ サービス名]** ドロップダウン リストで、**Prod** Web アプリの名前を選択します。
-1. タスク **[Deploy Azure App Service] (Azure App Service のデプロイ)** を選択します。 **[パッケージまたはフォルダー]** フィールドで、既定値の "$(System.DefaultWorkingDirectory)/ **/*.zip" を "$(System.DefaultWorkingDirectory)/** /Web.zip" に更新します** 
+1. タスク **[Deploy Azure App Service] (Azure App Service のデプロイ)** を選択します。 **[パッケージまたはフォルダー]** フィールドで、既定値の "$(System.DefaultWorkingDirectory)/\*\*/\*.zip" を "$(System.DefaultWorkingDirectory)/\*\*/Web.zip" に更新します 
 1. **[すべてのパイプライン] > [新しいリリース パイプライン]** ペインで、 **[保存]** をクリックし、 **[保存]** ダイアログ ボックスで **[OK]** をクリックします。
 
 これで、リリース パイプラインが正常に構成されました。
