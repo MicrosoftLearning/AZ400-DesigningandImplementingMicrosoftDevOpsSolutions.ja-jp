@@ -51,16 +51,16 @@ lab:
 1.  ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、以前に作成した **eShopOnWeb** プロジェクトを開きます。 **[リポジトリ] > [ファイル]** 、 **[インポート]** をクリックします。 **[Git リポジトリをインポートする]** ウィンドウで、URL https://github.com/MicrosoftLearning/eShopOnWeb.git を貼り付けて、 **[インポート]** をクリックします。 
 
 1.  リポジトリは次のように編成されています。
-    - **.ado** フォルダーには Azure DevOps YAML パイプラインが含まれています
+    - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています
     - **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)
     - **.azure** フォルダーには、一部のラボ シナリオで使用される Bicep&ARM コードとしてのインフラストラクチャ テンプレートが含まれています。
-    - **.github** フォルダーには YAML GitHub ワークフロー定義が含まれています。
+    - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
     - **src** フォルダーには、ラボ シナリオで使用される .NET 6 Web サイトが含まれています。
 
 #### <a name="task-3-skip-if-done-set-main-branch-as-default-branch"></a>タスク 3: (完了している場合はスキップしてください) メイン ブランチを既定のブランチとして設定する
 
 1. **[リポジトリ] > [ブランチ]** に移動します
-1. **メイン** ブランチにカーソルを合わせ、列の右側にある省略記号をクリックします
+1. **main** ブランチにカーソルを合わせ、列の右側にある省略記号をクリックします
 1. **[既定のブランチとして設定]** をクリックします
 
 ### <a name="exercise-1-manage-the-service-connection"></a>演習 1: サービス接続を管理する
@@ -109,7 +109,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 1. 次に、ラボ コンピューターから Web ブラウザーを起動し、Azure DevOps **eShopOnWeb** プロジェクトに移動します。 **[プロジェクトの設定] > [サービス接続] ([パイプライン] の下)** 、 **[新しいサービス接続]** の順にクリックします。
 
-1. **[新しいサービス接続]** ブレードで、 **[Azure Resource Manager]** と **[次へ]** を選択します (下にスクロールする必要がある場合があります)。
+1. **[新しいサービス接続]** ブレードで、 **[Azure Resource Manager]** と **[次へ]** を選択します (必要に応じて下にスクロールします)。
 
 1. **[サービス プリンシパル (手動)]** を選択し、 **[次へ]** をクリックします。
 
@@ -130,9 +130,9 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 1. **[新しいパイプライン]** ボタンをクリックします
 
-1. **[Azure Repos Git (Yaml)]** を選択します
+1. **[Azure Repos Git (Yaml)]** を選びます
 
-1. **eShopOnWeb** リポジトリを選択します
+1. **eShopOnWeb** リポジトリを選びます
 
 1. **[既存の Azure Pipelines の YAML ファイル]** を選択します
 
@@ -153,7 +153,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
     - [**Docker**](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/docker-v0?view=azure-pipelines) **- Build**: Docker イメージをビルドし、2 つのタグを作成します (Latest と現在の BuildID)
     - **Docker - Push**: Azure Container Registry にイメージをプッシュします
 
-1. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、作成したばかりのパイプラインをクリックします。 省略記号と **[名前の変更]/[削除]** オプションをクリックします。 **eshoponweb-ci-docker** という名前を付け、 **[保存]** をクリックします。
+1. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、先ほど作成したパイプラインをクリックします。 省略記号と **[名前の変更または移動]** オプションをクリックします。 **eshoponweb-ci-docker** という名前を付け、 **[保存]** をクリックします。
 
 1. [**Azure Portal**](https://portal.azure.com) に移動し、最近作成したリソース グループから Azure Container Registry を検索します (**rg-az400-container-NAME** という名前であるはずです)。 **eshoponweb/web** が作成され、2 つのタグ (そのうちの 1 つは **Latest**) が含まれていることを確認します。
 
@@ -194,9 +194,9 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 1. **[新しいパイプライン]** ボタンをクリックします
 
-1. **[Azure Repos Git (Yaml)]** を選択します
+1. **[Azure Repos Git (Yaml)]** を選びます
 
-1. **eShopOnWeb** リポジトリを選択します
+1. **eShopOnWeb** リポジトリを選びます
 
 1. **[既存の Azure Pipelines の YAML ファイル]** を選択します
 
@@ -215,7 +215,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
     - **AzureResourceManagerTemplateDeployment**: bicep テンプレートを使用して Azure App Service をデプロイします。
     - **AzureResourceManagerTemplateDeployment**: Bicep を使用してロールの割り当てを追加します
 
-1. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、作成したばかりのパイプラインをクリックします。 省略記号と **[名前の変更]/[削除]** オプションをクリックします。 **eshoponweb-cd-webapp-docker** という名前を付け、 **[保存]** をクリックします。
+1. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、先ほど作成したパイプラインをクリックします。 省略記号と **[名前の変更または移動]** オプションをクリックします。 **eshoponweb-cd-webapp-docker** という名前を付け、 **[保存]** をクリックします。
 
     > **注 1**: **/.azure/bicep/webapp-docker.bicep** テンプレートを使用すると、アプリ サービス プラン、システム割り当てマネージド ID が有効な Web アプリが作成され、前にプッシュされた Docker イメージ **${acr.properties.loginServer}/eshoponweb/web:latest** が参照されます。
 
