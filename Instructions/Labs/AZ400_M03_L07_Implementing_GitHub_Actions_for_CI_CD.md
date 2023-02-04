@@ -38,10 +38,10 @@ lab:
 この演習では、既存の [eShopOnWeb](https://github.com/MicrosoftLearning/eShopOnWeb) リポジトリのコードを独自の GitHub プライベート リポジトリにインポートします。
 
 リポジトリは次のように編成されています。
-    - **.ado** フォルダーには Azure DevOps YAML パイプラインが含まれています
+    - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています
     - **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)
     - **.azure** フォルダーには、一部のラボ シナリオで使用される Bicep&ARM コードとしてのインフラストラクチャ テンプレートが含まれています。
-    - **.github** フォルダーには YAML GitHub ワークフロー定義が含まれています。
+    - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
     - **src** フォルダーには、ラボ シナリオで使用される .NET 6 Web サイトが含まれています。
 
 #### <a name="task-1-create-a-public-repository-in-github-and-import-eshoponweb"></a>タスク 1: GitHub でパブリック リポジトリを作成し、eShopOnWeb をインポートする
@@ -83,7 +83,7 @@ lab:
 1. ラボ コンピューターのブラウザー ウィンドウで、Azure Portal (https://portal.azure.com/) を開きます。
 1. ポータルで、 **[リソース グループ]** を探してクリックします。
 1. **[+ 作成]** をクリックして、演習用の新しいリソース グループを作成します。
-1. **[リソース グループを作成します]** タブで、リソース グループに **rg-az400-eshopeonweb-NAME** という名前を付けます (NAME を一意の別名に置き換えてください)。 **[確認と作成] > [作成]** をクリックします。
+1. **[リソース グループを作成します]** タブで、リソース グループに **rg-az400-eshoponweb-NAME** という名前を付けます (NAME を一意の別名に置き換えてください)。 **[確認と作成] > [作成]** をクリックします。
 1. Azure Portal で、(検索バーの横にある) **Cloud Shell** を開きます。
 
     > 注: Cloud Shell を初めて開く場合は、[永続ストレージ](https://learn.microsoft.com/en-us/azure/cloud-shell/persisting-shell-storage#create-new-storage)を構成する必要があります
@@ -182,13 +182,13 @@ lab:
 1. 次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
 
     ```sh
-    az group list --query "[?starts_with(name,'rg-az400-eshopeonweb')].name" --output tsv
+    az group list --query "[?starts_with(name,'rg-az400-eshoponweb')].name" --output tsv
     ```
 
 1. 次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
 
     ```sh
-    az group list --query "[?starts_with(name,'rg-az400-eshopeonweb')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
+    az group list --query "[?starts_with(name,'rg-az400-eshoponweb')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
     ```
 
     >**注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。

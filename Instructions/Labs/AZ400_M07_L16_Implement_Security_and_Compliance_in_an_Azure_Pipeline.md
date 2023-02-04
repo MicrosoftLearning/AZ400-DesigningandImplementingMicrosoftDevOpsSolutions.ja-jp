@@ -42,7 +42,7 @@ Azure DevOps を Mend Bolt に統合すると以下が可能になります:
 
 ### <a name="exercise-0-configure-the-lab-prerequisites"></a>演習 0:ラボの前提条件の構成
 
-この演習では、ラボの前提条件を設定します。これは、[eShopOnWeb](https://dev.azure.com/unhueteb/_git/eshopweb-az400) に基づくリポジトリを含む新しい Azure DevOps プロジェクトで構成されます。
+この演習では、ラボの前提条件を設定します。これは、[eShopOnWeb](https://github.com/MicrosoftLearning/eShopOnWeb) に基づくリポジトリを含む新しい Azure DevOps プロジェクトで構成されます。
 
 #### <a name="task-1--skip-if-done-create-and-configure-the-team-project"></a>タスク 1: (完了している場合はスキップしてください) チーム プロジェクトを作成して構成する
 
