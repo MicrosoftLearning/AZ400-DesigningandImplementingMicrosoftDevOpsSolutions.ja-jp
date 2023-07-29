@@ -206,7 +206,7 @@ lab:
    - テンプレート モジュールには相対パスを使います。
    - パラメーターを使って、メイン テンプレートからテンプレート モジュールに値を渡します。
 
-    > **注**: Azure ARM テンプレートでは、ストレージ アカウントを使ってリンクされたテンプレートをアップロードし、他のユーザーが簡単に使用できるようしました。 Azure Bicep モジュールでは、パブリックとプライベート両方のレジストリ オプションを備えた Azure Bicep モジュール レジストリに、モジュールをアップロードするオプションがあります。 詳しくは、[Azure Bicep に関するドキュメント](https://learn.microsoft.com/azure/azure-resource-manager/bicep/modules)をご覧ください。
+   > **注**: Azure ARM テンプレートでは、ストレージ アカウントを使ってリンクされたテンプレートをアップロードし、他のユーザーが簡単に使用できるようしました。 Azure Bicep モジュールでは、パブリックとプライベート両方のレジストリ オプションを備えた Azure Bicep モジュール レジストリに、モジュールをアップロードするオプションがあります。 詳しくは、[Azure Bicep に関するドキュメント](https://learn.microsoft.com/azure/azure-resource-manager/bicep/modules)をご覧ください。
 
 6. テンプレートを保存します。
 
@@ -229,6 +229,16 @@ lab:
 6. Cloud Shell ペインの **Bash** セッションから以下を実行し、新しくアップロードされたテンプレートを使用してデプロイを実行します。
 
    ```bash
+   LOCATION='<region>'
+   ```
+
+   > **注**: リージョンの名前を、自分の場所に近いリージョンに置き換えます。 使用できる場所がわからない場合は、`az account list-locations -o table` コマンドを実行してください。
+
+   ```bash
+   az group create --name az400m06l15-RG --location $LOCATION
+   ```
+
+   ```bash
    az deployment group what-if --name az400m06l15deployment --resource-group az400m06l15-RG --template-file main.bicep
    ```
 
@@ -238,19 +248,9 @@ lab:
 
 10. Cloud Shell ペインの **Bash** セッションから以下を実行し、新しくアップロードされたテンプレートを使用してデプロイを実行します。
 
-       ```bash
-       LOCATION='<region>'
-       ```
-
-       > **注**: リージョンの名前を、自分の場所に近いリージョンに置き換えます。 使用できる場所がわからない場合は、`az account list-locations -o table` コマンドを実行してください。
-
-       ```bash
-       az group create --name az400m06l15-RG --location $LOCATION
-       ```
-
-       ```bash
-       az deployment group create --name az400m06l15deployment --resource-group az400m06l15-RG --template-file main.bicep
-       ```
+    ```bash
+    az deployment group create --name az400m06l15deployment --resource-group az400m06l15-RG --template-file main.bicep
+    ```
 
 11. 'adminUsername' の値を提供するよう指示されたら、「**Student**」と入力して **Enter** キーを押します。
 12. 'adminPassword' の値を提供するよう指示されたら、「**Pa55w.rd1234**」と入力して **Enter** キーを押します。 (パスワードの入力は表示されません)
