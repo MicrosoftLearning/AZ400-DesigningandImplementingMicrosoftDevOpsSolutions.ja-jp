@@ -75,7 +75,7 @@ Azure Pipelines から外部およびリモート サービスへの接続を作
 
 - Azure サブスクリプションでリソースをデプロイします。
 - Docker イメージを Azure Container Registry にプッシュします。
-- ロールの割り当てを追加して、Azure App Service が Azure Container Registry から Docker イメージをプルできるようにします。
+- ロールの割り当てを追加して、Azure App Service で Azure Container Registry から Docker イメージをプルできるようにします。
 
 > **注**:サービス プリンシパルが既にある場合は、次のタスクに直接進むことができます。
 
@@ -113,7 +113,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 8. **[サービス プリンシパル (手動)]** を選択し、 **[次へ]** をクリックします。
 9. 前の手順で収集した情報を使って、空のフィールドに入力します。
     - サブスクリプション ID と名前。
-    - サービス プリンシパル ID (または clientId)、Key (または Password)、TenantId。
+    - サービス プリンシパル ID (appId)、サービス プリンシパル キー (パスワード)、テナント ID (テナント)。
     - **[サービス接続名]** に「**azure-connection**」と入力します。 この名前は、Azure サブスクリプションと通信するために Azure DevOps サービス接続が必要になるときに、YAML パイプラインで参照されます。
 
 10. **[確認して保存]** をクリックします。
@@ -126,12 +126,12 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 1. **[パイプライン] > [パイプライン]** に移動します
 2. **[新しいパイプライン]** ボタンをクリックします
-3. **[Azure Repos Git (Yaml)]** を選びます
+3. **[Azure Repos Git (YAML)]** を選びます
 4. **eShopOnWeb** リポジトリを選びます
-5. **[既存の Azure Pipelines の YAML ファイル]** を選択します
+5. **[既存の Azure Pipelines YAML ファイル]** を選択します。
 6. **/.ado/eshoponweb-ci-docker.yml** ファイルを選択し、 **[続行]** をクリックします
 7. YAML パイプライン定義で、次をカスタマイズします。
-   - **YOUR-SUBSCRIPTION-ID** を使用する Azure サブスクリプション ID にします。
+   - **YOUR-SUBSCRIPTION-ID** を、お使いの Azure サブスクリプション ID に置き換えます。
    - **rg-az400-container-NAME** と、パイプラインによって作成されるリソース グループ名 (既存のリソース グループでもかまいません)。
 
 8. **[保存および実行]** をクリックし、パイプラインが正常に実行されるまで待ちます。
@@ -142,12 +142,12 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
     - **リソース**: 以下のタスクで使われるリポジトリ ファイルをダウンロードします。
     - **AzureResourceManagerTemplateDeployment**: bicep テンプレートを使用して Azure Container Registry をデプロイします。
     - **PowerShell**: 前のタスクの出力から **ACR ログイン サーバー**の値を取得し、新しいパラメーター **acrLoginServer** を作成します
-    - [**Docker**](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/docker-v0?view=azure-pipelines) **- Build**: Docker イメージをビルドし、2 つのタグを作成します (Latest と現在の BuildID)
+    - [**Docker**](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/docker-v0?view=azure-pipelines) **- Build**: Docker イメージをビルドし、2 つのタグを作成します (最新と現在の BuildID)
     - **Docker - Push**: Azure Container Registry にイメージをプッシュします
 
 9. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、先ほど作成したパイプラインをクリックします。 省略記号と **[名前の変更または移動]** オプションをクリックします。 **eshoponweb-ci-docker** という名前を付け、 **[保存]** をクリックします。
 
-10. [**Azure Portal**](https://portal.azure.com) に移動し、最近作成したリソース グループから Azure Container Registry を検索します (**rg-az400-container-NAME** という名前であるはずです)。 **eshoponweb/web** が作成され、2 つのタグ (そのうちの 1 つは **Latest**) が含まれていることを確認します。
+10. [**Azure Portal**](https://portal.azure.com) に移動し、最近作成したリソース グループから Azure Container Registry を検索します (**rg-az400-container-NAME** という名前であるはずです)。 左側の **[サービス]** の下にある **[リポジトリ]** をクリックし、リポジトリ **eshoponweb/web** が作成されていることを確認します。 リポジトリ リンクをクリックすると、2 つのタグ (そのうちの 1 つが **最新**) が表示されます。これらはプッシュされたイメージです。 これが表示されない場合は、パイプラインの状態を調べます。
 
 ### 演習 3: CD パイプラインをインポートして実行する
 
@@ -155,7 +155,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 #### タスク 1: 新しいロールの割り当てを追加する
 
-このタスクでは、新しいロールの割り当てを追加して、Azure App Service が Azure Container Registry から Docker イメージをプルできるようにします。
+このタスクでは、新しいロールの割り当てを追加して、Azure App Service で Azure Container Registry から Docker イメージをプルできるようにします。
 
 1. [**Azure Portal**](https://portal.azure.com) に移動します。
 2. Azure portal で、ページ上部の検索テキストボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
@@ -179,36 +179,36 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 #### タスク 2: CD パイプラインをインポートして実行する
 
-このタスクでは、CI パイプラインをインポートして実行します。
+このタスクでは、CD パイプラインをインポートして実行します。
 
 1. **[パイプライン] > [パイプライン]** に移動します
 2. **[新しいパイプライン]** ボタンをクリックします
-3. **[Azure Repos Git (Yaml)]** を選びます
+3. **[Azure Repos Git (YAML)]** を選びます
 4. **eShopOnWeb** リポジトリを選びます
 5. **[既存の Azure Pipelines の YAML ファイル]** を選択します
 6. **/.ado/eshoponweb-cd-webapp-docker.yml** ファイルを選択し、 **[続行]** をクリックします
 7. YAML パイプライン定義で、次をカスタマイズします。
-   - **YOUR-SUBSCRIPTION-ID** を使用する Azure サブスクリプション ID にします。
+   - **YOUR-SUBSCRIPTION-ID** を、お使いの Azure サブスクリプション ID に置き換えます。
    - **rg-az400-container-NAME** をラボで前に定義したリソース グループ名にします。
 
 8. **[保存および実行]** をクリックし、パイプラインが正常に実行されるまで待ちます。
 
     > **注**: デプロイが完了するまでに数分かかる場合があります。
 
-    CI の定義は以下のタスクで構成されます。
+    CD の定義は以下のタスクで構成されます。
     - **リソース**: 以下のタスクで使われるリポジトリ ファイルをダウンロードします。
     - **AzureResourceManagerTemplateDeployment**: bicep テンプレートを使用して Azure App Service をデプロイします。
     - **AzureResourceManagerTemplateDeployment**: Bicep を使用してロールの割り当てを追加します
 
 9. パイプラインには、プロジェクト名に基づく名前が付けられます。 パイプラインを識別しやすくするために、**名前を変更**しましょう。 **[パイプライン] > [パイプライン]** に移動し、先ほど作成したパイプラインをポイントします。 省略記号と **[名前の変更または移動]** オプションをクリックします。 **eshoponweb-cd-webapp-docker** という名前を付け、 **[保存]** をクリックします。
 
-    > **注 1**: **/.azure/bicep/webapp-docker.bicep** テンプレートを使用すると、アプリ サービス プラン、システム割り当てマネージド ID が有効な Web アプリが作成され、前にプッシュされた Docker イメージ **${acr.properties.loginServer}/eshoponweb/web:latest** が参照されます。
+    > **注 1**: **/.azure/bicep/webapp-docker.bicep** テンプレートを使用すると、アプリ サービス プラン、システム割り当てマネージド ID が有効な Web アプリが作成され、前にプッシュされた Docker イメージ **${acr.properties.loginServer}/eshoponweb/web:latest** が作成されます。
 
     > **注 2**: **/.azure/bicep/webapp-to-acr-roleassignment.bicep** テンプレートを使用すると、Docker イメージを取得できるように、AcrPull ロールを使用して Web アプリの新しいロールの割り当てが作成されます。 これは最初のテンプレートで実行される可能性がありますが、ロールの割り当てが反映されるまでには時間がかかることがあるため、両方のタスクを個別に実行することをお勧めします。
 
 #### タスク 3: ソリューションをテストする
 
-1. Azure Portal で、最近作成したリソース グループに移動すると、3 つのリソース (Ap Service、App Service プラン、Container Registry) が表示されるはずです。
+1. Azure Portal で、最近作成したリソース グループに移動すると、3 つのリソース (Ap Service、App Service プラン、Container Registry) が表示されます。
 
 1. App Service に移動し、 **[参照]** をクリックすると、Web サイトに移動します。
 
