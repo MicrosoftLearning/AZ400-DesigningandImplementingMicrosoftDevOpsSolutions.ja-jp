@@ -71,7 +71,7 @@ lab:
 まず、[eshoponweb-ci.yml](https://github.com/MicrosoftLearning/eShopOnWeb/blob/main/.ado/eshoponweb-ci.yml) という CI パイプラインをインポートします。
 
 1. **[パイプライン] > [パイプライン]** に移動します。
-2. **[パイプラインの作成]** ボタンをクリックします。
+2. **[パイプラインの作成]** ボタン (パイプラインがない場合) または **[新しいパイプライン]** ボタン (既に作成されたパイプラインがある場合) をクリックします。
 3. **[Azure Repos Git (Yaml)]** を選びます。
 4. **eShopOnWeb** リポジトリを選びます。
 5. **[既存の Azure Pipelines YAML ファイル]** を選びます。
