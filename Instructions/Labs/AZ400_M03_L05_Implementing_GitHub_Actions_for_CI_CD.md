@@ -105,13 +105,16 @@ lab:
             (...)
         }
     ```
-
-8. ブラウザー ウィンドウで、**eShopOnWeb** GitHub リポジトリに戻ります。
-9. リポジトリ ページで **[Settings] (設定)** に移動し、 **[Secrets and variables] (シークレットと変数) > [Actions] (アクション)** をクリックします。 **[New repository secret]** をクリックします
+8. また、次のコマンドを実行して、後でデプロイする **Azure App Service** のリソース プロバイダーを登録する必要もあります。
+   ```bash
+   az provider register --namespace Microsoft.Web
+   ``` 
+10. ブラウザー ウィンドウで、**eShopOnWeb** GitHub リポジトリに戻ります。
+11. リポジトリ ページで **[Settings] (設定)** に移動し、 **[Secrets and variables] (シークレットと変数) > [Actions] (アクション)** をクリックします。 **[New repository secret]** をクリックします
     - 名前 : **AZURE_CREDENTIALS**
     - シークレット: **前にコピーした JSON オブジェクトを貼り付けます** (GitHub では、[azure/login](https://github.com/Azure/login) アクションで使用される複数のシークレットを同じ名前で保持できます)
 
-10. **[Add secret]** をクリックします。 これで、GitHub Actions ではリポジトリ シークレットを使用して、サービス プリンシパルを参照できるようになりました。
+12. **[Add secret]** をクリックします。 これで、GitHub Actions ではリポジトリ シークレットを使用して、サービス プリンシパルを参照できるようになりました。
 
 #### タスク 2: GitHub ワークフローを変更して実行する
 
