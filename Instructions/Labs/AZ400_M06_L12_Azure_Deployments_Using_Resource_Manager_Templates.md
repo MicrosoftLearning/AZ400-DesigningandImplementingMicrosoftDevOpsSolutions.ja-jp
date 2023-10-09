@@ -16,58 +16,65 @@ lab:
 
 - 既存の Azure サブスクリプションを識別するか、新しいものを作成します。
 
-- Azure サブスクリプションでは所有者のロール、Azure サブスクリプションに関連のある Azure AD テナントではグローバル管理者のロールで Microsoft アカウントまたは Azure AD アカウントがあることを確認します。
-
-- [Visual Studio Code](https://code.visualstudio.com/)。 このラボでは前提条件の一部としてインストールされます。
+- Azure サブスクリプションの所有者ロールと、Azure サブスクリプションに関連付けられた Microsoft Entra テナントの全体管理者ロールを持つ Microsoft アカウントまたは Microsoft Entra アカウントがあることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://docs.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://docs.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
 
 ## ラボの概要
 
-このラボでは、Azure Bicep テンプレートを作成し、Azure Bicep モジュールの概念を使ってそれをモジュール化します。 次に、モジュールを使うようにメイン デプロイ テンプレートを変更して、最後にすべてのリソースを Azure にデプロイします。
+このラボでは、Azure Bicep テンプレートを作成し、Azure Bicep モジュールの概念を使ってそれをモジュール化します。 次に、モジュールを使用するようにメイン デプロイ テンプレートを変更して、最後にすべてのリソースを Azure にデプロイします。
 
 ## 目標
 
 このラボを完了すると、次のことができるようになります。
 
-- Azure Bicep テンプレートを理解して作成する。
-- ストレージ リソース用の再利用可能な Bicep モジュールを作成する。
-- リンク済みテンプレートを Azure Blob Storage にアップロードして SAS トークンを生成する。
-- モジュールを使用するようにメイン テンプレートを変更する。
-- メイン テンプレートを修正して、依存関係を更新する。
-- Azure Bicep テンプレートを使用して、すべてのリソースを Azure にデプロイする。
+- Azure Bicep テンプレートの構造を理解します。
+- 再利用可能な Bicep モジュールを作成します。
+- モジュールを使うようにメイン テンプレートを変更する
+- Azure YAML パイプラインを使って、すべてのリソースを Azure にデプロイします。
 
-## 推定時間:60 分
+## 推定時間:45 分
 
 ## Instructions
 
 ### 演習 0:ラボの前提条件の構成
 
-この演習では、ラボの前提条件を設定します。この中には、Visual Studio Code が含まれます。
+この演習では、ラボの前提条件を設定します。これは、[eShopOnWeb](https://github.com/MicrosoftLearning/eShopOnWeb) に基づくリポジトリを含む新しい Azure DevOps プロジェクトで構成されます。
 
-#### タスク 1:Git と Visual Studio Code をインストールして構成する
+#### タスク 1: (完了している場合はスキップしてください) チーム プロジェクトを作成して構成する
 
-このタスクでは、Visual Studio Code をインストールします。 この前提条件をすでに実装している場合は、直接、次のタスクに進むことができます。
+このタスクでは、複数のラボで使用される **eShopOnWeb** Azure DevOps プロジェクトを作成します。
 
-1. まだ Visual Studio Code がインストールされていない場合は、ラボのコンピューターから Web ブラウザーを起動し、[Visual Studio Code ダウンロード ページ](https://code.visualstudio.com/) に移動し、これをダウンロードしてインストールします。
+1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織を開きます。 **[新しいプロジェクト]** をクリックします。 プロジェクトに「**eShopOnWeb**」という名前を付け、他のフィールドは既定値のままにします。 **[作成]** をクリックします。
 
-### 演習 1: Azure Bicep テンプレートを作成してデプロイする
+    ![Create Project](images/create-project.png)
 
-このラボでは、Azure Bicep テンプレートとテンプレート モジュールを作成します。 その後、テンプレート モジュールを使うようにメイン デプロイ テンプレートを変更し、依存関係を更新して、最後にテンプレートを Azure にデプロイします。
+#### タスク 2: (完了している場合はスキップしてください) eShopOnWeb Git リポジトリをインポートする
+
+このタスクでは、複数のラボで使用される eShopOnWeb Git リポジトリをインポートします。
+
+1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、前に作成した **eShopOnWeb** プロジェクトを開きます。 **[リポジトリ] > [ファイル]** 、 **[リポジトリをインポートする]** をクリックします。 **[インポート]** を選択します。 **[Git リポジトリをインポートする]** ウィンドウで、URL https://github.com/MicrosoftLearning/eShopOnWeb.git を貼り付けて、 **[インポート]** をクリックします。
+
+    ![インポートリポジトリ](images/import-repo.png)
+
+1. リポジトリは次のように編成されています。
+    - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています。
+    - **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)。
+    - **.azure** フォルダーには、一部のラボ シナリオで使用される Bicep&ARM コードとしてのインフラストラクチャ テンプレートが含まれています。
+    - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
+    - **src** フォルダーには、ラボ シナリオで使用される .NET 6 Web サイトが含まれています。
+
+### 演習 1: Azure Bicep テンプレートを理解し、再利用可能なモジュールを使って簡略化する
+
+このラボでは、Azure Bicep テンプレートを確認し、再利用可能なモジュールを使って簡略化します。
 
 #### タスク 1: Azure Bicep テンプレートを作成する
 
 このタスクでは、Visual Studio Code を使って Azure Bicep テンプレートを作成します
 
-1. ラボのコンピューターから Visual Studio Code を起動し、Visual Studio Code で **[ファイル]** トップ レベル メニューをクリックし、ドロップダウン メニューで **[基本設定]** を選び、カスケード メニューで **[拡張機能]** を選び、 **[拡張機能の検索]** テキストボックスに「**Bicep**」と入力し、Microsoft によって発行されたものを選び、 **[インストール]** をクリックして Azure Bicep 言語サポートをインストールします。
-2. Web ブラウザーで、 **<https://github.com/Azure/azure-quickstart-templates/blob/master/quickstarts/microsoft.compute/vm-simple-windows/main.bicep>** に接続します。 ファイルの **[Raw]** オプションをクリックします。 コード ウィンドウの内容をコピーして、Visual Studio コード エディターに貼り付けます。
+1. Azure DevOps プロジェクトを開いているブラウザーのタブで、 **[リポジトリ]** と **[ファイル]** に移動します。 `.azure\bicep` フォルダーを開き、`simple-windows-vm.bicep` ファイルを見つけます。
 
-   > **注**:テンプレートを最初から作成するよりも、[Azure クイックスタート テンプレート](https://azure.microsoft.com/resources/templates/) のひとつ (**シンプルな Windows テンプレート VM のデプロイ**) を使用します。 テンプレートは GitHub - [vm-simple-windows](https://github.com/Azure/azure-quickstart-templates/blob/master/quickstarts/microsoft.compute/vm-simple-windows) からダウンロードできます。
+   ![Simple-windows-vm.bicep ファイル](./images/m06/browsebicepfile.png)
 
-3. ラボのコンピューターでエクスプローラーを開き、テンプレートの格納に使う次のローカル フォルダーを作成します。
-
-   - **C:\\templates**
-
-4. main.bicep テンプレートのある Visual Studio Code ウィンドウに戻り、 **[ファイル]** トップ レベル メニューをクリックし、ドロップダウン メニューで **[名前を付けて保存]** をクリックし、新しく作成したローカル フォルダー **C:\\templates** にテンプレートを **main.bicep** として保存します。
-5. テンプレートをレビューし、その構造をよりよく把握します。 テンプレートには 5 種類のリソースが含まれています。
+1. テンプレートをレビューし、その構造をよりよく把握します。 型、既定値、検証を含むいくつかのパラメーター、いくつかの変数、以下の型を持つかなりの数のリソースがあります。
 
    - Microsoft.Storage/storageAccounts
    - Microsoft.Network/publicIPAddresses
@@ -75,15 +82,17 @@ lab:
    - Microsoft.Network/networkInterfaces
    - Microsoft.Compute/virtualMachines
 
-6. Visual Studio Code でファイルを再び保存しますが、今回は保存先として **C:\\templates**、ファイル名として **storage.bicep** を選びます。
+1. リソース定義のシンプルさと、テンプレート全体を通して明示的な `dependsOn` ではなく暗黙的にシンボリック名を参照できることに注意してください。
 
-   > **注**: これで 2 つの同一の JSON ファイルができました: **C:\\templates\\main.bicep** と **C:\\templates\\storage.bicep**。
+#### タスク 2: ストレージ リソースの Bicep モジュールを作成する
 
-#### タスク 2: ストレージ リソース用のテンプレート モジュールを作成する
+このタスクでは、ストレージ テンプレート モジュール **storage.bicep** を作成します。これにより、ストレージ アカウントのみが作成され、メイン テンプレートによってインポートされます。 ストレージ テンプレート モジュールは、メイン テンプレート **main.bicep** に値を戻す必要があります。この値は、ストレージ テンプレート モジュールの出力要素で定義されます。
 
-このタスクでは、前のタスクで保存したテンプレートを変更して、ストレージ テンプレート モジュール **storage.bicep** によってストレージ アカウントのみが作成され、それが最初のテンプレートによってインポートされるようにします。 ストレージ テンプレート モジュールは、メイン テンプレート **main.bicep** に値を戻す必要があります。この値は、ストレージ テンプレート モジュールの出力要素で定義されます。
+1. まず、メイン テンプレートからストレージ リソースを削除する必要があります。 ブラウザー ウィンドウの右上隅から **[編集]** ボタンをクリックします。
 
-1. Visual Studio Code ウィンドウに表示されている **storage.bicep** ファイルの**リソース セクション**で、**storageAccounts** リソース以外のすべてのリソース要素を削除します。 これによりリソース セクションは以下のようになるはずです。
+   ![[編集] ボタン](./images/m06/edit.png)
+
+1. 次にストレージ リソースを削除します。
 
    ```bicep
    resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
@@ -96,47 +105,15 @@ lab:
    }
    ```
 
-2. 次に、すべての変数定義を削除します。
+1. ファイルをコミットしますが、まだこれで終わりではありません。
 
-   ```bicep
-   var storageAccountName = 'bootdiags${uniqueString(resourceGroup().id)}'
-   var nicName = 'myVMNic'
-   var addressPrefix = '10.0.0.0/16'
-   var subnetName = 'Subnet'
-   var subnetPrefix = '10.0.0.0/24'
-   var virtualNetworkName = 'MyVNET'
-   var networkSecurityGroupName = 'default-NSG'
-   var securityProfileJson = {
-     uefiSettings: {
-       secureBootEnabled: true
-       vTpmEnabled: true
-     }
-     securityType: securityType
-   }
-   var extensionName = 'GuestAttestation'
-   var extensionPublisher = 'Microsoft.Azure.Security.WindowsAttestation'
-   var extensionVersion = '1.0'
-   var maaTenantName = 'GuestAttestation'
-   var maaEndpoint = substring('emptyString', 0, 0)
-   ```
+   ![ファイルのコミット](./images/m06/commit.png)
 
-3. 次に、場所以外のあらゆるパラメーター値を削除し、以下のパラメーター コードを追加すると、次のような結果になります:
+1. 次に、bicep フォルダーにマウス カーソルを合わせて省略記号アイコンをクリックし、 **[新規作成]** 、 **[ファイル]** の順に選びます。 名前に「**storage.bicep**」と入力し、 **[作成]** をクリックします。
 
-   ```bicep
-   @description('Location for all resources.')
-   param location string = resourceGroup().location
+   ![新規作成の [ファイル] メニュー](./images/m06/newfile.png)
 
-   @description('Name for the storage account.')
-   param storageAccountName string
-   ```
-
-4. 次に、ファイルの最後で、現在の出力を削除し、storageURI 出力値と呼ばれる新しい出力を追加します。 以下のようになるように出力を変更します。
-
-   ```bicep
-   output storageURI string = storageAccount.properties.primaryEndpoints.blob
-   ```
-
-5. storage.bicep テンプレート モジュールを保存します。 ストレージ テンプレートは次のようになります。
+1. 次に、次のコード スニペットを ファイルにコピーし、変更をコミットします。
 
    ```bicep
    @description('Location for all resources.')
@@ -161,21 +138,9 @@ lab:
 
 このタスクでは、前のタスクで作成したテンプレート モジュールを参照するように、メイン テンプレートを変更します。
 
-1. Visual Studio Code で **[ファイル]** トップ レベル メニューをクリックし、ドロップダウン メニューで **[ファイルを開く]** を選び、[ファイルを開く] ダイアログ ボックスで **C:\\templates\\main.bicep** に移動してそれを選び、 **[開く]** をクリックします。
-2. **main.bicep** ファイルのリソース セクションで、ストレージ リソース要素を削除します
+1. `simple-windows-vm.bicep` ファイルに戻り、 **[編集]** ボタンをもう一度クリックします。
 
-   ```bicep
-   resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
-     name: storageAccountName
-     location: location
-     sku: {
-       name: 'Standard_LRS'
-     }
-     kind: 'Storage'
-   }
-   ```
-
-3. 次に、新しく削除されたストレージ リソース要素があった場所に直接、以下のコードを追加します:
+1. 次に、変数の後に次のコードを追加します。
 
    ```bicep
    module storageModule './storage.bicep' = {
@@ -187,7 +152,7 @@ lab:
    }
    ```
 
-4. また、代わりにモジュールの出力を使うように、仮想マシン リソースのストレージ アカウント BLOB URI への参照を変更する必要があります。 仮想マシン リソースを見つけて、diagnosticsProfile セクションを次のように置き換えます。
+1. また、代わりにモジュールの出力を使うように、仮想マシン リソースのストレージ アカウント BLOB URI への参照を変更する必要があります。 仮想マシン リソースを見つけて、diagnosticsProfile セクションを次のように置き換えます。
 
    ```bicep
    diagnosticsProfile: {
@@ -198,97 +163,110 @@ lab:
    }
    ```
 
-5. メイン テンプレートで以下の詳細をレビューします:
+1. メイン テンプレートで以下の詳細をレビューします:
 
    - メイン テンプレートのモジュールは、別のテンプレートにリンクするために使われます。
-   - モジュールのシンボル名は storageModule です。 依存関係を構成する場合はこの名前を使います。
-   - テンプレート モジュールを使うときは、増分デプロイ モードのみを使用できます。
+   - モジュールのシンボル名は `storageModule` です。 依存関係を構成する場合はこの名前を使います。
+   - テンプレート モジュールを使うときは、**増分**デプロイ モードのみを使用できます。
    - テンプレート モジュールには相対パスを使います。
    - パラメーターを使って、メイン テンプレートからテンプレート モジュールに値を渡します。
 
-   > **注**: Azure ARM テンプレートでは、ストレージ アカウントを使ってリンクされたテンプレートをアップロードし、他のユーザーが簡単に使用できるようしました。 Azure Bicep モジュールでは、パブリックとプライベート両方のレジストリ オプションを備えた Azure Bicep モジュール レジストリに、モジュールをアップロードするオプションがあります。 詳しくは、[Azure Bicep に関するドキュメント](https://learn.microsoft.com/azure/azure-resource-manager/bicep/modules)をご覧ください。
+1. テンプレートをコミットします。
 
-6. テンプレートを保存します。
+### 演習 2: YAML パイプラインを使って Azure にテンプレートをデプロイする
 
-#### タスク 4: テンプレート モジュールを使用して Azure にリソースをデプロイする
+このラボでは、サービス接続を作成し、それを Azure DevOps YAML パイプラインで使って、テンプレートを Azure 環境にデプロイします。
 
-> **注**: テンプレートのデプロイは、ローカル環境にインストールされた Azure CLI の使用、Azure Cloud Shell、CI/CD パイプラインなど、複数の方法で行うことができます。 このラボでは、Azure Cloud Shell から Azure CLI を使用します。
+#### タスク 1: (完了している場合はスキップする) デプロイ用のサービス接続を作成する
 
-> **注**: ARM テンプレートとは対照的に、Azure portal を使って Bicep テンプレートを直接デプロイすることはできません。
+このタスクでは、Azure CLI を使ってサービス プリンシパルを作成します。これにより、Azure DevOps で次のことができるようになります。
 
-> **注**: Azure Cloud Shell を使うには、main.bicep と storage.bicep の両方のファイルを、Cloud Shell のホーム ディレクトリにアップロードします。
+- Azure サブスクリプションでリソースをデプロイします。
+- 後で作成する Key Vault シークレットに対する読み取りアクセス権を取得する。
 
-> **注**: 現在、Azure CLI ではリモート Bicep ファイルのデプロイはサポートされていません。 Bicep ファイルをビルドして ARM テンプレートの JSON を取得し、それをストレージ アカウントにアップロードしてから、リモートでデプロイできます。
+> **注**: サービス プリンシパルが既にある場合は、次のタスクに直接進むことができます。
 
-1. ラボのコンピューターで、Azure Portal が表示されている Web ブラウザーで **[Cloud Shell]** アイコンをクリックして Cloud Shell を開きます。
-   > **注**: この演習で前に使った PowerShell セッションがまだアクティブなままの場合は、Bash に切り替えます (次のステップ)。
-2. Cloud Shell ペインで **[PowerShell]** をクリックします。ドロップダウン メニューで **[バッシュ]** をクリックし、指示されたら **[確認]** をクリックします。
-3. Cloud Shell ペインで、 **[ファイルのアップロード / ダウンロード]** アイコンをクリックし、ドロップダウン メニューで **[アップロード]** をクリックします。
-4. **[開く]** ダイアログ ボックスで、**C:\\templates\\main.bicep** に移動して選び、 **[開く]** をクリックします。
-5. 同じ手順で、**C:\\templates\\storage.bicep** ファイルもアップロードします。
-6. Cloud Shell ペインの **Bash** セッションから以下を実行し、新しくアップロードされたテンプレートを使用してデプロイを実行します。
+Azure Pipelines から Azure リソースをデプロイするには、サービス プリンシパルが必要です。 パイプラインでシークレットを取得するため、Azure キー コンテナーを作成するときにサービスにアクセス許可を付与する必要があります。
 
-   ```bash
-   LOCATION='<region>'
-   ```
+サービス プリンシパルは、パイプライン定義内から Azure サブスクリプションに接続するとき、またはプロジェクト設定ページから新しいサービス接続を作成するときに (自動オプション)、Azure Pipelines によって自動的に作成されます。 ポータルから、または Azure CLI を使用してサービス プリンシパルを手動で作成し、プロジェクト間で再利用することもできます。
 
-   > **注**: リージョンの名前を、自分の場所に近いリージョンに置き換えます。 使用できる場所がわからない場合は、`az account list-locations -o table` コマンドを実行してください。
+1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで、所有者のロールがあり、このサブスクリプションに関連付けられている Microsoft Entra テナントで全体管理者のロールがあるユーザー アカウントを使ってサインインします。
+1. Azure portal で、ページ上部の検索テキストボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
+1. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
 
-   ```bash
-   az group create --name az400m06l15-RG --location $LOCATION
-   ```
+   >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。
 
-   ```bash
-   az deployment group what-if --name az400m06l15deployment --resource-group az400m06l15-RG --template-file main.bicep
-   ```
-
-7. 'adminUsername' の値を提供するよう指示されたら、「**Student**」と入力して **Enter** キーを押します。
-8. 'adminPassword' の値を提供するよう指示されたら、「**Pa55w.rd1234**」と入力して **Enter** キーを押します。 (パスワードの入力は表示されません)
-9. このコマンドの結果を調べると、デプロイを検証し、テンプレートにエラーがあるかどうかを確認できます。 これは特に、多くのリソースを含むテンプレートをビジネス クリティカルなクラウド環境でデプロイする場合に非常に便利です。
-
-10. Cloud Shell ペインの **Bash** セッションから以下を実行し、新しくアップロードされたテンプレートを使用してデプロイを実行します。
+1. **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行して、Azure サブスクリプション ID とサブスクリプション名の属性の値を取得します。
 
     ```bash
-    az deployment group create --name az400m06l15deployment --resource-group az400m06l15-RG --template-file main.bicep
+    az account show --query id --output tsv
+    az account show --query name --output tsv
     ```
 
-11. 'adminUsername' の値を提供するよう指示されたら、「**Student**」と入力して **Enter** キーを押します。
-12. 'adminPassword' の値を提供するよう指示されたら、「**Pa55w.rd1234**」と入力して **Enter** キーを押します。 (パスワードの入力は表示されません)
+    > **注**:両方の値をテキスト ファイルにコピーします。 これらは、このラボの後半で必要になります。
 
-13. テンプレートをデプロイする上記のコマンドの実行時にエラーが出た場合は以下を試してください。
+1. **Bash** プロンプトの **Cloud Shell** ペインで、次のコマンドを実行してサービス プリンシパルを作成します (**myServicePrincipalName** を文字と数字で構成される一意の文字列に、**mySubscriptionID** をご自分の Azure subscriptionId に置き換えてください)。
 
-- 複数の Azure サブスクリプションがある場合は、リソース グループがデプロイされている適切な場所にサブスクリプションのコンテキストが設定されていることを確認してください。
-- 指定した URI を介してリンク済みテンプレートにアクセスできることを確認します。
+    ```bash
+    az ad sp create-for-rbac --name myServicePrincipalName \
+                         --role contributor \
+                         --scopes /subscriptions/mySubscriptionID
+    ```
 
-> **注**:次のステップでは、メイン デプロイ テンプレートで残りのリソース定義 (ネットワークや仮想マシンのリソース定義など) をモジュラー化できます。
+    > **注**:このコマンドは JSON 出力を生成します。 出力をテキスト ファイルにコピーします。 このラボで後ほど必要になります。
 
-> **注**:デプロイされたリソースを使用する予定がない場合は、関連した料金が発生しないようにリソースを削除してください。 リソース グループ **az400m06l15-RG** を削除するだけで、簡単にそれを行うことができます。
+1. 次に、ラボ コンピューターから Web ブラウザーを起動し、Azure DevOps **eShopOnWeb** プロジェクトに移動します。 **[プロジェクトの設定] > [サービス接続] ([パイプライン] の下)** 、 **[新しいサービス接続]** の順にクリックします。
 
-### 演習 2:Azure ラボ リソースを削除する
+    ![新しいサービス接続](images/new-service-connection.png)
 
-この演習では、このラボでプロビジョニングした Azure リソースを削除し、予期しない料金を排除します。
+1. **[新しいサービス接続]** ブレードで、 **[Azure Resource Manager]** と **[次へ]** を選択します (下にスクロールする必要がある場合があります)。
 
-> **注**:新規に作成し、使用しなくなったすべての Azure リソースを削除することを忘れないでください。 使用していないリソースを削除することで、予期しない料金が発生しなくなります。
+1. **[サービス プリンシパル (手動)]** を選択し、 **[次へ]** をクリックします。
 
-#### タスク 1:Azure ラボ リソースを削除する
+1. 前の手順で収集した情報を使って、空のフィールドに入力します。
+    - サブスクリプション ID と名前。
+    - サービス プリンシパル ID (appId)、サービス プリンシパル キー (パスワード)、テナント ID (テナント)。
+    - **[サービス接続名]** に「**azure subs**」と入力します。 この名前は、Azure サブスクリプションと通信するために Azure DevOps サービス接続が必要になるときに、YAML パイプラインで参照されます。
+
+    ![Azure サービス接続](images/azure-service-connection.png)
+
+1. **[確認して保存]** をクリックします。
+
+#### タスク 2: YAML パイプラインによって Azure にリソースをデプロイする
+>>>>>>> 一時退避された変更
+1. **[パイプライン]** ハブで **[パイプライン]** に戻ります。
+1. **[最初のパイプラインを作成]** ウィンドウで、**[パイプラインの作成]** をクリックします。
+
+    > **注**: ウィザードを使い、プロジェクトに基づいて新しい YAML パイプラインの定義を作成します。
+
+1. **[コードはどこにありますか?]** ペインで **[Azure Repos Git (YAML)]** オプションをクリックします。
+1. **[リポジトリの選択]** ペインで **EShopOnWeb** をクリックします。
+1. **[パイプラインを構成する]** ペインで、 **[既存の Azure Pipelines YAML ファイル]** を選びます。
+1. **[既存の YAML ファイルを選択する]** ペインで、次のパラメーターを指定します。
+   - [ブランチ]: **main**
+   - パス: **.ado/eshoponweb-cd-windows-cm.yml**
+1. **[続行]** をクリックして、これらの設定を保存します。
+1. 変数セクションで、リソース グループの名前を選び、目的の場所を設定し、サービス接続の値を先ほど作成した既存のサービス接続のいずれかに置き換えます。
+1. 右上隅のコーダーから **[保存して実行]** ボタンをクリックし、コミット ダイアログが表示されたら、もう一度 **[保存して実行]** をクリックします。
+
+   ![変更を加えてから YAML パイプラインを保存して実行する](./images/m06/saveandrun.png)
+
+1. デプロイが完了するまで待ってから、結果を確認します。
+   ![YAML パイプラインを使った Azure へのリソース デプロイの成功](./images/m06/deploy.png)
+
+#### タスク 3: Azure ラボ リソースを削除する
 
 このタスクでは、Azure Cloud Shell を使用して、このラボでプロビジョニングされた Azure リソースを削除し、不要な料金を排除します。
 
 1. Azure portal で、**Cloud Shell** ウィンドウ内で **Bash** シェル セッションを開きます。
-2. 次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
+1. 次のコマンドを実行して、このモジュールのラボを通して作成したすべてのリソース グループを削除します (リソース グループ名は選んだものに置き換えてください)。
 
    ```bash
-   az group list --query "[?starts_with(name,'az400m06l15-RG')].name" --output tsv
-   ```
-
-3. 次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
-
-   ```bash
-   az group list --query "[?starts_with(name,'az400m06l15-RG')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
+   az group list --query "[?starts_with(name,'AZ400-EWebShop-NAME')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
    ```
 
    > **注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。
 
 ## 確認
 
-このラボでは、Azure Resource Manager テンプレートを作成し、リンク済みテンプレートを使用してこれをモジュラー化し、メイン デプロイ テンプレートを変更してリンク済みテンプレートと更新済みの依存関係を呼び出し、最後にテンプレートを Azure にデプロイする方法を学びました。
+このラボでは、Azure Bicep テンプレートを作成し、テンプレート モジュールを使ってこれをモジュラー化し、メイン デプロイ テンプレートを変更してモジュールと更新済みの依存関係を呼び出し、最後に YAML パイプラインを使ってテンプレートを Azure にデプロイする方法を学びました。
