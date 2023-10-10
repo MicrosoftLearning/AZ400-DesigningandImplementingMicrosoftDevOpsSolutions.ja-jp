@@ -14,7 +14,7 @@ lab:
 
 - 既存の Azure サブスクリプションを識別するか、新しいものを作成します。
 
-- Azure サブスクリプションで共同作成者または所有者のロールを持つ Microsoft アカウントまたは Azure AD アカウントを持っていることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://docs.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://docs.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
+- Azure サブスクリプションで共同作成者または所有者のロールを持つ Microsoft アカウントまたは Microsoft Entra アカウントを持っていることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://docs.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://docs.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
 
 - このラボで使用できる **GitHub アカウントをまだお持ちでない場合**は、[新しい GitHub アカウントのサインアップ](https://github.com/join)にある手順に従ってアカウントを作成してください。
 
@@ -94,7 +94,7 @@ lab:
     > 注: これが 1 行として入力されるか貼り付けられていることを確認します。
     > 注: このコマンドを実行すると、前に作成したリソース グループへの共同作成者アクセス権を持つサービス プリンシパルが作成されます。 これにより、GitHub Actions には、このリソース グループと対話するために必要なアクセス許可のみが付与されます (サブスクリプションの残りの部分は含まれません)
 
-7. コマンドによって JSON オブジェクトが出力されます。後でそれをワークフローの GitHub シークレットとして使います。 その JSON をコピーしておきます。 この JSON には、Azure AD アプリケーション ID (サービス プリンシパル) の名前で Azure に対する認証に使用される識別子が含まれます。
+7. コマンドによって JSON オブジェクトが出力されます。後でそれをワークフローの GitHub シークレットとして使います。 その JSON をコピーしておきます。 この JSON には、Microsoft Entra ID (サービス プリンシパル) の名前で Azure に対する認証に使用される識別子が含まれます。
 
     ```JSON
         {
@@ -158,6 +158,9 @@ lab:
 
 3. リポジトリ ページで、 **[Settings]** に移動し、 **[Environments]** を開き、 **[New environment]** をクリックします。
 4. **Development** の名前を指定し、 **[Configure Environment]** をクリックします。
+
+    > 注: **環境**の一覧に **Development** という名前の環境が既に存在する場合は、環境名をクリックしてその構成を開きます。  
+    
 5. **[Configure Development]** タブで、オプション **[Required Reviewers]** と、レビュー担当者としての GitHub アカウントをオンにします。 **[Save protection rules]** をクリックします。
 6. 次に、保護規則をテストしましょう。 リポジトリ ページで、 **[Actions]** に移動し、 **[eShopOnWeb Build and Test]** ワークフローをクリックし、 **[Run workflow] > [Run workflow]** をクリックして手動で実行します。
 
