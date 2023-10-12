@@ -16,7 +16,7 @@ lab:
 
 - 既存の Azure サブスクリプションを識別するか、新しいものを作成します。
 
-- Azure サブスクリプションで共同作成者または所有者のロールを持つ Microsoft アカウントまたは Azure AD アカウントを持っていることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://learn.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://learn.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
+- Azure サブスクリプションで共同作成者または所有者のロールを持つ Microsoft アカウントまたは Microsoft Entra アカウントを持っていることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://learn.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://learn.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
 
 ## ラボの概要
 
@@ -94,7 +94,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 サービス プリンシパルは、パイプライン定義内から Azure サブスクリプションに接続するとき、またはプロジェクト設定ページから新しいサービス接続を作成するときに (自動オプション)、Azure パイプラインによって自動的に作成されます。 ポータルから、または Azure CLI を使用してサービス プリンシパルを手動で作成し、プロジェクト間で再利用することもできます。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure Portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで所有者ロールがあり、このサブスクリプションに関連のある Azure AD テナントでグローバル管理者ロールがあるユーザー アカウントを使ってサインインします。
+1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションの所有者のロールを持っており、このサブスクリプションに関連付けられている Microsoft Entra テナントの全体管理者のロールを持っているユーザー アカウントを使用してサインインします。
 2. Azure portal で、ページ上部の検索テキストボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
 3. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
 
@@ -172,7 +172,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
     - 自分の Azure サブスクリプション。
     - 前に作成したリソース グループ (**AZ400-EWebShop-NAME** という名前になっているはずです)。
     - 場所。
-    - たとえば、**appcs-NAME-REGION** のような一意の値。
+    - たとえば、**appcs-NAME-REGION** のような一意の名前。
     - **Free** 価格レベルを選びます。
 3. **[確認と作成]** 、 **[作成]** の順にクリックします。
 4. App Configuration サービスを作成したら、 **[概要]** に移動し、 **[エンドポイント]** の値をコピーまたは保存します。
