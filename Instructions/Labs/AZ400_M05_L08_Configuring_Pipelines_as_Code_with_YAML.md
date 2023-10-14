@@ -16,7 +16,7 @@ lab:
 
 - 既存の Azure サブスクリプションを識別するか、新しいものを作成します。
 
-- Azure サブスクリプションでは所有者のロール、Azure サブスクリプションに関連のある Azure AD テナントではグローバル管理者のロールで Microsoft アカウントまたは Azure AD アカウントがあることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://docs.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://docs.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
+- Azure サブスクリプションの所有者ロールと、Azure サブスクリプションに関連付けられた Microsoft Entra テナントの全体管理者ロールを持つ Microsoft アカウントまたは Microsoft Entra アカウントがあることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://docs.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://docs.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
 
 ## ラボの概要
 
@@ -63,7 +63,7 @@ lab:
 
 このタスクでは、Azure portal を使って Azure Web アプリを作成します。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure Portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで所有者ロールがあり、このサブスクリプションに関連のある Azure AD テナントでグローバル管理者ロールがあるユーザー アカウントを使ってサインインします。
+1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで、所有者のロールがあり、このサブスクリプションに関連付けられている Microsoft Entra テナントで全体管理者のロールがあるユーザー アカウントを使ってサインインします。
 2. Azure portal のツールバーで、検索テキスト ボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
 3. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
 
@@ -188,7 +188,7 @@ lab:
 12. このタスクに対する次のパラメーターを指定します。
     - ダウンロードする成果物の生成元: **現在のビルド**
     - ダウンロードの種類: **特定の成果物**
-    - 成果物の名前: **一覧から "Website" を選びます**
+    - 成果物名: **一覧から [Web サイト] を選びます** (一覧に自動的に表示されない場合は、 **「Website」と直接入力します**)
     - ダウンロード先ディレクトリ: **$(Build.ArtifactStagingDirectory)**
 13. **[追加]** をクリックします。
 14. 追加されたコードのスニペットは、次のようになります。

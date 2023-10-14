@@ -16,7 +16,7 @@ lab:
 
 - 既存の Azure サブスクリプションを識別するか、新しいものを作成します。
 
-- Azure サブスクリプションで共同作成者または所有者のロールを持つ Microsoft アカウントまたは Azure AD アカウントを持っていることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://learn.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://learn.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
+- Azure サブスクリプションで共同作成者または所有者のロールを持つ Microsoft アカウントまたは Microsoft Entra アカウントを持っていることを確認します。 詳細については、[「Azure portal を使用して Azure ロールの割り当てを一覧表示する」](https://learn.microsoft.com/azure/role-based-access-control/role-assignments-list-portal)および[「Azure Active Directory で管理者ロールを表示して割当てる」](https://learn.microsoft.com/azure/active-directory/roles/manage-roles-portal)を参照してください。
 
 ## ラボの概要
 
@@ -83,7 +83,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 サービス プリンシパルは、パイプライン定義内から Azure サブスクリプションに接続するとき、またはプロジェクト設定ページから新しいサービス接続を作成するときに (自動オプション)、Azure パイプラインによって自動的に作成されます。 ポータルから、または Azure CLI を使用してサービス プリンシパルを手動で作成し、プロジェクト間で再利用することもできます。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure Portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで所有者ロールがあり、このサブスクリプションに関連のある Azure AD テナントでグローバル管理者ロールがあるユーザー アカウントを使ってサインインします。
+1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで所有者のロールがあり、このサブスクリプションに関連付けられている Microsoft Entra テナントでグローバル管理者のロールがあるユーザー アカウントを使ってサインインします。
 2. Azure portal で、ページ上部の検索テキストボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
 3. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
 
@@ -194,6 +194,8 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 8. **[保存および実行]** をクリックし、パイプラインが正常に実行されるまで待ちます。
 
     > **注**: デプロイが完了するまでに数分かかる場合があります。
+    
+    > **重要**: "TF402455: このブランチに対するプッシュは許可されていません。このブランチを更新するには pull request を使用する必要があります" というエラー メッセージが表示された場合は、前のラボで有効にした [レビュー担当者の最少数が必要です] というブランチ保護ルールをオフにする必要があります。
 
     CD の定義は以下のタスクで構成されます。
     - **リソース**: 以下のタスクで使われるリポジトリ ファイルをダウンロードします。
