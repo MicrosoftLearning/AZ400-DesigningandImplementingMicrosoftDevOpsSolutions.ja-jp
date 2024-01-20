@@ -136,7 +136,7 @@ Sonarcloud はパブリック ADO プロジェクトの場合は無料なので�
 
     > **注**: 次に、新しく作成された組織内で、Azure DevOps プロジェクト **SonarExamples** と同一の SonarCloud プロジェクトを作成します。
 
-11. **[Analyze projects - Select repositories] (プロジェクトの分析 - リポジトリの選択)** ページの Azure DevOps プロジェクトの一覧で、**eshoponweb / eshoponweb** エントリの横にあるチェックボックスをオンにして、 **[セットアップ]** をクリックします。
+11. **[Analyze projects - Select repositories] (プロジェクトの分析 - リポジトリの選択)** ページの Azure DevOps プロジェクトの一覧で、**eshoponweb / eshoponweb** エントリの横にあるチェックボックスをオンにして、**[セットアップ]** をクリックします。
 12. **[Choose your Analysis Method] (分析方法の選択)** ページで、 **[With Azure DevOps Pipelines] (Azure DevOps パイプラインを使用)** タイルを選びます。
 
     ![With Azure DevOps Pipelines (Azure DevOps パイプラインを使用) ](images/sonar-setup.png)
