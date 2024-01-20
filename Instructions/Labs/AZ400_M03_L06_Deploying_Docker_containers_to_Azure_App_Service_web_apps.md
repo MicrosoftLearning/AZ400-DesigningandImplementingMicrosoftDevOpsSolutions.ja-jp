@@ -172,7 +172,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 5. サービス プリンシパル ID とロール名を取得したら、次のコマンドを実行してロールの割り当てを作成しましょう (**rg-az400-container-NAME** はリソース グループ名に置き換えてください)
 
     ```sh
-    az role assignment create --assignee $spId --role $roleName --resource-group "rg-az400-container-NAME"
+    az role assignment create --assignee $spId --role $roleName --scope /subscriptions/$subscriptionId/resourceGroups/**g-az400-container-NAME**
     ```
 
 これで、コマンド実行の成功を確認する JSON 出力が表示されるはずです。
