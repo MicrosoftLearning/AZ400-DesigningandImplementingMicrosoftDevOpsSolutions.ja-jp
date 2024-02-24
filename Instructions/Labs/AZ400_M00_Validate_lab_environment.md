@@ -10,12 +10,13 @@ lab:
 
 ## Azure DevOps 組織を作成する手順 (これを行う必要があるのは 1 回だけです)
 
-### Azure サブスクリプションがない場合はここから始めます。
+### Azure サブスクリプションがない場合はここから始めます
+
 1. 講師またはその他のソースから、新しい **Azure Pass プロモーションコード**を入手します。
 1. プライベート ブラウザー セッションを使用し、[https://account.microsoft.com](https://account.microsoft.com) で新しい **個人 Microsoft アカウント (MSA)** を取得します。
 1. 同じブラウザー セッションを使用し、[https://www.microsoftazurepass.com](https://www.microsoftazurepass.com) にアクセスし、Microsoft アカウント (MSA) を使用して Azure Pass を利用します。 詳しくは、[Microsoft Azure Pass の引き換え](https://www.microsoftazurepass.com/Home/HowTo?Length=5)に関するページをご覧ください。 引き換えの手順に従います。
 
-### Azure のサブスクリプションがある場合はここから始めます。
+### Azure のサブスクリプションがある場合はここから始めます
 
 1. ブラウザーを開き、[https://portal.azure.com](https://portal.azure.com) に移動し、Azure portal 画面の上部で **Azure DevOps** を検索します。 表示されたページで、**[Azure DevOps 組織]** をクリックします。
 1. 次に、**My Azure DevOps Organizations** というラベルの付いたリンクをクリックするか、[https://aex.dev.azure.com](https://aex.dev.azure.com) に直接移動します。
@@ -57,7 +58,7 @@ lab:
     - 詳細設定: バージョン コントロール: **Git**
     - 詳細設定: 作業項目プロセス: **スクラム**
 
-2. **Create** をクリックしてください。
+1. **Create** をクリックしてください。
 
     ![Create Project](images/create-project.png)
 
@@ -65,15 +66,15 @@ lab:
 
 このタスクでは、複数のラボで使用される eShopOnWeb Git リポジトリをインポートします。
 
-1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、前に作成した **eShopOnWeb** プロジェクトを開きます。 **[リポジトリ] > [ファイル]** 、 **[リポジトリをインポートする]** をクリックします。 **[インポート]** を選択します。 **[Git リポジトリをインポートする]** ウィンドウで、URL https://github.com/MicrosoftLearning/eShopOnWeb.git を貼り付けて、 **[インポート]** をクリックします。
+1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、前に作成した **eShopOnWeb** プロジェクトを開きます。 **[リポジトリ] > [ファイル]** 、 **[リポジトリをインポートする]** をクリックします。 **[インポート]** を選択します。 **[Git リポジトリをインポートする]** ウィンドウで、URL <https://github.com/MicrosoftLearning/eShopOnWeb.git> を貼り付けて、 **[インポート]** をクリックします。
 
     ![インポートリポジトリ](images/import-repo.png)
 
-2. リポジトリは次のように編成されています。
+1. リポジトリは次のように編成されています。
     - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています。
     - **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)。
-    - **.azure** フォルダーには、一部のラボ シナリオで使用される Bicep&ARM コードとしてのインフラストラクチャ テンプレートが含まれています。
+    - **infra** フォルダーには、一部のラボ シナリオで使用される Bicep&ARM コードとしてのインフラストラクチャ テンプレートが含まれています。
     - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
-    - **src** フォルダーには、ラボ シナリオで使用される .NET 7 Web サイトが含まれています。
+    - **src** フォルダーには、ラボ シナリオで使用される .NET 8 Web サイトが含まれています。
 
 これで、この AZ-400 コースのさまざまな個々のラボを続けるために必要な前提条件の手順が完了しました。
