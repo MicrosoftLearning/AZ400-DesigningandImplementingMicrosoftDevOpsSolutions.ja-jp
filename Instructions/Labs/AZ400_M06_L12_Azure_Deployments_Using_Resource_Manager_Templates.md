@@ -70,7 +70,7 @@ lab:
 
 このタスクでは、Visual Studio Code を使って Azure Bicep テンプレートを作成します
 
-1. Azure DevOps プロジェクトを開いているブラウザーのタブで、 **[リポジトリ]** と **[ファイル]** に移動します。 `.azure\bicep` フォルダーを開き、`simple-windows-vm.bicep` ファイルを見つけます。
+1. Azure DevOps プロジェクトを開いているブラウザーのタブで、 **[リポジトリ]** と **[ファイル]** に移動します。 `infra` フォルダーを開き、`simple-windows-vm.bicep` ファイルを見つけます。
 
    ![Simple-windows-vm.bicep ファイル](./images/m06/browsebicepfile.png)
 
