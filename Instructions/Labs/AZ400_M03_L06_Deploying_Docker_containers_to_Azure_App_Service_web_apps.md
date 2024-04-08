@@ -125,7 +125,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 #### タスク 1: CI パイプラインをインポートして実行する
 
 1. **[パイプライン] > [パイプライン]** に移動します
-1. **[新しいパイプライン]** ボタンをクリックします
+1. **[新しいパイプライン]** ボタン (または、以前に作成したパイプラインがない場合は、**[パイプラインの作成]**) をクリックします
 1. **[Azure Repos Git (YAML)]** を選びます
 1. **eShopOnWeb** リポジトリを選びます
 1. **[既存の Azure Pipelines YAML ファイル]** を選択します。
@@ -171,10 +171,10 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
     echo $roleName
     ```
 
-1. サービス プリンシパル ID とロール名を取得したら、次のコマンドを実行してロールの割り当てを作成しましょう (**rg-az400-container-NAME** はリソース グループ名に置き換えてください)
+1. サービス プリンシパル ID とロール名を取得したら、次のコマンドを実行してロールの割り当てを作成しましょう (**&lt;rg-az400-container-NAME&gt;** はリソース グループ名に置き換えてください)
 
     ```sh
-    az role assignment create --assignee $spId --role $roleName --scope /subscriptions/$subscriptionId/resourceGroups/**rg-az400-container-NAME**
+    az role assignment create --assignee $spId --role $roleName --scope /subscriptions/$subscriptionId/resourceGroups/<rg-az400-container-NAME>
     ```
 
 これで、コマンド実行の成功を確認する JSON 出力が表示されるはずです。
