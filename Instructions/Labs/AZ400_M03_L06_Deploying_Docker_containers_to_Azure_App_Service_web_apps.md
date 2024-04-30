@@ -129,7 +129,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 1. **[Azure Repos Git (YAML)]** を選びます
 1. **eShopOnWeb** リポジトリを選びます
 1. **[既存の Azure Pipelines YAML ファイル]** を選択します。
-1. **/.ado/eshoponweb-ci-docker.yml** ファイルを選択し、 **[続行]** をクリックします
+1. **メイン** ブランチと **/.ado/eshoponweb-ci-docker.yml** ファイルを選択し、**[続行]** をクリックします
 1. YAML パイプライン定義で、次をカスタマイズします。
    - **YOUR-SUBSCRIPTION-ID** を、お使いの Azure サブスクリプション ID に置き換えます。
    - **rg-az400-container-NAME** と、パイプラインによって作成されるリソース グループ名 (既存のリソース グループでもかまいません)。
@@ -188,7 +188,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 1. **[Azure Repos Git (YAML)]** を選びます
 1. **eShopOnWeb** リポジトリを選びます
 1. **[既存の Azure Pipelines の YAML ファイル]** を選択します
-1. **/.ado/eshoponweb-cd-webapp-docker.yml** ファイルを選択し、 **[続行]** をクリックします
+1. **メイン** ブランチと **/.ado/eshoponweb-cd-webapp-docker.yml** ファイルを選択し、**[続行]** をクリックします
 1. YAML パイプライン定義で、次をカスタマイズします。
    - **YOUR-SUBSCRIPTION-ID** を、お使いの Azure サブスクリプション ID に置き換えます。
    - **rg-az400-container-NAME** をラボで前に定義したリソース グループ名にします。
