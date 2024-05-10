@@ -105,7 +105,62 @@ Web アプリケーションのロード テストは、URL を使用してす�
 
 この演習では、Azure DevOps で YAML を使用して CI/CD パイプラインをコードとして構成します。
 
-#### タスク 1: YAML ビルドとデプロイ定義を追加する
+#### タスク 1: (完了している場合はスキップする) デプロイ用のサービス接続を作成する
+
+このタスクでは、Azure CLI を使ってサービス プリンシパルを作成します。これにより、Azure DevOps で次のことができるようになります。
+
+- Azure サブスクリプションでリソースをデプロイします。
+- 後で作成する Key Vault シークレットに対する読み取りアクセス権を取得する。
+
+> **注**: サービス プリンシパルが既にある場合は、次のタスクに直接進むことができます。
+
+Azure Pipelines から Azure リソースをデプロイするには、サービス プリンシパルが必要です。 パイプラインでシークレットを取得するため、Azure キー コンテナーを作成するときにサービスにアクセス許可を付与する必要があります。
+
+サービス プリンシパルは、パイプライン定義内から Azure サブスクリプションに接続するとき、またはプロジェクト設定ページから新しいサービス接続を作成するときに (自動オプション)、Azure Pipelines によって自動的に作成されます。 ポータルから、または Azure CLI を使用してサービス プリンシパルを手動で作成し、プロジェクト間で再利用することもできます。
+
+1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで、所有者のロールがあり、このサブスクリプションに関連付けられている Microsoft Entra テナントで全体管理者のロールがあるユーザー アカウントを使ってサインインします。
+1. Azure portal で、ページ上部の検索テキストボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
+1. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
+
+   >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。
+
+1. **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行して、Azure サブスクリプション ID とサブスクリプション名の属性の値を取得します。
+
+    ```bash
+    az account show --query id --output tsv
+    az account show --query name --output tsv
+    ```
+
+    > **注**:両方の値をテキスト ファイルにコピーします。 これらは、このラボの後半で必要になります。
+
+1. **Bash** プロンプトの **Cloud Shell** ペインで、次のコマンドを実行してサービス プリンシパルを作成します (**myServicePrincipalName** を文字と数字で構成される一意の文字列に、**mySubscriptionID** をご自分の Azure subscriptionId に置き換えてください)。
+
+    ```bash
+    az ad sp create-for-rbac --name myServicePrincipalName \
+                         --role contributor \
+                         --scopes /subscriptions/mySubscriptionID
+    ```
+
+    > **注**:このコマンドは JSON 出力を生成します。 出力をテキスト ファイルにコピーします。 このラボで後ほど必要になります。
+
+1. 次に、ラボ コンピューターから Web ブラウザーを起動し、Azure DevOps **eShopOnWeb** プロジェクトに移動します。 **[プロジェクトの設定] > [サービス接続] ([パイプライン] の下)** 、 **[新しいサービス接続]** の順にクリックします。
+
+    ![新しいサービス接続](images/new-service-connection.png)
+
+1. **[新しいサービス接続]** ブレードで、 **[Azure Resource Manager]** と **[次へ]** を選択します (下にスクロールする必要がある場合があります)。
+
+1. **[サービス プリンシパル (手動)]** を選択し、 **[次へ]** をクリックします。
+
+1. 前の手順で収集した情報を使って、空のフィールドに入力します。
+    - サブスクリプション ID と名前。
+    - サービス プリンシパル ID (appId)、サービス プリンシパル キー (パスワード)、テナント ID (テナント)。
+    - **[サービス接続名]** に「**azure subs**」と入力します。 この名前は、Azure サブスクリプションと通信するために Azure DevOps サービス接続が必要になるときに、YAML パイプラインで参照されます。
+
+    ![Azure サービス接続](images/azure-service-connection.png)
+
+1. **[確認して保存]** をクリックします。
+
+#### タスク 2:YAML ビルドとデプロイ定義を追加する
 
 このタスクでは、既存のプロジェクトに YAML ビルドの定義を追加します。
 
@@ -188,7 +243,7 @@ Web アプリケーションのロード テストは、URL を使用してす�
 1. ポータルの右側にある **[アシスタントを表示する]** をクリックします。 タスクの一覧で **[Azure App Service デプロイ]** タスクを見つけて選びます。
 1. **[Azure App Service のデプロイ]** ペインで次の設定を指定して、**[追加]** をクリックします。
 
-    - **[Azure サブスクリプション]** ドロップダウン リストで、ラボで前に Azure リソースをデプロイした Azure サブスクリプションを選びます。必要に応じて (これが初めて作成するパイプラインの場合のみ)、**[承認]** をクリックし、メッセージが表示されたら、Azure リソースのデプロイ時に使ったのと同じユーザー アカウントを使って認証を行います。
+    - **[Azure サブスクリプション]** ドロップダウン リストで、先ほど作成したサービス接続を選択します。
     - **[App Service の種類]** で Windows 上の Web アプリが指定されていることを確認します。
     - **[App Service の名前]** ドロップダウン リストで、ラボで以前にデプロイした Web アプリの名前を選びます (**az400eshoponweb...)。
     - **[パッケージまたはフォルダー]** テキスト ボックスで、既定値を `$(Build.ArtifactStagingDirectory)/**/Web.zip` に**更新**します。
@@ -203,7 +258,7 @@ Web アプリケーションのロード テストは、URL を使用してす�
         - task: AzureRmWebAppDeployment@4
           inputs:
             ConnectionType: 'AzureRM'
-            azureSubscription: 'AZURE SUBSCRIPTION HERE (b999999abc-1234-987a-a1e0-27fb2ea7f9f4)'
+            azureSubscription: 'SERVICE CONNECTION NAME'
             appType: 'webApp'
             WebAppName: 'az400eshoponWeb369825031'
             packageForLinux: '$(Build.ArtifactStagingDirectory)/**/Web.zip'
