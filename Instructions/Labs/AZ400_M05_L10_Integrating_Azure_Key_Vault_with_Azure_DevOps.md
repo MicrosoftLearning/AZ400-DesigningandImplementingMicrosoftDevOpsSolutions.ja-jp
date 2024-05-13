@@ -13,7 +13,6 @@ lab:
 - このラボには、**Microsoft Edge** または [Azure DevOps 対応ブラウザー](https://learn.microsoft.com/azure/devops/server/compatibility)が必要です。
 
 - **Azure DevOps 組織を設定する:** このラボで使用できる Azure DevOps 組織がまだない場合は、[組織またはプロジェクト コレクションの作成](https://learn.microsoft.com/azure/devops/organizations/accounts/create-organization)に関するページの手順に従って作成してください。
-
 - 既存の Azure サブスクリプションを識別するか、新しいものを作成します。
 
 ## ラボの概要
@@ -137,7 +136,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 1. **[コードはどこにありますか?]** ウィンドウで、 **[Azure Repos Git (YAML)]** を選択し、**eShopOnWeb** リポジトリを選択します。
 
-1. **[構成]** セクションで、 **[既存の Azure Pipelines YAML ファイル]** を選択します。 次のパス **/.ado/eshoponweb-ci-dockercompose.yml** を指定し、 **[続行]** をクリックします。
+1. **[構成]** セクションで、 **[既存の Azure Pipelines YAML ファイル]** を選択します。 **メイン** ブランチを選択し、パス **/.ado/eshoponweb-ci-dockercompose.yml** を指定し、**[続行]** をクリックします。
 
     ![[パイプライン] を選択します](images/select-ci-container-compose.png)
 
@@ -235,7 +234,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 1. **[コードはどこにありますか?]** ウィンドウで、 **[Azure Repos Git (YAML)]** を選択し、**eShopOnWeb** リポジトリを選択します。
 
-1. **[構成]** セクションで、 **[既存の Azure Pipelines YAML ファイル]** を選択します。 次のパス **/.ado/eshoponweb-cd-aci.yml** を指定し、 **[続行]** をクリックします。
+1. **[構成]** セクションで、 **[既存の Azure Pipelines YAML ファイル]** を選択します。 **メイン** ブランチを選択し、パス **/.ado/eshoponweb-cd-aci.yml** を指定し、**[続行]** をクリックします。
 
 1. YAML パイプライン定義で、次をカスタマイズします。
 

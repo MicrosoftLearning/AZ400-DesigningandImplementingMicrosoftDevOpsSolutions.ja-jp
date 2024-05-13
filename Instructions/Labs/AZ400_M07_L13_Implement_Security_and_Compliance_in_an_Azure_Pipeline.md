@@ -101,7 +101,7 @@ Azure DevOps を Mend Bolt に統合すると以下が可能になります:
 
 1. **[コードはどこにありますか?]** ウィンドウで、 **[Azure Repos Git (YAML)]** を選択し、**eShopOnWeb** リポジトリを選択します。
 
-1. **[構成]** セクションで、 **[既存の Azure Pipelines YAML ファイル]** を選択します。 パス **/.ado/eshoponweb-ci-mend.yml** を指定して、 **[続行]** をクリックします。
+1. **[構成]** セクションで、 **[既存の Azure Pipelines YAML ファイル]** を選択します。 **メイン** ブランチを選択し、パス **/.ado/eshoponweb-ci-mend.yml** を指定し、**[続行]** をクリックします。
 
     ![パイプラインを選択する](images/select-pipeline.png)
 
