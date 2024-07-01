@@ -59,6 +59,10 @@ lab:
    - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
    - **src** フォルダーには、ラボ シナリオで使用される .NET 8 Web サイトが含まれています。
 
+1. **[リポジトリ] > [ブランチ]** に移動します。
+1. **main** ブランチをポイントし、列の右側に表示される省略記号をクリックします。
+1. **[既定のブランチとして設定]** をクリックします。
+
 #### タスク 2: Azure リソースを作成する
 
 このタスクでは、Azure portal を使って Azure Web アプリを作成します。
@@ -197,7 +201,7 @@ lab:
 1. 追加されたコードのスニペットは、次のようになります。
 
    ```yaml
-   - task: DownloadBuildArtifacts@0
+   - task: DownloadBuildArtifacts@1
      inputs:
        buildType: "current"
        downloadType: "single"
@@ -386,7 +390,7 @@ lab:
            runOnce:
              deploy:
                steps:
-                 - task: DownloadBuildArtifacts@0
+                 - task: DownloadBuildArtifacts@1
                    inputs:
                      buildType: "current"
                      downloadType: "single"
