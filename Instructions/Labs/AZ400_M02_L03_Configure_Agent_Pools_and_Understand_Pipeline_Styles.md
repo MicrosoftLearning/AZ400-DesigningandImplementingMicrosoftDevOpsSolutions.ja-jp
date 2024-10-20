@@ -86,9 +86,10 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
 
    - 1 つのステージ: Build
    - 1 つのジョブ: Build
-   - Build ジョブ内の 3 つのタスク:
+   - ビルド ジョブ内の 4 つのタスク:
    - Dotnet Restore
    - Dotnet Build
+   - Dotnet Test
    - Dotnet Publish
 
 1. **[パイプライン YAML の確認]** ペインで、 **[実行]** ボタンの横にある下向きのキャレット記号をクリックして、 **[保存]** をクリックします。
@@ -196,7 +197,7 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
 1. PAT トークンを取り消します。
 1. Repos/.ado/eshoponweb-ci-pr.yml ファイルに移動し、**[編集]** を選び、13 から 15 行目 (エージェント プール スニペット) を削除して元の `vmImage: ubuntu-latest` に戻すことで、**eshoponweb-ci-pr.yml** ファイルの変更を元に戻します。 (これは、この後のラボ演習で同じサンプル パイプライン ファイルを使うためです)。
 
-![パイプライン プールを vmImage の設定に戻す](images/m3/eshoponweb-ci-pr-vmimage_v1.png)
+![パイプライン プールを vmImage の設定に戻す](images/m3/eshoponweb-ci-pr-vmimage_v2.png)
 
 ## 確認
 
