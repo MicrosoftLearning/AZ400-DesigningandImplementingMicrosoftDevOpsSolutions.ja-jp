@@ -38,11 +38,11 @@ lab:
 この演習では、既存の [eShopOnWeb](https://github.com/MicrosoftLearning/eShopOnWeb) リポジトリのコードを独自の GitHub プライベート リポジトリにインポートします。
 
 リポジトリは次のように編成されています。
-    - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています。
-    - **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)。
-    - **infra** フォルダーには、一部のラボ シナリオで使用される Bicep および ARM のコードとしてのインフラストラクチャ テンプレートが含まれています。
-    - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
-    - **src** フォルダーには、ラボ シナリオで使用される .NET 8 Web サイトが含まれています。
+- **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています。
+- **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)。
+- **infra** フォルダーには、一部のラボ シナリオで使用される Bicep および ARM のコードとしてのインフラストラクチャ テンプレートが含まれています。
+- **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
+- **src** フォルダーには、ラボ シナリオで使用される .NET 8 Web サイトが含まれています。
 
 #### タスク 1: GitHub でパブリック リポジトリを作成し、eShopOnWeb をインポートする
 
