@@ -6,8 +6,6 @@ lab:
 
 # YAML を使用してパイプラインをコードとして構成する
 
-## 受講生用ラボ マニュアル
-
 ## ラボの要件
 
 - このラボには、**Microsoft Edge** または [Azure DevOps 対応ブラウザー](https://docs.microsoft.com/azure/devops/server/compatibility)が必要です。
@@ -28,13 +26,13 @@ lab:
 
 - Azure DevOps で YAML を使用して CI/CD パイプラインをコードとして構成する。
 
-## 推定時間:60 分
+## 推定時間:45 分
 
 ## Instructions
 
 ### 演習 0:ラボの前提条件の構成
 
-この演習では、ラボの前提条件を設定します。これは、[eShopOnWeb](https://github.com/MicrosoftLearning/eShopOnWeb) に基づくリポジトリを含む新しい Azure DevOps プロジェクトで構成されます。
+この演習では、ラボの前提条件を設定します。
 
 #### タスク 1: (完了している場合はスキップしてください) チーム プロジェクトを作成して構成する
 
@@ -42,15 +40,15 @@ lab:
 
 1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織を開きます。 **[新しいプロジェクト]** をクリックします。 プロジェクトに「**eShopOnWeb_MultiStageYAML**」という名前を付け、他のフィールドは既定値のままにします。 **[作成]** をクリックします。
 
-   ![Create Project](images/create-project.png)
+   ![[新しいプロジェクトの作成] パネルのスクリーンショット。](images/create-project.png)
 
 #### タスク 2: (完了している場合はスキップしてください) eShopOnWeb Git リポジトリをインポートする
 
 このタスクでは、複数のラボで使用される eShopOnWeb Git リポジトリをインポートします。
 
-1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、前に作成した **eShopOnWeb_MultiStageYAML** プロジェクトを開きます。 **[リポジトリ] > [ファイル]** 、 **[リポジトリをインポートする]** をクリックします。 **[インポート]** を選択します。 **[Git リポジトリをインポートする]** ウィンドウで、URL https://github.com/MicrosoftLearning/eShopOnWeb.git を貼り付けて、 **[インポート]** をクリックします。
+1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、前に作成した **eShopOnWeb_MultiStageYAML** プロジェクトを開きます。 **[リポジトリ]、[ファイル]**、**[リポジトリをインポートする]** の順にクリックします。 **インポート** を選択します。 **[Git リポジトリをインポートする]** ウィンドウで、URL https://github.com/MicrosoftLearning/eShopOnWeb.git を貼り付けて、 **[インポート]** をクリックします。
 
-   ![インポートリポジトリ](images/import-repo.png)
+   ![[リポジトリのインポート] パネルのスクリーンショット。](images/import-repo.png)
 
 1. リポジトリは次のように編成されています。
    - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています。
@@ -59,11 +57,11 @@ lab:
    - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
    - **src** フォルダーには、ラボ シナリオで使用される .NET 8 Web サイトが含まれています。
 
-1. **[リポジトリ] > [ブランチ]** に移動します。
+1. **[リポジトリ]、[ブランチ]** の順に移動します。
 1. **main** ブランチをポイントし、列の右側に表示される省略記号をクリックします。
 1. **[既定のブランチとして設定]** をクリックします。
 
-#### タスク 2: Azure リソースを作成する
+#### タスク 3:Azure リソースを作成します
 
 このタスクでは、Azure portal を使って Azure Web アプリを作成します。
 
@@ -86,14 +84,14 @@ lab:
    ```
 
    ```bash
-   RESOURCEGROUPNAME='az400m05l11-RG'
+   RESOURCEGROUPNAME='az400m03l07-RG'
    az group create --name $RESOURCEGROUPNAME --location $LOCATION
    ```
 
 1. 次のコマンドを実行して Windows App Service プランを作成するには、次のようにします。
 
    ```bash
-   SERVICEPLANNAME='az400m05l11-sp1'
+   SERVICEPLANNAME='az400m03l07-sp1'
    az appservice plan create --resource-group $RESOURCEGROUPNAME --name $SERVICEPLANNAME --sku B3
    ```
 
@@ -151,7 +149,7 @@ lab:
      jobs:
        - job: Deploy
          pool:
-           vmImage: "windows-2019"
+           vmImage: "windows-latest"
          steps:
    ```
 
@@ -195,7 +193,7 @@ lab:
 1. このタスクに対する次のパラメーターを指定します。
    - ダウンロードする成果物の生成元: **現在のビルド**
    - ダウンロードの種類: **特定の成果物**
-   - 成果物名: **一覧から [Web サイト] を選びます** (一覧に自動的に表示されない場合は、 **「Website」と直接入力します**)
+   - 成果物名: **一覧から [Web サイト] を選択します** (一覧に自動的に表示されない場合は、**「`Website`」と直接入力します**)
    - ダウンロード先ディレクトリ: **$(Build.ArtifactStagingDirectory)**
 1. **[追加]** をクリックします。
 1. 追加されたコードのスニペットは、次のようになります。
@@ -297,7 +295,7 @@ lab:
     jobs:
     - job: Deploy
       pool:
-        vmImage: 'windows-2019'
+        vmImage: 'windows-latest'
       steps:
       - task: DownloadBuildArtifacts@0
         inputs:
@@ -316,7 +314,7 @@ lab:
 
    ```
 
-#### タスク 4:デプロイされたサイトをレビューする
+#### タスク 3: デプロイされたサイトを確認する
 
 1. Azure portal を表示している Web ブラウザー ウィンドウに戻り、Azure Web アプリのプロパティが表示されているブレードに移動します。
 1. [Azure Web アプリ] ブレードで **[概要]** をクリックします。[概要] ブレードで **[参照]** をクリックし、新しい Web ブラウザー タブでサイトを開きます。
@@ -333,11 +331,10 @@ lab:
 1. Azure DevOps プロジェクト **eShopOnWeb_MultiStageYAML** から、**[パイプライン]** に移動します。
 1. 左側の [パイプライン] メニューで、 **[環境]** を選びます。
 1. **[環境の作成]** をクリックします。
-1. **[新しい環境]** ペインで、環境に **approvals** という名前を追加します。
+1. **[新しい環境]** ペインで、環境に **`approvals`** という名前を追加します。
 1. **[リソース]** で **[なし]** を選びます。
 1. **[作成]** ボタンを選んで設定を確定します。
-1. 環境が作成されたら、[リソースの追加] ボタンの横にある "省略記号" [...] をクリックします。
-1. **[承認とチェック]** を選びます。
+1. 環境を作成したら、新しい **approvals** 環境から **[承認とチェック]** タブを選択します。
 1. **[最初のチェックを追加]** で、 **[承認]** を選びます。
 1. 自分の Azure DevOps ユーザー アカウント名を **[承認者]** フィールドに追加します。
 
@@ -360,12 +357,12 @@ lab:
      - job: Deploy
        environment: approvals
        pool:
-         vmImage: "windows-2019"
+         vmImage: "windows-latest"
    ```
 
 1. 環境はデプロイ ステージに固有の設定なので、"jobs" では使用できません。 したがって、現在のジョブ定義にいくつか追加の変更を行う必要があります。
 1. **60** 行目で、名前を "- job: Deploy" から **- deployment: Deploy** に変更します
-1. 次に、**63** 行目 (vmImage: Windows-2019) で、新しい空の行を追加します。
+1. 次に、**63** 行目 (vmImage: windows-latest) で、新しい空の行を追加します。
 1. 次の Yaml スニペットを貼り付けます。
 
    ```yaml
@@ -385,7 +382,7 @@ lab:
        - deployment: Deploy
          environment: approvals
          pool:
-           vmImage: "windows-2019"
+           vmImage: "windows-latest"
          strategy:
            runOnce:
              deploy:
@@ -420,30 +417,8 @@ lab:
 
    > **注:** この例では承認のみを使っていますが、Azure Monitor や REST API などの他のチェックも同様の方法で使用できます
 
-### 演習 3:Azure ラボ リソースを削除する
-
-この演習では、このラボでプロビジョニングした Azure リソースを削除し、予期しない料金を排除します。
-
-> **注**:新規に作成し、使用しなくなったすべての Azure リソースを削除することを忘れないでください。 使用していないリソースを削除することで、予期しない料金が発生しなくなります。
-
-#### タスク 1:Azure ラボ リソースを削除する
-
-このタスクでは、Azure Cloud Shell を使用して、このラボでプロビジョニングされた Azure リソースを削除し、不要な料金を排除します。
-
-1. Azure portal で、**Cloud Shell** ウィンドウ内で **Bash** シェル セッションを開きます。
-1. 次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
-
-   ```sh
-   az group list --query "[?starts_with(name,'az400m05l11-RG')].name" --output tsv
-   ```
-
-1. 次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
-
-   ```sh
-   az group list --query "[?starts_with(name,'az400m05l11-RG')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-   ```
-
-   > **注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。
+   > [!IMPORTANT]
+   > 不要な料金が発生しないように、Azure portal で作成されたリソースを必ず削除してください。
 
 ## 確認
 
