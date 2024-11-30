@@ -6,8 +6,6 @@ lab:
 
 # CI/CD のために GitHub Actions を実装する
 
-## 受講生用ラボ マニュアル
-
 ## ラボの要件
 
 - このラボには、**Microsoft Edge** または [Azure DevOps 対応ブラウザー](https://docs.microsoft.com/azure/devops/server/compatibility)が必要です。
@@ -31,18 +29,18 @@ lab:
 
 ## 推定時間:40 分
 
-## Instructions
+## 手順
 
-### 演習 0: eShopOnWeb を GitHub リポジトリにインポートする
+### 演習 1: eShopOnWeb を GitHub リポジトリにインポートする
 
 この演習では、既存の [eShopOnWeb](https://github.com/MicrosoftLearning/eShopOnWeb) リポジトリのコードを独自の GitHub プライベート リポジトリにインポートします。
 
 リポジトリは次のように編成されています。
-    - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています。
-    - **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)。
-    - **infra** フォルダーには、一部のラボ シナリオで使用される Bicep および ARM のコードとしてのインフラストラクチャ テンプレートが含まれています。
-    - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
-    - **src** フォルダーには、ラボ シナリオで使用される .NET 8 Web サイトが含まれています。
+- **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています。
+- **.devcontainer** フォルダーには、コンテナーを使って開発するためのセットアップが含まれています (VS Code でローカルに、または GitHub Codespaces で)。
+- **infra** フォルダーには、一部のラボ シナリオで使用される Bicep および ARM のコードとしてのインフラストラクチャ テンプレートが含まれています。
+- **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
+- **src** フォルダーには、ラボ シナリオで使用される .NET 8 Web サイトが含まれています。
 
 #### タスク 1: GitHub でパブリック リポジトリを作成し、eShopOnWeb をインポートする
 
@@ -50,11 +48,11 @@ lab:
 
 1. ラボ コンピューターから Web ブラウザーを起動し、[GitHub Web サイト](https://github.com/)に移動し、ご自分のアカウントを使ってサインインし、 **[New]** をクリックして新しいリポジトリを作成します。
 
-    ![リポジトリを作成する](images/github-new.png)
+    ![新しいリポジトリを作成するボタンのスクリーンショット。](images/github-new.png)
 
 1. **[Create a new repository]** ページで、 **[Import a repository]** のリンク (ページ タイトルの下) をクリックします。
 
-    > 注: インポート Web サイトは、 <https://github.com/new/import> で直接開くこともできます。
+    > **注**: インポート Web サイトは、<https://github.com/new/import> で直接開くこともできます。
 
 1. **[Import your project to GitHub]** ページ上で:
 
@@ -69,9 +67,9 @@ lab:
 
 1. リポジトリ ページで、 **[Settings]** に移動し、 **[Actions] > [General]** をクリックし、 **[Allow all actions and reusable workflows]** オプションを選択します。 **[Save]** をクリックします。
 
-    ![GitHub Actions の有効化](images/enable-actions.png)
+    ![GitHub Actions を有効にするオプションのスクリーンショット。](images/enable-actions.png)
 
-### 演習 1: GitHub リポジトリと Azure アクセスを設定する
+### 演習 2: GitHub リポジトリと Azure アクセスをセットアップする
 
 この演習では、GitHub Actions から Azure サブスクリプションにアクセスする GitHub を承認するための Azure サービス プリンシパルを作成します。 また、Web サイトをビルド、テストし、Azure にデプロイする GitHub ワークフローも設定します。
 
@@ -79,20 +77,21 @@ lab:
 
 このタスクでは、GitHub が目的のリソースをデプロイするために使用する Azure サービス プリンシパルを作成します。 代わりに、シークレットレス認証メカニズムとして [Azure の OpenID Connect](https://docs.github.com/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure) を使用することもできます。
 
-1. ラボ コンピューターのブラウザー ウィンドウで、Azure Portal (https://portal.azure.com/) を開きます。
+1. ラボ コンピューターのブラウザー ウィンドウで、Azure portal (<https://portal.azure.com/>) を開きます。
 1. ポータルで、 **[リソース グループ]** を探してクリックします。
 1. **[+ 作成]** をクリックして、演習用の新しいリソース グループを作成します。
-1. **[リソース グループを作成します]** タブで、リソース グループに **rg-eshoponweb-NAME** という名前を付けます (NAME を一意の別名に置き換えてください)。 **[確認と作成] > [作成]** をクリックします。
+1. **[リソース グループを作成します]** タブで、リソース グループに **rg-eshoponweb-NAME** という名前を付けます (NAME を一意の別名に置き換えてください)。 **[確認および作成]、[作成]** の順にクリックします。
 1. Azure Portal で、(検索バーの横にある) **Cloud Shell** を開きます。
 
-    > 注: Cloud Shell を初めて開く場合は、[永続ストレージ](https://learn.microsoft.com/azure/cloud-shell/persisting-shell-storage)を構成する必要があります
+    > **注**: Cloud Shell を初めて開く場合は、[永続ストレージ](https://learn.microsoft.com/azure/cloud-shell/persisting-shell-storage)を構成する必要があります
 
 1. ターミナルが **Bash** モードで実行されていることを確認し、次のコマンドを実行します。**SUBSCRIPTION-ID** と **RESOURCE-GROUP** を独自の識別子に置き換えてください (どちらも [リソース グループ] の **[概要]** ページで確認できます)。
 
     `az ad sp create-for-rbac --name GH-Action-eshoponweb --role contributor --scopes /subscriptions/SUBSCRIPTION-ID/resourceGroups/RESOURCE-GROUP --sdk-auth`
 
-    > 注: これが 1 行として入力されるか貼り付けられていることを確認します。
-    > 注: このコマンドを実行すると、前に作成したリソース グループへの共同作成者アクセス権を持つサービス プリンシパルが作成されます。 これにより、GitHub Actions には、このリソース グループと対話するために必要なアクセス許可のみが付与されます (サブスクリプションの残りの部分は含まれません)
+    > **注**: これは必ず 1 行で入力するか貼り付けてください。
+
+    > **注**: このコマンドにより、前に作成したリソース グループへの共同作成者アクセス権を持つサービス プリンシパルが作成されます。 これにより、GitHub Actions には、このリソース グループと対話するために必要なアクセス許可のみが付与されます (サブスクリプションの残りの部分は含まれません)
 
 1. コマンドによって JSON オブジェクトが出力されます。後でそれをワークフローの GitHub シークレットとして使います。 その JSON をコピーしておきます。 この JSON には、Microsoft Entra ID (サービス プリンシパル) の名前で Azure に対する認証に使用される識別子が含まれます。
 
@@ -106,7 +105,7 @@ lab:
         }
     ```
 
-1. また、次のコマンドを実行して、後でデプロイする **Azure App Service** のリソース プロバイダーを登録する必要もあります。
+1. (既に登録済みの場合はスキップしてください) また、次のコマンドを実行して、後でデプロイする **Azure App Service** のリソース プロバイダーを登録する必要もあります。
 
    ```bash
    az provider register --namespace Microsoft.Web
@@ -142,15 +141,15 @@ lab:
 1. ブラウザー ウィンドウで、**eShopOnWeb** GitHub リポジトリに戻ります。
 1. リポジトリ ページで、 **[Actions]** に移動すると、実行前のワークフロー設定が表示されます。 そのタイルをクリックします。
 
-    ![進行中の GitHub ワークフロー](images/gh-actions.png)
+    ![進行中の GitHub ワークフローのスクリーンショット。](images/gh-actions.png)
 
 1. ワークフローが完了するまで待ちます。 **[Summary]** で、実行から保持される 2 つのワークフロー ジョブ、状態、成果物を確認できます。 各ジョブをクリックしてログを確認できます。
 
-    ![ワークフローの成功](images/gh-action-success.png)
+    ![正常に終了したワークフローのスクリーンショット。](images/gh-action-success.png)
 
 1. ブラウザー ウィンドウで、Azure portal (<https://portal.azure.com/>) に戻ります。 前に作成したリソース グループを開きます。 bicep テンプレートを使用した GitHub アクションによって、Azure App Service プランと App Service が作成されていることがわかります。 発行された Web サイトが表示され、App Service が開きます。 **[参照]** をクリックします。
 
-    ![WebApp を参照する](images/browse-webapp.png)
+    ![WebApp 参照のスクリーンショット。](images/browse-webapp.png)
 
 #### (省略可能) タスク 4: GitHub 環境を使って手動承認の事前デプロイを追加する
 
@@ -162,39 +161,23 @@ lab:
 1. リポジトリ ページで、 **[Settings]** に移動し、 **[Environments]** を開き、 **[New environment]** をクリックします。
 1. **Development** の名前を指定し、 **[Configure Environment]** をクリックします。
 
-    > 注: **環境**の一覧に **Development** という名前の環境が既に存在する場合は、環境名をクリックしてその構成を開きます。  
+    > **注**: **[Environments]** 一覧に **Development** という名前の環境が既に存在する場合は、環境名をクリックしてその構成を開きます。  
 
 1. **[Configure Development]** タブで、オプション **[Required Reviewers]** と、レビュー担当者としての GitHub アカウントをオンにします。 **[Save protection rules]** をクリックします。
-1. 次に、保護規則をテストしましょう。 リポジトリ ページで、 **[Actions]** に移動し、 **[eShopOnWeb Build and Test]** ワークフローをクリックし、 **[Run workflow] > [Run workflow]** をクリックして手動で実行します。
+1. 次に、保護規則をテストしましょう。 リポジトリ ページで、**[Actions]** に移動し、**[eShopOnWeb Build and Test]** ワークフローをクリックし、**[Run workflow]、[Run workflow]** の順にクリックして手動で実行します。
 
-    ![ワークフローを手動でトリガーする](images/gh-manual-run.png)
+    ![ワークフローの手動トリガーのスクリーンショット。](images/gh-manual-run.png)
 
 1. 開始されたワークフローの実行をクリックし、**buildandtest** ジョブが完了するまで待ちます。 **deploy** ジョブに達すると、レビュー要求が表示されます。
 
 1. **[Review deployments]** をクリックし、 **[Development]** をオンにして、 **[Approve and deploy]** をクリックします。
 
-    ![承認](images/gh-approve.png)
+    ![アクションの承認のスクリーンショット。](images/gh-approve.png)
 
 1. ワークフローは **deploy** ジョブの実行に続き、完了します。
 
-### 演習 2:Azure ラボ リソースを削除する
-
-この演習では、Azure Cloud Shell を使用して、このラボでプロビジョニングされた Azure リソースを削除し、不要な料金を排除します。
-
-1. Azure portal で、**Cloud Shell** ウィンドウ内で **Bash** シェル セッションを開きます。
-1. 次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
-
-    ```sh
-    az group list --query "[?starts_with(name,'rg-eshoponweb')].name" --output tsv
-    ```
-
-1. 次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
-
-    ```sh
-    az group list --query "[?starts_with(name,'rg-eshoponweb')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-    ```
-
-    >**注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。
+> [!IMPORTANT]
+> 不要な料金が発生しないように、Azure portal で作成されたリソースを必ず削除してください。
 
 ## 確認
 
