@@ -6,8 +6,6 @@ lab:
 
 # Azure Load Testing を使ってアプリケーション パフォーマンスを監視する
 
-## 受講生用ラボ マニュアル
-
 ## ラボの要件
 
 - このラボには、**Microsoft Edge** または [Azure DevOps 対応ブラウザー](https://docs.microsoft.com/azure/devops/server/compatibility)が必要です。
@@ -42,7 +40,7 @@ Web アプリケーションのロード テストは、URL を使用してす�
 
 ### 演習 0:ラボの前提条件の構成
 
-この演習では、ラボの前提条件を設定します。これは、[eShopOnWeb](https://github.com/MicrosoftLearning/eShopOnWeb) に基づくリポジトリを含む新しい Azure DevOps プロジェクトで構成されます。
+この演習では、ラボの前提条件を設定します。
 
 #### タスク 1: (完了している場合はスキップしてください) チーム プロジェクトを作成して構成する
 
@@ -50,15 +48,15 @@ Web アプリケーションのロード テストは、URL を使用してす�
 
 1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織を開きます。 **[新しいプロジェクト]** をクリックします。 プロジェクトに **eShopOnWeb** という名前を付け、 **[作業項目プロセス]** ドロップダウンで **[スクラム]** を選びます。 **[作成]** をクリックします。
 
-    ![Create Project](images/create-project.png)
+    ![[新しいプロジェクトの作成] パネルのスクリーンショット。](images/create-project.png)
 
 #### タスク 2: (完了している場合はスキップしてください) eShopOnWeb Git リポジトリをインポートする
 
 このタスクでは、複数のラボで使用される eShopOnWeb Git リポジトリをインポートします。
 
-1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、前に作成した **eShopOnWeb** プロジェクトを開きます。 **[リポジトリ] > [ファイル]** 、 **[インポート]** をクリックします。 **[Git リポジトリをインポートする]** ウィンドウで、URL https://github.com/MicrosoftLearning/eShopOnWeb.git を貼り付けて、 **[インポート]** をクリックします。
+1. ラボ コンピューターのブラウザー ウィンドウで、Azure DevOps 組織と、前に作成した **eShopOnWeb** プロジェクトを開きます。 **[リポジトリ]、[ファイル]**、**[インポート]** の順にクリックします。 **[Git リポジトリをインポートする]** ウィンドウで、URL <https://github.com/MicrosoftLearning/eShopOnWeb.git> を貼り付けて、 **[インポート]** をクリックします。
 
-    ![インポートリポジトリ](images/import-repo.png)
+    ![リポジトリのインポート パネルのスクリーンショット。](images/import-repo.png)
 
 1. リポジトリは次のように編成されています。
     - **.ado** フォルダーには、Azure DevOps の YAML パイプラインが含まれています
@@ -67,23 +65,25 @@ Web アプリケーションのロード テストは、URL を使用してす�
     - **.github** フォルダーには、YAML GitHub ワークフローの定義が含まれています。
     - **src** フォルダーには、ラボ シナリオで使用される .NET 8 Web サイトが含まれています。
 
-1. **[リポジトリ] > [ブランチ]** に移動します。
+#### タスク 3: (完了している場合はスキップしてください) メイン ブランチを既定のブランチとして設定する
+
+1. **[リポジトリ]、[ブランチ]** の順に移動します。
 1. **main** ブランチをポイントし、列の右側に表示される省略記号をクリックします。
 1. **[既定のブランチとして設定]** をクリックします。
 
-#### タスク 3:Azure リソースを作成します
+#### タスク 4: Azure リソースを作成する
 
 このタスクでは、Azure portal でクラウド シェルを使って Azure Web アプリを作成します。
 
-1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで、所有者のロールがあり、このサブスクリプションに関連付けられている Microsoft Entra テナントで全体管理者のロールがあるユーザー アカウントを使ってサインインします。
+1. ラボ コンピューターから Web ブラウザーを起動して、[**Azure portal**](https://portal.azure.com) に移動し、サインインします。
 1. Azure portal のツールバーで、検索テキスト ボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
 1. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
-    >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。
+    > **注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。
 
 1. **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行してリソース グループを作成します (`<region>` プレースホルダーを 'eastus' などのご自分の場所に最も近い Azure リージョンの名前に置き換えます)。
 
     ```bash
-    RESOURCEGROUPNAME='az400m09l16-RG'
+    RESOURCEGROUPNAME='az400m08l14-RG'
     LOCATION='<region>'
     az group create --name $RESOURCEGROUPNAME --location $LOCATION
     ```
@@ -91,7 +91,7 @@ Web アプリケーションのロード テストは、URL を使用してす�
 1. 次のコマンドを実行して Windows App Service プランを作成するには、次のようにします。
 
     ```bash
-    SERVICEPLANNAME='az400l16-sp'
+    SERVICEPLANNAME='az400l14-sp'
     az appservice plan create --resource-group $RESOURCEGROUPNAME \
         --name $SERVICEPLANNAME --sku B3
     ```
@@ -109,62 +109,7 @@ Web アプリケーションのロード テストは、URL を使用してす�
 
 この演習では、Azure DevOps で YAML を使用して CI/CD パイプラインをコードとして構成します。
 
-#### タスク 1: (完了している場合はスキップする) デプロイ用のサービス接続を作成する
-
-このタスクでは、Azure CLI を使ってサービス プリンシパルを作成します。これにより、Azure DevOps で次のことができるようになります。
-
-- Azure サブスクリプションでリソースをデプロイします。
-- 後で作成する Key Vault シークレットに対する読み取りアクセス権を取得する。
-
-> **注**: サービス プリンシパルが既にある場合は、次のタスクに直接進むことができます。
-
-Azure Pipelines から Azure リソースをデプロイするには、サービス プリンシパルが必要です。 パイプラインでシークレットを取得するため、Azure キー コンテナーを作成するときにサービスにアクセス許可を付与する必要があります。
-
-サービス プリンシパルは、パイプライン定義内から Azure サブスクリプションに接続するとき、またはプロジェクト設定ページから新しいサービス接続を作成するときに (自動オプション)、Azure Pipelines によって自動的に作成されます。 ポータルから、または Azure CLI を使用してサービス プリンシパルを手動で作成し、プロジェクト間で再利用することもできます。
-
-1. ラボのコンピューターで Web ブラウザーを起動し、[**Azure portal**](https://portal.azure.com) に移動します。このラボで使用する Azure サブスクリプションで、所有者のロールがあり、このサブスクリプションに関連付けられている Microsoft Entra テナントで全体管理者のロールがあるユーザー アカウントを使ってサインインします。
-1. Azure portal で、ページ上部の検索テキストボックスのすぐ右側にある **Cloud Shell** アイコンをクリックします。
-1. **Bash** または **PowerShell** の選択を求めるメッセージが表示されたら、**[Bash]** を選択します。
-
-   >**注**: **Cloud Shell** を初めて起動し、[**ストレージがマウントされていません**] というメッセージが表示された場合は、このラボで使用しているサブスクリプションを選択し、**[ストレージの作成]** を選択します。
-
-1. **Bash** プロンプトの **[Cloud Shell]** ペインで、次のコマンドを実行して、Azure サブスクリプション ID とサブスクリプション名の属性の値を取得します。
-
-    ```bash
-    az account show --query id --output tsv
-    az account show --query name --output tsv
-    ```
-
-    > **注**:両方の値をテキスト ファイルにコピーします。 これらは、このラボの後半で必要になります。
-
-1. **Bash** プロンプトの **Cloud Shell** ペインで、次のコマンドを実行してサービス プリンシパルを作成します (**myServicePrincipalName** を文字と数字で構成される一意の文字列に、**mySubscriptionID** をご自分の Azure subscriptionId に置き換えてください)。
-
-    ```bash
-    az ad sp create-for-rbac --name myServicePrincipalName \
-                         --role contributor \
-                         --scopes /subscriptions/mySubscriptionID
-    ```
-
-    > **注**:このコマンドは JSON 出力を生成します。 出力をテキスト ファイルにコピーします。 このラボで後ほど必要になります。
-
-1. 次に、ラボ コンピューターから Web ブラウザーを起動し、Azure DevOps **eShopOnWeb** プロジェクトに移動します。 **[プロジェクトの設定] > [サービス接続] ([パイプライン] の下)** 、 **[新しいサービス接続]** の順にクリックします。
-
-    ![新しいサービス接続](images/new-service-connection.png)
-
-1. **[新しいサービス接続]** ブレードで、 **[Azure Resource Manager]** と **[次へ]** を選択します (下にスクロールする必要がある場合があります)。
-
-1. **[サービス プリンシパル (手動)]** を選択し、 **[次へ]** をクリックします。
-
-1. 前の手順で収集した情報を使って、空のフィールドに入力します。
-    - サブスクリプション ID と名前。
-    - サービス プリンシパル ID (appId)、サービス プリンシパル キー (パスワード)、テナント ID (テナント)。
-    - **[サービス接続名]** に「**azure subs**」と入力します。 この名前は、Azure サブスクリプションと通信するために Azure DevOps サービス接続が必要になるときに、YAML パイプラインで参照されます。
-
-    ![Azure サービス接続](images/azure-service-connection.png)
-
-1. **[確認して保存]** をクリックします。
-
-#### タスク 2:YAML ビルドとデプロイ定義を追加する
+#### タスク 1: YAML ビルドとデプロイ定義を追加する
 
 このタスクでは、既存のプロジェクトに YAML ビルドの定義を追加します。
 
@@ -251,7 +196,7 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
     - **[App Service の種類]** で Windows 上の Web アプリが指定されていることを確認します。
     - **[App Service の名前]** ドロップダウン リストで、ラボで以前にデプロイした Web アプリの名前を選びます (**az400eshoponweb...)。
     - **[パッケージまたはフォルダー]** テキスト ボックスで、既定値を `$(Build.ArtifactStagingDirectory)/**/Web.zip` に**更新**します。
-    - **[アプリケーションと構成の設定]** を展開し、値 `-UseOnlyInMemoryDatabase true -ASPNETCORE_ENVIRONMENT Development` を追加します
+    - **[アプリケーションと構成の設定]** を展開し、[アプリの設定] テキスト ボックスにキーと値のペア `-UseOnlyInMemoryDatabase true -ASPNETCORE_ENVIRONMENT Development` を追加します。
 1. **[追加]** ボタンをクリックし、[アシスタント] ペインで設定を確認します。
 
     > **注**:これにより、デプロイ タスクが YAML パイプラインの定義に自動的に追加されます。
@@ -271,17 +216,17 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
     > **注**:**packageForLinux** パラメーターは、このラボの状況では不適切ですが、Windows または Linux では有効です。
 
-1. 更新を yml ファイルに保存する前に、もっとわかりやすい名前を付けます。 yaml エディター ウィンドウの上部に、**EShopOnweb/azure-pipelines-#.yml** と表示されます。 (# は数字で、通常は 1 ですが、設定によっては異なる場合があります。)**そのファイル名**を選び、名前を **m09l16-pipeline.yml** に変更します
+1. 更新を yml ファイルに保存する前に、もっとわかりやすい名前を付けます。 yaml エディター ウィンドウの上部に、**EShopOnweb/azure-pipelines-#.yml** と表示されます。 (# は数字で、通常は 1 ですが、設定によっては異なる場合があります。) **そのファイル名**を選択し、名前を **m08l14-pipeline.yml** に変更します
 
-1. **[保存]** をクリックし、**[保存]** ペインでもう一度 **[保存]** をクリックして、master ブランチに変更を直接コミットします。
+1. **[保存]** をクリックし、 **[保存]** ペインでもう一度 **[保存]** をクリックして、メイン ブランチに変更を直接コミットします。
 
     > **注**: 元の CI-YAML は新しいビルドを自動的にトリガーするように構成されていなかったため、手動で開始する必要があります。
 
 1. Azure DevOps の左側のメニューから **[パイプライン]** に移動し、もう一度 **[パイプライン]** を選びます。 次に、**[すべて]** を選んで、最近使ったものだけでなく、すべてのパイプライン定義を開きます。
 
-    > **注**: 前のラボ演習のパイプラインをすべて残している場合、次のスクリーンショットで示すように、パイプラインの既定の **eShopOnWeb (#)** シーケンス名がこの新しいパイプラインで再利用されている可能性があります。 パイプラインを選択します (おそらくシーケンス番号が最も大きいものを選び、[編集] を選択して、m09l16-pipeline.yml コード ファイルを指していることを確認します)。
+    > **注**: 前のラボ演習のパイプラインをすべて残している場合、次のスクリーンショットで示すように、パイプラインの既定の **eShopOnWeb (#)** シーケンス名がこの新しいパイプラインで再利用されている可能性があります。 パイプラインを選択します (おそらくシーケンス番号が最も大きいものを選択し、[編集] を選択して、m08l14-pipeline.yml コード ファイルを指していることを確認します)。
 
-    ![eShopOnWeb の実行を示す Azure Pipelines のスクリーンショット](images/m3/eshoponweb-m9l16-pipeline.png)
+    ![eShopOnWeb の実行を示す Azure Pipelines のスクリーンショット。](images/m3/eshoponweb-m9l16-pipeline.png)
 
 1. 表示されるペインで **[実行]** をクリックしてこのパイプラインが実行することを確認し、もう一度 **[実行]** をクリックして確認します。
 1. **[Build .Net Core Solution] (.Net Core ソリューションをビルドする)** と **[Deploy to Azure Web App] (Azure Web アプリにデプロイする)** という 2 つの異なるステージが表示されることに注意してください。
@@ -315,13 +260,13 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 このタスクでは、Azure Load Testing リソースを Azure サブスクリプションにデプロイします。
 
 1. Azure Portal (<https://portal.azure.com>) から、**[Azure リソースの作成]** に移動します。
-1. [Search Services and marketplace] (サービスとマーケットプレースの検索) 検索フィールドに「**Azure Load Testing**」と入力します。
+1. [サービスとマーケットプレースの検索] 検索フィールドに「**`Azure Load Testing`**」と入力します。
 1. 検索結果から (Microsoft が公開した) **[Azure Load Testing]** を選びます。
 1. [Azure Load Testing] ページの **[作成]** をクリックしてデプロイ プロセスを開始します。
 1. [Create a Load Testing Resource] (Load Testing リソースの作成) ページで、リソースのデプロイに必要な詳細を指定します。
    - **サブスクリプション**: Azure サブスクリプションを選びます
    - **リソース グループ**: 前の演習で Web App Service のデプロイに使ったリソース グループを選びます
-   - **名前**: eShopOnWebLoadTesting
+   - **名前**: `eShopOnWebLoadTesting`
    - **リージョン**: 自分の地域に近いリージョンを選びます
 
     > **注**: Azure Load Testing サービスは、すべての Azure リージョンで使用できるわけではありません。
@@ -337,7 +282,8 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 
 このタスクでは、さまざまな負荷構成設定を使って、さまざまな Azure Load Testing テストを作成します。
 
-1. **eShopOnWebLoadTesting** Azure Load Testing リソース ブレード内から、**[テスト]** に移動します。 **[+ 作成]** メニュー オプションをクリックして、**[Create a URL-based test] (URL ベースのテストの作成)** を選びます。
+1. **eShopOnWebLoadTesting** Azure Load Testing リソース ブレード内から、**[テスト]** の下の **[テスト]** に移動します。 **[+ 作成]** メニュー オプションをクリックして、**[URL ベースのテストの作成]** を選択します。
+1. **[詳細設定を有効にする]** チェックボックスをオフにして、詳細設定を表示します。
 1. ロード テストを作成するには、次のパラメーターと設定を完了します。
    - **[Test URL] (テストの URL)**: 前の演習でデプロイした Azure App Service の URL を **https:// を含めて**入力します (az400eshoponweb...azurewebsites.net)
    - **Specify Load (負荷の指定)** : 仮想ユーザー
@@ -376,33 +322,30 @@ Azure Pipelines から Azure リソースをデプロイするには、サービ
 1. 以下に、これらの値のいくつかをダッシュボードのグラフの折れ線とグラフ ビューを使って表します。
 1. 数分かけて両方のシミュレート テストの**結果を相互に比較します**。また、より多くのユーザーが App Service のパフォーマンスに与える**影響を特定します**。
 
-### 演習 2:Azure Pipelines で CI/CD を使用してロード テストを自動化する
+### 演習 3: Azure Pipelines で CI/CD を使用してロード テストを自動化する
 
 CI/CD パイプラインにロード テスト追加して、Azure Load Testing でのロード テストの自動化を開始します。 Azure portal でロード テストを実行した後、構成ファイルをエクスポートし、Azure Pipelines で CI/CD パイプラインを構成します (GitHub Actions 用に対して機能があります)。
 
 この演習を完了すると、Azure Load Testing でロード テストを実行するように構成された CI/CD ワークフローが作成されます。
 
-#### タスク 1: ADO サービス接続の詳細を特定する
+#### タスク 1: Azure DevOps サービス接続の詳細を特定する
 
-このタスクでは、Azure DevOps Service Connection のサービス プリンシパルに必要なアクセス許可を付与します。
+このタスクでは、Azure DevOps サービス接続に必要なアクセス許可を付与します。
 
-1. **Azure DevOps Portal** (<https://dev.azure.com>) から **eShopOnWeb** プロジェクトに移動します。
+1. **Azure DevOps Portal** (<https://aex.dev.azure.com>) から **eShopOnWeb** プロジェクトに移動します。
 1. 左下隅にある **[プロジェクトの設定]** を選びます。
 1. **[パイプライン]** セクションで、 **[サービス接続]** を選びます。
 1. [サービス接続] には、このラボ演習の開始時に Azure リソースのデプロイに使った Azure サブスクリプションの名前が含まれていることに注目してください。
-1. **[サービス接続] を選びます**。 **[概要]** タブから **[詳細]** に移動し、 **[サービス プリンシパルの管理]** を選びます。
-1. これで Azure Portal にリダイレクトされ、ID オブジェクトの**サービス プリンシパル**の詳細が開きます。
-1. **[表示名]** の値 (Name_of_ADO_Organization_eShopOnWeb_-b86d9ae1-7552-4b75-a1e0-27fb2ea7f9f4 のような形式です) をコピーしておきます。これは次の手順で必要になります。
+1. **[サービス接続] を選びます**。 **[概要]** タブから **[詳細]** に移動し、**[サービス接続のロールの管理]** を選択します。
+1. これで Azure portal にリダイレクトされ、そこからアクセス制御 (IAM) ブレードにリソース グループの詳細が開きます。
 
-#### タスク 2: サービス プリンシパルのアクセス許可を付与する
+#### タスク 2: Azure Load Testing リソースへのアクセス許可を付与する
 
-Azure Load Testing では、Azure RBAC を使用して、ロード テスト リソースで特定のアクティビティを実行するためのアクセス許可を付与します。 CI/CD パイプラインからロード テストを実行するには、**ロード テスト共同作成者**ロールをサービス プリンシパルに付与します。
+Azure Load Testing では、Azure RBAC を使用して、ロード テスト リソースで特定のアクティビティを実行するためのアクセス許可を付与します。 CI/CD パイプラインからロード テストを実行するには、**ロード テスト共同作成者**ロールを Azure DevOps サービス接続に付与します。
 
-1. **Azure portal** で **Azure Load Testing** リソースに移動します。
-1. **[アクセス制御 (IAM)]** > [追加] > [ロールの割り当ての追加] の順に選びます。
+1. **[+ 追加]** を選択し、**[ロールの割り当ての追加]** を選択します。
 1. **[ロール] タブ**のジョブ関数ロールの一覧で **[ロード テスト共同作成者]** を選びます。
-1. **[メンバー]** タブで **[メンバーの選択]** を選び、先ほどコピーした**表示名**を使ってサービス プリンシパルを検索します。
-1. **サービス プリンシパル**を選び、 **[選択]** を選びます。
+1. **[メンバー]** タブで、**[メンバーの選択]** を選択して、自分のユーザー アカウントを見つけて選択し、**[選択]** をクリックします。
 1. **[確認と 割り当て]** タブで、**[確認と割り当て]** を選択して ロールの割り当てを追加します。
 
 Azure Pipelines ワークフロー定義でサービス接続を使用して、Azure ロード テスト リソースにアクセスできるようになりました。
@@ -422,7 +365,7 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
    - *config.yaml*: ロード テストの YAML 構成ファイル。 このファイルは、CI/CD ワークフロー定義で参照します。
    - *quick_test.jmx*: JMeter テスト スクリプト
 
-1. 抽出されたすべての入力ファイルをソース管理リポジトリにコミットします。 これを行うには、**Azure DevOps Portal** (<https://dev.azure.com>) に移動し、**eShopOnWeb** DevOps プロジェクトに移動します。
+1. 抽出されたすべての入力ファイルをソース管理リポジトリにコミットします。 これを行うには、**Azure DevOps Portal** (<https://aex.dev.azure.com/>) に移動し、**eShopOnWeb** DevOps プロジェクトに移動します。
 1. **[リポジトリ]** を選びます。 ソース コード フォルダー構造の **tests** サブフォルダーを選びます。 省略記号 (...) を選び、 **[新規作成] > [フォルダー]** を選びます。
 1. フォルダー名として **jmeter**、ファイル名として **placeholder.txt** を指定します (注: フォルダーを空として作成することはできません)
 1. **[コミット]** をクリックして、プレースホルダー ファイルと jmeter フォルダーの作成を確認します。
@@ -431,8 +374,6 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
 1. **[コミット]** をクリックして、ソース管理へのファイルのアップロードを確認します。
 
 #### タスク 4: CI/CD ワークフロー YAML 定義ファイルを更新する
-
-このタスクでは、Azure Load Testing - Azure DevOps Marketplace 拡張機能をインポートし、AzureLoadTest タスクを使って既存の CI/CD パイプラインを更新します。
 
 1. ロード テストを作成して実行するために、Azure Pipelines ワークフロー定義には Azure DevOps Marketplace の **Azure Load Testing タスク**拡張機能が使われます。 Azure DevOps Marketplace で [Azure Load Testing タスク拡張機能](https://marketplace.visualstudio.com/items?itemName=AzloadTest.AzloadTesting)を開き、**[Get it free] (無料で入手)** を選択します。
 1. Azure DevOps 組織を選択し、**[インストール]** を選択して拡張機能をインストールします。
@@ -443,7 +384,7 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
    - Azure サブスクリプション: Azure リソースを実行するサブスクリプションを選びます
    - ロード テスト ファイル: '$(Build.SourcesDirectory)/tests/jmeter/config.yaml'
    - ロード テスト リソース グループ: Azure Load Testing リソースを保持するリソース グループ
-   - ロード テスト リソース名: ESHopOnWebLoadTesting
+   - ロード テスト リソース名: `eShopOnWebLoadTesting`
    - ロード テストの実行名: ado_run
    - ロード テストの実行の説明: ADO からのロード テスト
 
@@ -454,9 +395,9 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
     ```yml
          - task: AzureLoadTest@1
           inputs:
-            azureSubscription: 'AZURE DEMO SUBSCRIPTION(b86d9ae1-1234-4b75-a8e7-27fb2ea7f9f4)'
+            azureSubscription: 'AZURE DEMO SUBSCRIPTION'
             loadTestConfigFile: '$(Build.SourcesDirectory)/tests/jmeter/config.yaml'
-            resourceGroup: 'az400m05l11-RG'
+            resourceGroup: 'az400m08l14-RG'
             loadTestResource: 'eShopOnWebLoadTesting'
             loadTestRunName: 'ado_run'
             loadTestRunDescription: 'load testing from ADO'
@@ -489,7 +430,7 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
     Test '0d295119-12d0-482d-94be-a7b84787c004' already exists
     Uploaded test plan for the test
     Creating and running a testRun for the test
-    View the load test run in progress at: https://portal.azure.com/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%4b75-a1e0-27fb2ea7f9f4%2fresourcegroups%2faz400m05l11-rg%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2feshoponwebloadtesting/testId/0d295119-12d0-787c004/testRunId/161046f1-d2d3-46f7-9d2b-c8a09478ce4c
+    View the load test run in progress at: https://portal.azure.com/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%4b75-a1e0-27fb2ea7f9f4%2fresourcegroups%2faz400m08l14-RG%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2feshoponwebloadtesting/testId/0d295119-12d0-787c004/testRunId/161046f1-d2d3-46f7-9d2b-c8a09478ce4c
     TestRun completed
     
     -------------------Summary ---------------
@@ -533,7 +474,7 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
 
     ```text
     Creating and running a testRun for the test
-    View the load test run in progress at: https://portal.azure.com/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%2fb86d9ae1-7552-47fb2ea7f9f4%2fresourcegroups%2faz400m05l11-rg%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2feshoponwebloadtesting/testId/0d295119-12d0-a7b84787c004/testRunId/f4bec76a-8b49-44ee-a388-12af34f0d4ec
+    View the load test run in progress at: https://portal.azure.com/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%2fb86d9ae1-7552-47fb2ea7f9f4%2fresourcegroups%2faz400m08l14-RG%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2feshoponwebloadtesting/testId/0d295119-12d0-a7b84787c004/testRunId/f4bec76a-8b49-44ee-a388-12af34f0d4ec
     TestRun completed
     
     -------------------Summary ---------------
@@ -565,34 +506,12 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
 
 1. ロード テスト出力の最後の行に **##[error]TestResult: FAILED** という出力があることに注目してください。平均応答時間が > 300 であるか、エラーの割合が > 20 という **FailCriteria** を定義したので、300 を超える平均応答時間が表示されると、タスクは失敗としてフラグが付けられます。
 
-    > 注: App Service のパフォーマンスを検証するという実際のシナリオを想像してください。パフォーマンスが一定のしきい値を下回る場合 (通常は Web アプリの負荷が高いことを意味します)、追加の Azure App Service への新しいデプロイをトリガーできます。 Azure ラボ環境では応答時間を制御できないため、失敗を保証するロジックに元に戻すことにしました。
+    > **注:** App Service のパフォーマンスを検証するという実際のシナリオを想像してください。パフォーマンスが一定のしきい値を下回る場合 (通常は Web アプリの負荷が高いことを意味します)、追加の Azure App Service への新しいデプロイをトリガーできます。 Azure ラボ環境では応答時間を制御できないため、失敗を保証するロジックに元に戻すことにしました。
 
 1. パイプライン タスクの失敗状態は、実際には Azure Load Testing の要件条件の検証の成功を反映しています。
 
-### 演習 3:Azure ラボ リソースを削除する
-
-この演習では、このラボでプロビジョニングした Azure リソースを削除し、予期しない料金を排除します。
-
-> **注**:新規に作成し、使用しなくなったすべての Azure リソースを削除することを忘れないでください。 使用していないリソースを削除することで、予期しない料金が発生しなくなります。
-
-#### タスク 1:Azure ラボ リソースを削除する
-
-このタスクでは、Azure Cloud Shell を使用して、このラボでプロビジョニングされた Azure リソースを削除し、不要な料金を排除します。
-
-1. Azure portal で、**Cloud Shell** ウィンドウ内で **Bash** シェル セッションを開きます。
-1. 次のコマンドを実行して、このモジュールのラボ全体で作成したすべてのリソース グループのリストを表示します。
-
-    ```sh
-    az group list --query "[?starts_with(name,'az400m09l16')].name" --output tsv
-    ```
-
-1. 次のコマンドを実行して、このモジュールのラボ全体を通して作成したすべてのリソース グループを削除します。
-
-    ```sh
-    az group list --query "[?starts_with(name,'az400m09l16')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-    ```
-
-    >**注**:コマンドは非同期に実行されるので (--nowait パラメーターで決定される)、同じ Bash セッション内ですぐに別の Azure CLI コマンドを実行できますが、リソース グループが実際に削除されるまでに数分かかります。
+   > [!IMPORTANT]
+   > 不要な料金が発生しないように、Azure portal で作成されたリソースを必ず削除してください。
 
 ## 確認
 
