@@ -113,7 +113,7 @@ lab:
 
 1. ブラウザー ウィンドウで、**eShopOnWeb** GitHub リポジトリに戻ります。
 1. リポジトリ ページで **[Settings] (設定)** に移動し、 **[Secrets and variables] (シークレットと変数) > [Actions] (アクション)** をクリックします。 **[New repository secret]** をクリックします
-    - 名前 : **AZURE_CREDENTIALS**
+    - 名前: **`AZURE_CREDENTIALS`**
     - シークレット: **前にコピーした JSON オブジェクトを貼り付けます** (GitHub では、[azure/login](https://github.com/Azure/login) アクションで使用される複数のシークレットを同じ名前で保持できます)
 
 1. **[Add secret]** をクリックします。 これで、GitHub Actions ではリポジトリ シークレットを使用して、サービス プリンシパルを参照できるようになりました。
@@ -159,7 +159,7 @@ lab:
 1. **[デプロイ]** ジョブ セクションには、**Development** という**環境**への参照があります。 GitHub で使用される[環境](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment)では、ターゲットの保護規則 (およびシークレット) が追加されます。
 
 1. リポジトリ ページで、 **[Settings]** に移動し、 **[Environments]** を開き、 **[New environment]** をクリックします。
-1. **Development** の名前を指定し、 **[Configure Environment]** をクリックします。
+1. **`Development`** の名前を指定し、**[Configure Environment]** をクリックします。
 
     > **注**: **[Environments]** 一覧に **Development** という名前の環境が既に存在する場合は、環境名をクリックしてその構成を開きます。  
 

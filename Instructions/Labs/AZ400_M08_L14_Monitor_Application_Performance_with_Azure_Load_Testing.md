@@ -322,7 +322,7 @@ Web アプリケーションのロード テストは、URL を使用してす�
 1. 以下に、これらの値のいくつかをダッシュボードのグラフの折れ線とグラフ ビューを使って表します。
 1. 数分かけて両方のシミュレート テストの**結果を相互に比較します**。また、より多くのユーザーが App Service のパフォーマンスに与える**影響を特定します**。
 
-### 演習 2:Azure Pipelines で CI/CD を使用してロード テストを自動化する
+### 演習 3: Azure Pipelines で CI/CD を使用してロード テストを自動化する
 
 CI/CD パイプラインにロード テスト追加して、Azure Load Testing でのロード テストの自動化を開始します。 Azure portal でロード テストを実行した後、構成ファイルをエクスポートし、Azure Pipelines で CI/CD パイプラインを構成します (GitHub Actions 用に対して機能があります)。
 
@@ -397,7 +397,7 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
           inputs:
             azureSubscription: 'AZURE DEMO SUBSCRIPTION'
             loadTestConfigFile: '$(Build.SourcesDirectory)/tests/jmeter/config.yaml'
-            resourceGroup: 'az400m05l11-RG'
+            resourceGroup: 'az400m08l14-RG'
             loadTestResource: 'eShopOnWebLoadTesting'
             loadTestRunName: 'ado_run'
             loadTestRunDescription: 'load testing from ADO'
@@ -430,7 +430,7 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
     Test '0d295119-12d0-482d-94be-a7b84787c004' already exists
     Uploaded test plan for the test
     Creating and running a testRun for the test
-    View the load test run in progress at: https://portal.azure.com/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%4b75-a1e0-27fb2ea7f9f4%2fresourcegroups%2faz400m05l11-rg%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2feshoponwebloadtesting/testId/0d295119-12d0-787c004/testRunId/161046f1-d2d3-46f7-9d2b-c8a09478ce4c
+    View the load test run in progress at: https://portal.azure.com/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%4b75-a1e0-27fb2ea7f9f4%2fresourcegroups%2faz400m08l14-RG%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2feshoponwebloadtesting/testId/0d295119-12d0-787c004/testRunId/161046f1-d2d3-46f7-9d2b-c8a09478ce4c
     TestRun completed
     
     -------------------Summary ---------------
@@ -474,7 +474,7 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
 
     ```text
     Creating and running a testRun for the test
-    View the load test run in progress at: https://portal.azure.com/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%2fb86d9ae1-7552-47fb2ea7f9f4%2fresourcegroups%2faz400m05l11-rg%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2feshoponwebloadtesting/testId/0d295119-12d0-a7b84787c004/testRunId/f4bec76a-8b49-44ee-a388-12af34f0d4ec
+    View the load test run in progress at: https://portal.azure.com/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%2fb86d9ae1-7552-47fb2ea7f9f4%2fresourcegroups%2faz400m08l14-RG%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2feshoponwebloadtesting/testId/0d295119-12d0-a7b84787c004/testRunId/f4bec76a-8b49-44ee-a388-12af34f0d4ec
     TestRun completed
     
     -------------------Summary ---------------
