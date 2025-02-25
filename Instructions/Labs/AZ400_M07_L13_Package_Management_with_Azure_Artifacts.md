@@ -145,23 +145,23 @@ Azure Artifacts は、Azure DevOps での NuGet、npm、Maven パッケージの
 1. 
           **[管理者:Windows PowerShell]** ウィンドウで、次のコマンドを実行して eShopOnWeb.Shared フォルダーに移動します。
 
-   ```text
+   ```powershell
    cd c:\eShopOnWeb\eShopOnWeb.Shared
    ```
 
    > **注**:**eShopOnWeb.Shared** フォルダーは、**eShopOnWeb.Shared.csproj** ファイルの場所です。 別の場所またはプロジェクト名を選択した場合は、代わりにその場所に移動します。
 
-1. 次を実行して、プロジェクトから **.nupkg** ファイルを作成します。
+1. 次を実行して、プロジェクトから **.nupkg** ファイルを作成します (`XXXXXX` プレースホルダーの値を一意の文字列に変更します)。
 
    ```powershell
-   dotnet pack .\eShopOnWeb.Shared.csproj
+   dotnet pack .\eShopOnWeb.Shared.csproj -p:PackageId=eShopOnWeb-XXXXX.Shared
    ```
 
    > **注**:**dotnet pack** コマンドは、プロジェクトをビルドし、NuGet パッケージを **bin\Release** フォルダーに作成します。 **[リリース]** フォルダーがない場合は、代わりに **[デバッグ]** フォルダーを使用できます。
 
    > **注**: **[管理者:Windows PowerShell]** ウィンドウに表示される警告はすべて無視します。
 
-   > **注意**: dotnet pack は、プロジェクトから識別できる情報に基づいて最小限のパッケージをビルドします。 たとえば、名前が **eShopOnWeb.Shared.1.0.0.nupkg** となることに注意してください。 そのバージョン番号は、アセンブリから取得されました。
+   > **注意**: dotnet pack は、プロジェクトから識別できる情報に基づいて最小限のパッケージをビルドします。 引数 `-p:PackageId=eShopOnWeb-XXXXXX.Shared` を使用すると、プロジェクトに含まれている名前を使用する代わりに、特定の名前を持つパッケージを作成できます。 たとえば、文字列 `12345` を `XXXXXX` プレースホルダーに置き換えた場合、パッケージの名前は **eShopOnWeb-12345.Shared.1.0.0.nupkg** になります。 バージョン番号は、アセンブリから取得されました。
 
 1. PowerShell ウィンドウで、次のコマンドを実行して、**bin\Release** フォルダーを開きます。
 
