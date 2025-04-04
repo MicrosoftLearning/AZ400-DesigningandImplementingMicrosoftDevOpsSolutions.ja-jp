@@ -240,7 +240,7 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
    > [!IMPORTANT]
    > エージェントが Azure DevOps パイプラインから Azure リソースをビルドしてデプロイできるようにするには (今後のラボで手順を実行します)、エージェントをホストしている Azure VM のオペレーティング システム内に Azure CLI をインストールする必要があります。
 
-1. Web ブラウザーを起動し、[[Windows に Azure CLI をインストールする]](https://learn.microsoft.com/cli/azure/install-azure-cli-windows?tabs=azure-cli#install-or-update) ページに移動します。
+1. Web ブラウザーを起動し、[[Windows に Azure CLI をインストールする]](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli&pivots=msi#install-or-update) ページに移動します。
 
 1. Azure CLI をダウンロードしてインストールします。
 
