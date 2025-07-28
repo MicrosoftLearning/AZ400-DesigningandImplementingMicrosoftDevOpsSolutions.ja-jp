@@ -125,7 +125,7 @@ Azure Artifacts は、Azure DevOps での NuGet、npm、Maven パッケージの
 
    > **注**:NuGet パッケージとして公開される共有アセンブリを作成して、他のチームがプロジェクト ソースを直接操作しなくても、アセンブリを統合して最新の状態に保つことができるようにします。
 
-1. **[新しいプロジェクトの作成]** ペインの **[最近のプロジェクト テンプレート]** ページで、検索テキスト ボックスを使って**クラス ライブラリ** テンプレートを見つけ、C# 用のテンプレートを選んで **[次へ]** をクリックします。
+1. **[新しいプロジェクトの作成]** ウィンドウで、検索テキスト ボックスを使用して **Class Library** テンプレートを見つけ、.NET または .NET Standard を対象とする C# のテンプレートを選択し、**[次へ]** をクリックします。
 1. **[新しいプロジェクトの作成]** ペインの **[クラス ライブラリ]** ページで、次の設定を指定して **[作成]** をクリックします。
 
    | 設定       | [値]                    |
@@ -154,7 +154,7 @@ Azure Artifacts は、Azure DevOps での NuGet、npm、Maven パッケージの
 1. 次を実行して、プロジェクトから **.nupkg** ファイルを作成します (`XXXXXX` プレースホルダーの値を一意の文字列に変更します)。
 
    ```powershell
-   dotnet pack .\eShopOnWeb.Shared.csproj -p:PackageId=eShopOnWeb-XXXXX.Shared
+   dotnet pack .\eShopOnWeb.Shared.csproj -p:PackageId=eShopOnWeb-XXXXXX.Shared
    ```
 
    > **注**:**dotnet pack** コマンドは、プロジェクトをビルドし、NuGet パッケージを **bin\Release** フォルダーに作成します。 **[リリース]** フォルダーがない場合は、代わりに **[デバッグ]** フォルダーを使用できます。
@@ -172,10 +172,10 @@ Azure Artifacts は、Azure DevOps での NuGet、npm、Maven パッケージの
 1. 次を実行して、パッケージを **eShopOnWebShared** フィードに発行します。 ソースを、前に Visual Studio **Source** URL `https://pkgs.dev.azure.com/Azure-DevOps-Org-Name/_packaging/eShopOnWebShared/nuget/v3/index.json`からコピーした URL に置き換えます。
 
    ```powershell
-   dotnet nuget push --source "https://pkgs.dev.azure.com/Azure-DevOps-Org-Name/_packaging/eShopOnWebShared/nuget/v3/index.json" --api-key az "eShopOnWeb.Shared.1.0.0.nupkg"
+   dotnet nuget push --source "https://pkgs.dev.azure.com/Azure-DevOps-Org-Name/_packaging/eShopOnWebShared/nuget/v3/index.json" --api-key az "eShopOnWeb-XXXXXX.Shared.1.0.0.nupkg"
    ```
 
-   > **重要**: Azure DevOps で認証できるようにするには、オペレーティング システムの資格情報プロバイダーをインストールする必要があります。 インストール手順については、「[Azure Artifacts 資格情報プロバイダー](https://go.microsoft.com/fwlink/?linkid=2099625)」を参照してください。 PowerShell ウィンドウで次のコマンドを実行することでインストールできます: `iex "& { $(irm https://aka.ms/install-artifacts-credprovider.ps1) } -AddNetfx"`
+   > **重要**: 承認エラー (401 Unauthorized) を受け取った場合は、Azure DevOps で認証できるように、オペレーティング システムの資格情報プロバイダーをインストールする必要があります。 インストール手順については、「[Azure Artifacts 資格情報プロバイダー](https://go.microsoft.com/fwlink/?linkid=2099625)」を参照してください。 PowerShell ウィンドウで次のコマンドを実行することでインストールできます: `iex "& { $(irm https://aka.ms/install-artifacts-credprovider.ps1) } -AddNetfx"`
 
    > **注**:**API キー**を指定する必要があります。これは、空でない文字列にすることができます。 ここでは **az** を使用しています。 プロンプトが表示されたら、Azure DevOps 組織にサインインします。
 
@@ -195,7 +195,7 @@ Azure Artifacts は、Azure DevOps での NuGet、npm、Maven パッケージの
 
 このタスクでは、汎用の "Newtonsoft.Json" サンプル パッケージを使用しますが、ライブラリ内の他のパッケージにも同じ方法を使用できます。
 
-1. 以前のタスクで使用されたのと同じ PowerShell ウィンドウで、**eShopOnWeb.Shared** フォルダー (`cd..`) に移動し、次の **dotnet** コマンドを実行して、サンプル パッケージをインストールします。
+1. 以前のタスクで使用されたのと同じ PowerShell ウィンドウで、**eShopOnWeb.Shared** フォルダー (`cd ../..`) に移動し、次の **dotnet** コマンドを実行して、サンプル パッケージをインストールします。
 
    ```powershell
    dotnet add package Newtonsoft.Json

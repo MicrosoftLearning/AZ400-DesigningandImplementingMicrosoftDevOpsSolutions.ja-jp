@@ -76,7 +76,7 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
 
 1. **[作成]** ボタンを選択します。
 
-1. **[構成が事前設定された Azure 仮想マシン]** を選びます。
+1. **[プリセット]** を選択します。
 
     ![構成が事前設定された仮想マシンの作成のスクリーンショット。](images/create-virtual-machine-preset.png)
 
@@ -143,6 +143,8 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
 
    > **注**: インストール手順に従ってエージェントをインストールします。
 
+   > **注**:**[ダウンロード]** ボタンでダウンロードした zip ファイルの名前は、次の `vsts-agent-win-x64-X.YYY.Z.zip` のようになります (このラボの執筆時点ではファイル名は `vsts-agent-win-x64-4.255.0.zip` です)。 ファイル名は、後でエージェントのインストール コマンドのいずれかで使用されます。
+
 1. PowerShell セッションを開始し、次のコマンドを実行して **agent** というフォルダーを作成します。
 
    ```powershell
@@ -154,10 +156,12 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
 1. 次のコマンドを実行し、ダウンロードしたエージェント インストーラー ファイルの内容を抽出します。
 
    ```powershell
-   Add-Type -AssemblyName System.IO.Compression.FileSystem ; [System.IO.Compression.ZipFile]::ExtractToDirectory("$HOME\Downloads\vsts-agent-win-x64-3.245.0.zip", "$PWD")
+   Add-Type -AssemblyName System.IO.Compression.FileSystem ; [System.IO.Compression.ZipFile]::ExtractToDirectory("$HOME\Downloads\vsts-agent-win-x64-4.255.0.zip", "$PWD")
    ```
 
    > **注**: エージェントを別の場所にダウンロードした場合 (またはダウンロードしたバージョンが異なる場合) は、上記のコマンドを適宜調整してください。
+
+   > **注**:`ExtractToDirectory` コマンド内で指定した zip ファイル名が、前にダウンロードした zip ファイル名と同じであることを確認します。
 
 #### タスク 4:PAT トークンを作成する
 
@@ -208,7 +212,7 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
 
 1. エージェントを構成するには、プロンプトが表示されたら次のアクションを実行します。
 
-   - Azure DevOps 組織の URL (**サーバー URL**) を `https://aex.dev.azure.com`{お客様の組織名} 形式で入力します。
+   - Azure DevOps 組織の URL (**サーバー URL**) を `https://dev.azure.com/{your organization name}` の形式で入力します。
    - 既定の認証の種類 (**`PAT`**) を受け入れます。
    - 前の手順で作成した PAT トークンの値を入力します。
    - この演習で先ほど作成したエージェント プール名 **`eShopOnWebSelfPool`** を入力します。
@@ -240,7 +244,7 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
    > [!IMPORTANT]
    > エージェントが Azure DevOps パイプラインから Azure リソースをビルドしてデプロイできるようにするには (今後のラボで手順を実行します)、エージェントをホストしている Azure VM のオペレーティング システム内に Azure CLI をインストールする必要があります。
 
-1. Web ブラウザーを起動し、[[Windows に Azure CLI をインストールする]](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli&pivots=msi#install-or-update) ページに移動します。
+1. Web ブラウザーを起動し、ページ `https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli&pivots=msi#install-or-update`に移動します。
 
 1. Azure CLI をダウンロードしてインストールします。
 
@@ -306,7 +310,7 @@ YAML ベースのパイプラインを使用すると、CI/CD をコードとし
     ![YAML プールの構文を示すスクリーンショット。](images/eshoponweb-ci-pr-agent-pool.png)
 
 1. **[eShopOnWeb]** 編集ペインで、ペインの右上隅にある **[検証して保存]** をクリックします。 **[保存]** をクリックします。
-1. **[eShopOnWeb]** 編集ペインの右上隅にある **[パイプラインを実行]** をクリックします。
+1. **[eShopOnWeb]** 編集ペインで、ペインの右上隅にある **[実行]** をクリックします。
 
     > **注**: パイプラインは、前の演習で作成したセルフホステッド エージェント プールで実行されます。
 1. パイプライン実行を開き、正常に完了するまでジョブを監視します。
