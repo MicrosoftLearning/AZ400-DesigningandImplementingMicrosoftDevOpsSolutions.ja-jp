@@ -204,7 +204,7 @@ Web アプリケーションのロード テストは、URL を使用してす�
 1. エディターには次のようなコード スニペットが追加されていて、azureSubscription と WebappName パラメーターには実際の名前が反映されている必要があります。
 
    ```yml
-   - task: AzureRmWebAppDeployment@4
+   - task: AzureRmWebAppDeployment@5
      inputs:
        ConnectionType: "AzureRM"
        azureSubscription: "SERVICE CONNECTION NAME"
@@ -228,7 +228,7 @@ Web アプリケーションのロード テストは、URL を使用してす�
 
    ![eShopOnWeb の実行を示す Azure Pipelines のスクリーンショット。](images/m3/eshoponweb-m9l16-pipeline.png)
 
-1. 表示されるペインで **[実行]** をクリックしてこのパイプラインが実行することを確認し、もう一度 **[実行]** をクリックして確認します。
+1. 表示されるペインで **[パイプラインの実行]** をクリックしてこのパイプラインを実行することを確認し、もう一度 **[実行]** をクリックして確定します。
 1. **[Build .Net Core Solution] (.Net Core ソリューションをビルドする)** と **[Deploy to Azure Web App] (Azure Web アプリにデプロイする)** という 2 つの異なるステージが表示されることに注意してください。
 1. パイプラインが開始するまで待ちます。
 
@@ -389,8 +389,8 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
 1. ロード テストを作成して実行するために、Azure Pipelines ワークフロー定義には Azure DevOps Marketplace の **Azure Load Testing タスク**拡張機能が使われます。 Azure DevOps Marketplace で [Azure Load Testing タスク拡張機能](https://marketplace.visualstudio.com/items?itemName=AzloadTest.AzloadTesting)を開き、**[Get it free] (無料で入手)** を選択します。
 1. Azure DevOps 組織を選択し、**[インストール]** を選択して拡張機能をインストールします。
 1. Azure DevOps Portal と [プロジェクト] 内から **[パイプライン]** に移動し、この演習の開始時に作成したパイプラインを選びます。 **編集** をクリックします。
-1. YAML スクリプトで**行 56** に移動し、Enter/Return キーを押して新しい空行を追加します (これは YAML ファイルのデプロイ ステージの直前です)。
-1. 57 行目で、右側にある [タスク アシスタント] を選び、**Azure Load Testing** を検索します。
+1. YAML スクリプトで**行 64** に移動し、Enter/Return キーを押して新しい空行を追加します。 (これは YAML ファイルのデプロイ ステージの直前です)。
+1. 65 行目で、右側にある [タスク アシスタント] を選び、**Azure Load Testing** を検索します (必ず前のタスク レベルのインデントにカーソルを置いてください)。
 1. シナリオの正しい設定を使ってグラフィカル ペインを完了します。
 
    - Azure サブスクリプション: Azure リソースを実行するサブスクリプションを選びます
@@ -424,12 +424,12 @@ CI/CD ワークフローで Azure Load Testing を使用してロード テス�
    ```
 
 1. YAML スニペットのインデントでエラー (赤い波線) が発生している場合は、スニペットを正しく配置するために 2 つのスペースまたはタブを追加して修正します。
-1. 両方のスニペットが CI/CD パイプラインに追加されたら、変更を **[保存]** します。
+1. 両方のスニペットが CI/CD パイプラインに追加されたら、**[検証と保存]** をクリックして、変更を**保存**します。
 1. 保存したら、 **[実行]** をクリックしてパイプラインをトリガーします。
 1. ブランチ (main) を確認し、 **[実行]** ボタンをクリックしてパイプラインの実行を開始します。
-1. パイプラインの状態ページで **[ビルド]** ステージをクリックし、パイプライン内の異なるタスクの詳細ログを開きます。
-1. パイプラインがビルド ステージをキックオフし、パイプラインのフロー内の **AzureLoadTest** タスクに到達するまで待ちます。
-1. タスクが実行されている間に、Azure Portal で **Azure Load Testing** を参照して、パイプラインによって **adoloadtest1** という新しい RunTest がどのように作成されるかを確認します。 これを選ぶと、TestRun ジョブの結果値が表示されます。
+1. パイプラインの状態ページで **[デプロイ]** ステージをクリックし、パイプライン内の各タスクの詳細ログを開きます。
+1. パイプラインがデプロイ ステージをキックオフし、パイプラインのフロー内の **AzureLoadTest** タスクに到達するまで待ちます。
+1. タスクが実行されている間に、Azure Portal で **Azure Load Testing** を参照して、パイプラインによって **ado_load_test** という新しい RunTest がどのように作成されるかを確認します。 これを選ぶと、TestRun ジョブの結果値が表示されます。
 1. Azure DevOps CI/CD のパイプライン実行ビューに戻ります。**AzureLoadTest タスク**は正常に完了しています。 詳細ログの出力から、ロード テストの結果の値も表示されます。
 
    ```text
